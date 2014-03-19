@@ -1,0 +1,12 @@
+Config { font = "xft:Ricty"
+       , bgColor = "#002b36"
+       , fgColor = "#839496"
+       , position = Top
+       , lowerOnStart = False
+       , commands = [ Run Com "date" ["+%c"] "date" 10
+                    , Run StdinReader
+                    ]
+       , sepChar = "%"
+       , alignSep = "{}"
+       , template = "%StdinReader% {} <fc=#b58900>%date%</fc>"
+       }

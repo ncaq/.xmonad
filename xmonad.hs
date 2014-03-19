@@ -8,7 +8,7 @@ myBar :: String
 myBar = "xmobar"
 
 myPP :: PP
-myPP = defaultPP { ppCurrent = xmobarColor "#429942" "" . wrap "<" ">" }
+myPP = defaultPP
 
 toggleStrutsKey :: XConfig t -> (KeyMask, KeySym)
 toggleStrutsKey _ = (mod4Mask, xK_F11)
