@@ -3,7 +3,7 @@ Config { font = "xft:Ricty"
        , fgColor = "#839496"
        , position = Top
        , lowerOnStart = False
-       , commands = [ Run Com "date" ["+%c"] "date" 10
+       , commands = [ Run Date "%m/%d/%a %H-%M-%S" "date" 10
                     , Run StdinReader
                     ]
        , sepChar = "%"
