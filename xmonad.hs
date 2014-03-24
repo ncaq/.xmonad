@@ -4,6 +4,7 @@ import Graphics.X11.Xlib
 import XMonad
 import XMonad.Hooks.DynamicLog
 import XMonad.StackSet
+import XMonad.Actions.WindowGo
 
 main :: IO ()
 main = xmonad =<< statusBar "xmobar" defaultPP hideStatusBar myConfig
@@ -11,7 +12,7 @@ main = xmonad =<< statusBar "xmobar" defaultPP hideStatusBar myConfig
 hideStatusBar :: XConfig t -> (KeyMask, KeySym)
 hideStatusBar _ = (mod4Mask, xK_F11)
 
-myConfig :: XConfig (Choose Tall (Choose (Mirror Tall) Full))
+myConfig :: XConfig (Choose Full (Choose (Mirror Tall) Tall))
 myConfig = XConfig
   { XMonad.normalBorderColor  = "#dddddd" ,
     XMonad.focusedBorderColor = "#ff0000" ,
@@ -30,8 +31,8 @@ myConfig = XConfig
     XMonad.clickJustFocuses   = True
   }
 
-fullFirstLayout :: Choose Tall (Choose (Mirror Tall) Full) a
-fullFirstLayout = tiled ||| Mirror tiled ||| Full
+fullFirstLayout :: Choose Full (Choose (Mirror Tall) Tall) a
+fullFirstLayout = Full ||| Mirror tiled ||| tiled
   where
      tiled   = Tall nmaster delta ratio -- default tiling algorithm partitions the screen into two panes
      nmaster = 0 -- The default number of windows in the master pane
@@ -44,32 +45,37 @@ superKey = mod4Mask
 keyBind :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
 keyBind conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
     -- launching and killing programs
-    [ ((modKey .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf) -- %! Launch terminal
-    , ((modKey              , xK_q     ), kill) -- %! Close the focused window
-    , ((modKey .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf) -- %!  Reset the layouts on the current workspace to default
-    , ((modKey,               xK_n     ), refresh) -- %! Resize viewed windows to the correct size
-    , ((modKey,               xK_space ), sendMessage NextLayout) -- %! Rotate through the available layout algorithms
+  [ ((modKey .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf) -- %! Launch terminal
+  , ((modKey              , xK_q     ), kill) -- %! Close the focused window
+  , ((modKey .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf) -- %!  Reset the layouts on the current workspace to default
+  , ((modKey,               xK_n     ), refresh) -- %! Resize viewed windows to the correct size
+  , ((modKey,               xK_space ), sendMessage NextLayout) -- %! Rotate through the available layout algorithms
     -- move focus up or down the window stack
-    , ((modKey,               xK_Tab   ), windows focusDown) -- %! Move focus to the next window
-    , ((modKey .|. shiftMask, xK_Tab   ), windows focusUp  ) -- %! Move focus to the previous window
-    , ((modKey,               xK_j     ), windows focusDown) -- %! Move focus to the next window
-    , ((modKey,               xK_k     ), windows focusUp  ) -- %! Move focus to the previous window
-    , ((modKey,               xK_m     ), windows focusMaster  ) -- %! Move focus to the master window
+  , ((modKey,               xK_Tab   ), windows focusDown) -- %! Move focus to the next window
+  , ((modKey .|. shiftMask, xK_Tab   ), windows focusUp  ) -- %! Move focus to the previous window
+  , ((modKey,               xK_j     ), windows focusDown) -- %! Move focus to the next window
+  , ((modKey,               xK_k     ), windows focusUp  ) -- %! Move focus to the previous window
+  , ((modKey,               xK_m     ), windows focusMaster  ) -- %! Move focus to the master window
     -- modifying the window order
-    , ((modKey,               xK_Return), windows swapMaster) -- %! Swap the focused window and the master window
-    , ((modKey .|. shiftMask, xK_j     ), windows swapDown  ) -- %! Swap the focused window with the next window
-    , ((modKey .|. shiftMask, xK_k     ), windows swapUp    ) -- %! Swap the focused window with the previous window
+  , ((modKey,               xK_Return), windows swapMaster) -- %! Swap the focused window and the master window
+  , ((modKey .|. shiftMask, xK_j     ), windows swapDown  ) -- %! Swap the focused window with the next window
+  , ((modKey .|. shiftMask, xK_k     ), windows swapUp    ) -- %! Swap the focused window with the previous window
     -- resizing the master/slave ratio
-    , ((modKey,               xK_a     ), sendMessage Shrink) -- %! Shrink the master area
-    , ((modKey,               xK_o     ), sendMessage Expand) -- %! Expand the master area
+  , ((modKey,               xK_a     ), sendMessage Shrink) -- %! Shrink the master area
+  , ((modKey,               xK_o     ), sendMessage Expand) -- %! Expand the master area
     -- floating layer support
-    , ((modKey,               xK_l     ), withFocused $ windows . sink) -- %! Push window back into tiling
+  , ((modKey,               xK_l     ), withFocused $ windows . sink) -- %! Push window back into tiling
     -- increase or decrease number of windows in the master area
-    , ((modKey              , xK_comma ), sendMessage (IncMasterN 1)) -- %! Increment the number of windows in the master area
-    , ((modKey              , xK_period), sendMessage (IncMasterN (-1))) -- %! Deincrement the number of windows in the master area
+  , ((modKey              , xK_comma ), sendMessage (IncMasterN 1)) -- %! Increment the number of windows in the master area
+  , ((modKey              , xK_period), sendMessage (IncMasterN (-1))) -- %! Deincrement the number of windows in the master area
     -- quit, or restart
-    , ((modKey .|. shiftMask, xK_r     ), xmonadRestart)
-    ]
+  , ((modKey              , xK_r     ), xmonadRestart)
+    -- move to application
+  , ((modKey              , xK_h     ), runOrRaise "firefox"  (className =? "Firefox"))
+  , ((modKey              , xK_t     ), runOrRaise "mikutter" (className =? "Mikutter.rb"))
+  , ((modKey              , xK_n     ), runOrRaise "lilyterm" (className =? "Lilyterm"))
+  , ((modKey              , xK_s     ), runOrRaise "emacs"    (className =? "Emacs"))
+  ]
     ++
     -- mod-{w,e,r} %! Switch to physical/Xinerama screens 1, 2, or 3
     -- mod-shift-{w,e,r} %! Move client to screen 1, 2, or 3
