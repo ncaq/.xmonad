@@ -2,17 +2,35 @@ import Data.Map as M
 import Data.Monoid
 import Graphics.X11.Xlib
 import XMonad
+import XMonad.Actions.WindowGo
 import XMonad.Hooks.DynamicLog
 import XMonad.StackSet
-import XMonad.Actions.WindowGo
+import XMonad.Util.WorkspaceCompare
 
 main :: IO ()
-main = xmonad =<< statusBar "xmobar" defaultPP hideStatusBar myConfig
+main = xmonad =<< statusBar "xmobar" myPP hideStatusBar myConfig
+
+myPP :: PP
+myPP = PP { ppCurrent         = wrap "[" "]"
+          , ppVisible         = wrap "<" ">"
+          , ppHidden          = id
+          , ppHiddenNoWindows = id
+          , ppUrgent          = id
+          , ppSep             = ":"
+          , ppWsSep           = ""
+          , ppTitle           = id
+          , ppTitleSanitize   = id
+          , ppLayout          = id
+          , ppOrder           = id
+          , ppOutput          = putStr
+          , ppSort            = getSortByIndex
+          , ppExtras          = []
+          }
 
 hideStatusBar :: XConfig t -> (KeyMask, KeySym)
 hideStatusBar _ = (mod4Mask, xK_F11)
 
-myConfig :: XConfig (Choose Full (Choose (Mirror Tall) Tall))
+myConfig :: XConfig (Choose Full (Choose Tall (Mirror Tall)))
 myConfig = XConfig
   { XMonad.normalBorderColor  = "#dddddd" ,
     XMonad.focusedBorderColor = "#ff0000" ,
@@ -31,8 +49,8 @@ myConfig = XConfig
     XMonad.clickJustFocuses   = True
   }
 
-fullFirstLayout :: Choose Full (Choose (Mirror Tall) Tall) a
-fullFirstLayout = Full ||| Mirror tiled ||| tiled
+fullFirstLayout :: Choose Full (Choose Tall (Mirror Tall)) a
+fullFirstLayout = Full ||| tiled ||| Mirror tiled
   where
      tiled   = Tall nmaster delta ratio -- default tiling algorithm partitions the screen into two panes
      nmaster = 0 -- The default number of windows in the master pane
@@ -75,6 +93,7 @@ keyBind conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
   , ((modKey              , xK_t     ), runOrRaise "mikutter" (className =? "Mikutter.rb"))
   , ((modKey              , xK_n     ), runOrRaise "lilyterm" (className =? "Lilyterm"))
   , ((modKey              , xK_s     ), runOrRaise "emacs"    (className =? "Emacs"))
+  , ((modKey              , xK_d     ), runOrRaise "chromium-browser"    (className =? "Chromium-browser"))
   ]
     ++
     -- mod-{w,e,r} %! Switch to physical/Xinerama screens 1, 2, or 3
@@ -82,5 +101,6 @@ keyBind conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
     [((m .|. modKey, key), screenWorkspace sc >>= flip whenJust (windows . f))
         | (key, sc) <- zip [xK_1, xK_2, xK_3] [0..]
         , (f, m) <- [(view, 0), (shift, shiftMask)]]
+
 xmonadRestart :: X ()
 xmonadRestart = spawn "if type xmonad; then xmonad --recompile && xmonad --restart; else xmessage xmonad not in \\$PATH: \"$PATH\"; fi"
