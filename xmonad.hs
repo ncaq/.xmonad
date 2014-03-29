@@ -1,3 +1,7 @@
+-- It original code copylight.
+-- Copyright (c) 2007,2008 Spencer Janssen
+-- Copyright (c) 2007,2008 Don Stewart
+-- Copyright (c) The Xmonad Community
 import Data.Map as M
 import Data.Monoid
 import Graphics.X11.Xlib
@@ -44,7 +48,7 @@ myConfig = XConfig
     XMonad.mouseBindings      = mouseBindings defaultConfig,
     XMonad.borderWidth        = 0 ,
     XMonad.logHook            = return () ,
-    XMonad.startupHook        = return () ,
+    XMonad.startupHook        = startUp ,
     XMonad.focusFollowsMouse  = False ,
     XMonad.clickJustFocuses   = True
   }
@@ -104,3 +108,6 @@ keyBind conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
 
 xmonadRestart :: X ()
 xmonadRestart = spawn "if type xmonad; then xmonad --recompile && xmonad --restart; else xmessage xmonad not in \\$PATH: \"$PATH\"; fi"
+
+startUp :: X ()
+startUp = spawn "dropbox"

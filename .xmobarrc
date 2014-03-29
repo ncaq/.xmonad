@@ -1,3 +1,6 @@
+-- It original code copylight.
+-- Copyright (c) Andrea Rossato
+
 Config { font = "xft:Ricty"
        , bgColor = "#002b36"
        , fgColor = "#839496"
