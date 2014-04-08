@@ -93,13 +93,14 @@ keyBind conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
     -- quit, or restart
   , ((modKey              , xK_r     ), xmonadRestart)
     -- move to application
-  , ((modKey              , xK_h     ), runOrRaise "firefox"          (className =? "Firefox"))
-  , ((modKey              , xK_t     ), runOrRaise "mikutter"         (className =? "Mikutter.rb"))
-  , ((modKey              , xK_n     ), runOrRaise "lilyterm"         (className =? "Lilyterm"))
-  , ((modKey              , xK_s     ), runOrRaise "emacs"            (className =? "Emacs"))
-  , ((modKey              , xK_d     ), runOrRaise "chromium-browser" (className =? "Chromium-browser"))
-  , ((modKey              , xK_m     ), runOrRaise "rhythmbox"        (className =? "Rhythmbox"))
-  , ((modKey              , xK_b     ), runOrRaise "keepassx"         (className =? "Keepassx"))
+  , ((modKey , xK_h), runOrRaise "firefox"          (className =? "Firefox"))
+  , ((modKey , xK_t), runOrRaise "mikutter"         (className =? "Mikutter.rb"))
+  , ((modKey , xK_n), runOrRaise "lilyterm"         (className =? "Lilyterm"))
+  , ((modKey , xK_s), runOrRaise "emacs"            (className =? "Emacs"))
+  , ((modKey , xK_b), runOrRaise "keepassx"         (className =? "Keepassx"))
+  , ((modKey , xK_d), runOrRaise "chromium-browser" (className =? "Chromium-browser"))
+  , ((modKey , xK_i), runOrRaise "thunderbird"      (className =? "Thunderbird"))
+  , ((modKey , xK_m), runOrRaise "rhythmbox"        (className =? "Rhythmbox"))
   ]
     ++
     -- mod-{w,e,r} %! Switch to physical/Xinerama screens 1, 2, or 3
