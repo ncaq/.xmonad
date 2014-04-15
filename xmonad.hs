@@ -101,6 +101,7 @@ keyBind conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
   , ((modKey , xK_d), runOrRaise "chromium-browser" (className =? "Chromium-browser"))
   , ((modKey , xK_i), runOrRaise "thunderbird"      (className =? "Thunderbird"))
   , ((modKey , xK_m), runOrRaise "rhythmbox"        (className =? "Rhythmbox"))
+  , ((modKey , xK_e), runOrRaise "evince"           (className =? "Evince"))
   ]
     ++
     -- mod-{w,e,r} %! Switch to physical/Xinerama screens 1, 2, or 3

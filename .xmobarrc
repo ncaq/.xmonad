@@ -7,9 +7,11 @@ Config { font = "xft:Ricty"
        , position = Top
        , lowerOnStart = False
        , commands = [ Run Date "%m/%d/%a %H-%M-%S" "date" 10
+                    , Run Cpu ["-t","idle=<idle>%"] 100
+                    , Run Memory ["-t","used=<used>"] 600
                     , Run StdinReader
                     ]
        , sepChar = "%"
        , alignSep = "{}"
-       , template = "%StdinReader% {} <fc=#b58900>%date%</fc>"
+       , template = "%StdinReader% {} %cpu% %memory% <fc=#b58900>%date%</fc>"
        }
