@@ -83,8 +83,8 @@ keyBind conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
   , ((modKey .|. shiftMask, xK_j     ), windows swapDown  ) -- %! Swap the focused window with the next window
   , ((modKey .|. shiftMask, xK_k     ), windows swapUp    ) -- %! Swap the focused window with the previous window
     -- resizing the master/slave ratio
-  , ((modKey,               xK_a     ), sendMessage Shrink) -- %! Shrink the master area
-  , ((modKey,               xK_o     ), sendMessage Expand) -- %! Expand the master area
+  , ((modKey .|. shiftMask, xK_h     ), sendMessage Shrink) -- %! Shrink the master area
+  , ((modKey .|. shiftMask, xK_s     ), sendMessage Expand) -- %! Expand the master area
     -- floating layer support
   , ((modKey,               xK_l     ), withFocused $ windows . sink) -- %! Push window back into tiling
     -- increase or decrease number of windows in the master area
@@ -102,6 +102,7 @@ keyBind conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
   , ((modKey , xK_i), runOrRaise "thunderbird"      (className =? "Thunderbird"))
   , ((modKey , xK_m), runOrRaise "rhythmbox"        (className =? "Rhythmbox"))
   , ((modKey , xK_e), runOrRaise "evince"           (className =? "Evince"))
+  , ((modKey , xK_o), runOrRaise "libreoffice"      (className =? "libreoffice-writer"))
   ]
     ++
     -- mod-{w,e,r} %! Switch to physical/Xinerama screens 1, 2, or 3
