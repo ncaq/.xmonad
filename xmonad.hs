@@ -1,18 +1,39 @@
 -- It original code copylight.
--- Copyright (c) 2007,2008 Spencer Janssen
 -- Copyright (c) 2007,2008 Don Stewart
+-- Copyright (c) 2007,2008 Spencer Janssen
 -- Copyright (c) The Xmonad Community
+
 import Data.Map as M
 import Data.Monoid
 import Graphics.X11.Xlib
 import XMonad
 import XMonad.Actions.WindowGo
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.ManageDocks
 import XMonad.StackSet
 import XMonad.Util.WorkspaceCompare
 
 main :: IO ()
 main = xmonad =<< statusBar "xmobar" myPP hideStatusBar myConfig
+
+myConfig :: XConfig (Choose Full (Choose Tall (Mirror Tall)))
+myConfig = XConfig
+  { XMonad.normalBorderColor  = "#dddddd" ,
+    XMonad.focusedBorderColor = "#ff0000" ,
+    XMonad.terminal           = "lilyterm" ,
+    XMonad.layoutHook         = fullFirstLayout ,
+    XMonad.manageHook         = windowMode <+> manageHook defaultConfig ,
+    XMonad.handleEventHook    = \_ -> return (All True) ,
+    XMonad.workspaces         = ["main","mikutter"] ,
+    XMonad.modMask            = superKey ,
+    XMonad.keys               = keyBind ,
+    XMonad.mouseBindings      = mouseBindings defaultConfig ,
+    XMonad.borderWidth        = 0 ,
+    XMonad.logHook            = return () ,
+    XMonad.startupHook        = startUp ,
+    XMonad.focusFollowsMouse  = False ,
+    XMonad.clickJustFocuses   = True
+  }
 
 myPP :: PP
 myPP = PP { ppCurrent         = wrap "[" "]"
@@ -34,25 +55,6 @@ myPP = PP { ppCurrent         = wrap "[" "]"
 hideStatusBar :: XConfig t -> (KeyMask, KeySym)
 hideStatusBar _ = (mod4Mask, xK_F11)
 
-myConfig :: XConfig (Choose Full (Choose Tall (Mirror Tall)))
-myConfig = XConfig
-  { XMonad.normalBorderColor  = "#dddddd" ,
-    XMonad.focusedBorderColor = "#ff0000" ,
-    XMonad.terminal           = "lilyterm" ,
-    XMonad.layoutHook         = fullFirstLayout,
-    XMonad.manageHook         = composeAll [] ,
-    XMonad.handleEventHook    = \_ -> return (All True) ,
-    XMonad.workspaces         = ["main","mikutter"] ,
-    XMonad.modMask            = superKey ,
-    XMonad.keys               = keyBind ,
-    XMonad.mouseBindings      = mouseBindings defaultConfig,
-    XMonad.borderWidth        = 0 ,
-    XMonad.logHook            = return () ,
-    XMonad.startupHook        = startUp ,
-    XMonad.focusFollowsMouse  = False ,
-    XMonad.clickJustFocuses   = True
-  }
-
 fullFirstLayout :: Choose Full (Choose Tall (Mirror Tall)) a
 fullFirstLayout = Full ||| tiled ||| Mirror tiled
   where
@@ -60,6 +62,12 @@ fullFirstLayout = Full ||| tiled ||| Mirror tiled
      nmaster = 0 -- The default number of windows in the master pane
      ratio   = 1/2 -- Default proportion of screen occupied by master pane
      delta   = 3/100 -- Percent of screen to increment by when resizing panes
+
+windowMode :: Query (Endo WindowSet)
+windowMode = composeAll
+   [ className =? "Mikutter.rb" --> doShift "mikutter"
+   , manageDocks
+   ]
 
 superKey :: KeyMask
 superKey = mod4Mask
@@ -70,14 +78,12 @@ keyBind conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
   [ ((modKey .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf) -- %! Launch terminal
   , ((modKey              , xK_q     ), kill) -- %! Close the focused window
   , ((modKey .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf) -- %!  Reset the layouts on the current workspace to default
-  , ((modKey,               xK_n     ), refresh) -- %! Resize viewed windows to the correct size
   , ((modKey,               xK_space ), sendMessage NextLayout) -- %! Rotate through the available layout algorithms
     -- move focus up or down the window stack
   , ((modKey,               xK_Tab   ), windows focusDown) -- %! Move focus to the next window
   , ((modKey .|. shiftMask, xK_Tab   ), windows focusUp  ) -- %! Move focus to the previous window
   , ((modKey,               xK_j     ), windows focusDown) -- %! Move focus to the next window
   , ((modKey,               xK_k     ), windows focusUp  ) -- %! Move focus to the previous window
-  , ((modKey,               xK_m     ), windows focusMaster  ) -- %! Move focus to the master window
     -- modifying the window order
   , ((modKey,               xK_Return), windows swapMaster) -- %! Swap the focused window and the master window
   , ((modKey .|. shiftMask, xK_j     ), windows swapDown  ) -- %! Swap the focused window with the next window
@@ -103,6 +109,7 @@ keyBind conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
   , ((modKey , xK_m), runOrRaise "rhythmbox"        (className =? "Rhythmbox"))
   , ((modKey , xK_e), runOrRaise "evince"           (className =? "Evince"))
   , ((modKey , xK_o), runOrRaise "libreoffice"      (className =? "libreoffice-writer"))
+  , ((modKey , xK_g), runOrRaise "gimp"             (className =? "gimp-2.8"))
   ]
     ++
     -- mod-{w,e,r} %! Switch to physical/Xinerama screens 1, 2, or 3
