@@ -22,7 +22,7 @@ myConfig = XConfig
     XMonad.focusedBorderColor = "#ff0000" ,
     XMonad.terminal           = "lilyterm" ,
     XMonad.layoutHook         = fullFirstLayout ,
-    XMonad.manageHook         = windowMode <+> manageHook defaultConfig ,
+    XMonad.manageHook         = windowMode ,
     XMonad.handleEventHook    = \_ -> return (All True) ,
     XMonad.workspaces         = ["main","mikutter"] ,
     XMonad.modMask            = superKey ,
@@ -103,13 +103,15 @@ keyBind conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
   , ((modKey , xK_t), runOrRaise "mikutter"         (className =? "Mikutter.rb"))
   , ((modKey , xK_n), runOrRaise "lilyterm"         (className =? "Lilyterm"))
   , ((modKey , xK_s), runOrRaise "emacs"            (className =? "Emacs"))
+    
   , ((modKey , xK_b), runOrRaise "keepassx"         (className =? "Keepassx"))
   , ((modKey , xK_d), runOrRaise "chromium-browser" (className =? "Chromium-browser"))
+  , ((modKey , xK_e), runOrRaise "evince"           (className =? "Evince"))
+  , ((modKey , xK_g), runOrRaise "gimp"             (className =? "Gimp"))
   , ((modKey , xK_i), runOrRaise "thunderbird"      (className =? "Thunderbird"))
   , ((modKey , xK_m), runOrRaise "rhythmbox"        (className =? "Rhythmbox"))
-  , ((modKey , xK_e), runOrRaise "evince"           (className =? "Evince"))
   , ((modKey , xK_o), runOrRaise "libreoffice"      (className =? "libreoffice-writer"))
-  , ((modKey , xK_g), runOrRaise "gimp"             (className =? "gimp-2.8"))
+  , ((modKey , xK_v), runOrRaise "inkscape"         (className =? "Inkscape"))
   ]
     ++
     -- mod-{w,e,r} %! Switch to physical/Xinerama screens 1, 2, or 3
