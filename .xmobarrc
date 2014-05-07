@@ -8,7 +8,7 @@ Config { font = "xft:Ricty"
        , lowerOnStart = False
        , commands = [ Run Date "%m/%d/%a %H-%M-%S" "date" 10
                     , Run Cpu ["-t","idle=<idle>%"] 100
-                    , Run Memory ["-t","used=<used>"] 600
+                    , Run Memory ["-t","used=<used>"] 100
                     , Run StdinReader
                     ]
        , sepChar = "%"

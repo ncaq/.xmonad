@@ -103,7 +103,7 @@ keyBind conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
   , ((modKey , xK_t), runOrRaise "mikutter"         (className =? "Mikutter.rb"))
   , ((modKey , xK_n), runOrRaise "lilyterm"         (className =? "Lilyterm"))
   , ((modKey , xK_s), runOrRaise "emacs"            (className =? "Emacs"))
-    
+
   , ((modKey , xK_b), runOrRaise "keepassx"         (className =? "Keepassx"))
   , ((modKey , xK_d), runOrRaise "chromium-browser" (className =? "Chromium-browser"))
   , ((modKey , xK_e), runOrRaise "evince"           (className =? "Evince"))
@@ -112,6 +112,8 @@ keyBind conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
   , ((modKey , xK_m), runOrRaise "rhythmbox"        (className =? "Rhythmbox"))
   , ((modKey , xK_o), runOrRaise "libreoffice"      (className =? "libreoffice-writer"))
   , ((modKey , xK_v), runOrRaise "inkscape"         (className =? "Inkscape"))
+  , ((modKey , xK_w), runOrRaise "viewnior"         (className =? "Viewnior"))
+
   ]
     ++
     -- mod-{w,e,r} %! Switch to physical/Xinerama screens 1, 2, or 3
