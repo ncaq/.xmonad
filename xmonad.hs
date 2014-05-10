@@ -37,7 +37,7 @@ myConfig = XConfig
 
 myPP :: PP
 myPP = PP { ppCurrent         = wrap "[" "]"
-          , ppVisible         = wrap "<" ">"
+          , ppVisible         = wrap "(" ")"
           , ppHidden          = id
           , ppHiddenNoWindows = id
           , ppUrgent          = id
@@ -105,10 +105,10 @@ keyBind conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
   , ((modKey , xK_s), runOrRaise "emacs"            (className =? "Emacs"))
 
   , ((modKey , xK_b), runOrRaise "keepassx"         (className =? "Keepassx"))
-  , ((modKey , xK_d), runOrRaise "chromium-browser" (className =? "Chromium-browser"))
+  , ((modKey , xK_c), runOrRaise "chromium-browser" (className =? "Chromium-browser"))
+  , ((modKey , xK_d), runOrRaise "thunderbird"      (className =? "Thunderbird"))
   , ((modKey , xK_e), runOrRaise "evince"           (className =? "Evince"))
   , ((modKey , xK_g), runOrRaise "gimp"             (className =? "Gimp"))
-  , ((modKey , xK_i), runOrRaise "thunderbird"      (className =? "Thunderbird"))
   , ((modKey , xK_m), runOrRaise "rhythmbox"        (className =? "Rhythmbox"))
   , ((modKey , xK_o), runOrRaise "libreoffice"      (className =? "libreoffice-writer"))
   , ((modKey , xK_v), runOrRaise "inkscape"         (className =? "Inkscape"))
@@ -116,9 +116,8 @@ keyBind conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
 
   ]
     ++
-    -- mod-{w,e,r} %! Switch to physical/Xinerama screens 1, 2, or 3
-    -- mod-shift-{w,e,r} %! Move client to screen 1, 2, or 3
-    [((m .|. modKey, key), screenWorkspace sc >>= flip whenJust (windows . f))
+  -- workspace
+  [((m .|. modKey, key), screenWorkspace sc >>= flip whenJust (windows . f))
         | (key, sc) <- zip [xK_1, xK_2, xK_3] [0..]
         , (f, m) <- [(view, 0), (shift, shiftMask)]]
 
