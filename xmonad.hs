@@ -18,26 +18,26 @@ main = xmonad =<< statusBar "xmobar" myPP hideStatusBar myConfig
 
 myConfig :: XConfig (Choose Full (Choose Tall (Mirror Tall)))
 myConfig = XConfig
-  { XMonad.normalBorderColor  = "#dddddd" ,
-    XMonad.focusedBorderColor = "#ff0000" ,
-    XMonad.terminal           = "lilyterm" ,
-    XMonad.layoutHook         = fullFirstLayout ,
-    XMonad.manageHook         = windowMode ,
-    XMonad.handleEventHook    = \_ -> return (All True) ,
-    XMonad.workspaces         = ["main","mikutter"] ,
-    XMonad.modMask            = superKey ,
-    XMonad.keys               = keyBind ,
-    XMonad.mouseBindings      = mouseBindings defaultConfig ,
-    XMonad.borderWidth        = 0 ,
-    XMonad.logHook            = return () ,
-    XMonad.startupHook        = startUp ,
-    XMonad.focusFollowsMouse  = False ,
-    XMonad.clickJustFocuses   = True
+  { XMonad.normalBorderColor  = "#dddddd"
+  , XMonad.focusedBorderColor = "#ff0000"
+  , XMonad.terminal           = "lilyterm"
+  , XMonad.layoutHook         = firstFullLayout
+  , XMonad.manageHook         = windowMode <+> manageHook defaultConfig
+  , XMonad.handleEventHook    = const $ return (All True)
+  , XMonad.workspaces         = ["main","mikutter"]
+  , XMonad.modMask            = superKey
+  , XMonad.keys               = keyBind
+  , XMonad.mouseBindings      = mouseBindings defaultConfig
+  , XMonad.borderWidth        = 0
+  , XMonad.logHook            = return ()
+  , XMonad.startupHook        = startUp
+  , XMonad.focusFollowsMouse  = False
+  , XMonad.clickJustFocuses   = True
   }
 
 myPP :: PP
 myPP = PP { ppCurrent         = wrap "[" "]"
-          , ppVisible         = wrap "<" ">"
+          , ppVisible         = wrap "(" ")"
           , ppHidden          = id
           , ppHiddenNoWindows = id
           , ppUrgent          = id
@@ -53,10 +53,10 @@ myPP = PP { ppCurrent         = wrap "[" "]"
           }
 
 hideStatusBar :: XConfig t -> (KeyMask, KeySym)
-hideStatusBar _ = (mod4Mask, xK_F11)
+hideStatusBar _ = (superKey, xK_F11)
 
-fullFirstLayout :: Choose Full (Choose Tall (Mirror Tall)) a
-fullFirstLayout = Full ||| tiled ||| Mirror tiled
+firstFullLayout :: Choose Full (Choose Tall (Mirror Tall)) a
+firstFullLayout = Full ||| tiled ||| Mirror tiled
   where
      tiled   = Tall nmaster delta ratio -- default tiling algorithm partitions the screen into two panes
      nmaster = 0 -- The default number of windows in the master pane
@@ -76,7 +76,7 @@ keyBind :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
 keyBind conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
     -- launching and killing programs
   [ ((modKey .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf) -- %! Launch terminal
-  , ((modKey              , xK_q     ), kill) -- %! Close the focused window
+  , ((modKey,               xK_q     ), kill) -- %! Close the focused window
   , ((modKey .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf) -- %!  Reset the layouts on the current workspace to default
   , ((modKey,               xK_space ), sendMessage NextLayout) -- %! Rotate through the available layout algorithms
     -- move focus up or down the window stack
@@ -94,29 +94,30 @@ keyBind conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
     -- floating layer support
   , ((modKey,               xK_l     ), withFocused $ windows . sink) -- %! Push window back into tiling
     -- increase or decrease number of windows in the master area
-  , ((modKey              , xK_comma ), sendMessage (IncMasterN 1)) -- %! Increment the number of windows in the master area
-  , ((modKey              , xK_period), sendMessage (IncMasterN (-1))) -- %! Deincrement the number of windows in the master area
+  , ((modKey,               xK_comma ), sendMessage (IncMasterN 1)) -- %! Increment the number of windows in the master area
+  , ((modKey,               xK_period), sendMessage (IncMasterN (-1))) -- %! Deincrement the number of windows in the master area
     -- quit, or restart
-  , ((modKey              , xK_r     ), xmonadRestart)
+  , ((modKey,               xK_r     ), xmonadRestart)
     -- move to application
-  , ((modKey , xK_h), runOrRaise "firefox"          (className =? "Firefox"))
-  , ((modKey , xK_t), runOrRaise "mikutter"         (className =? "Mikutter.rb"))
-  , ((modKey , xK_n), runOrRaise "lilyterm"         (className =? "Lilyterm"))
-  , ((modKey , xK_s), runOrRaise "emacs"            (className =? "Emacs"))
-    
-  , ((modKey , xK_b), runOrRaise "keepassx"         (className =? "Keepassx"))
-  , ((modKey , xK_d), runOrRaise "chromium-browser" (className =? "Chromium-browser"))
-  , ((modKey , xK_e), runOrRaise "evince"           (className =? "Evince"))
-  , ((modKey , xK_g), runOrRaise "gimp"             (className =? "Gimp"))
-  , ((modKey , xK_i), runOrRaise "thunderbird"      (className =? "Thunderbird"))
-  , ((modKey , xK_m), runOrRaise "rhythmbox"        (className =? "Rhythmbox"))
-  , ((modKey , xK_o), runOrRaise "libreoffice"      (className =? "libreoffice-writer"))
-  , ((modKey , xK_v), runOrRaise "inkscape"         (className =? "Inkscape"))
+  , ((modKey, xK_h), runOrRaise "firefox"          (className =? "Firefox"))
+  , ((modKey, xK_t), runOrRaise "mikutter"         (className =? "Mikutter.rb"))
+  , ((modKey, xK_n), runOrRaise "lilyterm"         (className =? "Lilyterm"))
+  , ((modKey, xK_s), runOrRaise "emacs"            (className =? "Emacs"))
+
+  , ((modKey, xK_b), runOrRaise "keepassx"         (className =? "Keepassx"))
+  , ((modKey, xK_c), runOrRaise "chromium-browser" (className =? "Chromium-browser"))
+  , ((modKey, xK_d), runOrRaise "thunderbird"      (className =? "Thunderbird"))
+  , ((modKey, xK_e), runOrRaise "evince"           (className =? "Evince"))
+  , ((modKey, xK_g), runOrRaise "gimp"             (className =? "Gimp"))
+  , ((modKey, xK_m), runOrRaise "rhythmbox"        (className =? "Rhythmbox"))
+  , ((modKey, xK_o), runOrRaise "libreoffice"      (className =? "libreoffice-writer"))
+  , ((modKey, xK_v), runOrRaise "inkscape"         (className =? "Inkscape"))
+  , ((modKey, xK_w), runOrRaise "viewnior"         (className =? "Viewnior"))
+
   ]
     ++
-    -- mod-{w,e,r} %! Switch to physical/Xinerama screens 1, 2, or 3
-    -- mod-shift-{w,e,r} %! Move client to screen 1, 2, or 3
-    [((m .|. modKey, key), screenWorkspace sc >>= flip whenJust (windows . f))
+  -- workspace
+  [((m .|. modKey, key), screenWorkspace sc >>= flip whenJust (windows . f))
         | (key, sc) <- zip [xK_1, xK_2, xK_3] [0..]
         , (f, m) <- [(view, 0), (shift, shiftMask)]]
 
