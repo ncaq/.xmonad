@@ -9,7 +9,7 @@ Config { font = "xft:Ricty"
        , commands = [ Run Date "%m/%d/%a %H-%M-%S" "date" 10
                     , Run Cpu ["-t","idle=<idle>%"] 100
                     , Run Memory ["-t","used=<used>"] 100
-                    , Run BatteryP ["BAT0"] ["-t" , "charge:<acstatus> wat:<watts> battery:<left>%/<timeleft>"] 600
+                    , Run BatteryP ["BAT0"] ["-t" , "wat:<watts> battery:<left>%/<timeleft>"] 600
                     , Run StdinReader
                     ]
        , sepChar = "%"
