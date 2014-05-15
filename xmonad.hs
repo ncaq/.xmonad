@@ -24,7 +24,7 @@ myConfig = XConfig
   , XMonad.layoutHook         = firstFullLayout
   , XMonad.manageHook         = windowMode <+> manageHook defaultConfig
   , XMonad.handleEventHook    = const $ return (All True)
-  , XMonad.workspaces         = ["main","mikutter"]
+  , XMonad.workspaces         = ["main"]
   , XMonad.modMask            = superKey
   , XMonad.keys               = keyBind
   , XMonad.mouseBindings      = mouseBindings defaultConfig
@@ -65,8 +65,7 @@ firstFullLayout = Full ||| tiled ||| Mirror tiled
 
 windowMode :: Query (Endo WindowSet)
 windowMode = composeAll
-   [ className =? "Mikutter.rb" --> doShift "mikutter"
-   , manageDocks
+   [manageDocks
    ]
 
 superKey :: KeyMask
