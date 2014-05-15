@@ -98,6 +98,9 @@ keyBind conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
   , ((modKey,               xK_period), sendMessage (IncMasterN (-1))) -- %! Deincrement the number of windows in the master area
     -- quit, or restart
   , ((modKey,               xK_r     ), xmonadRestart)
+    -- toggle trackpad
+  , ((noModMask,            xK_F6),     enableTrackPad)
+  , ((noModMask,            xK_F7),     disableTrackPad)
     -- move to application
   , ((modKey, xK_h), runOrRaise "firefox"          (className =? "Firefox"))
   , ((modKey, xK_t), runOrRaise "mikutter.rb"      (className =? "Mikutter.rb"))
@@ -123,6 +126,12 @@ keyBind conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
 
 xmonadRestart :: X ()
 xmonadRestart = spawn "if type xmonad; then xmonad --recompile && xmonad --restart; else xmessage xmonad not in \\$PATH: \"$PATH\"; fi"
+
+disableTrackPad :: X ()
+disableTrackPad = spawn "xinput --disable CyPS/2\\ Cypress\\ Trackpad"
+
+enableTrackPad :: X ()
+enableTrackPad = spawn "xinput --enable CyPS/2\\ Cypress\\ Trackpad"
 
 startUp :: X ()
 startUp = spawn "dropbox"
