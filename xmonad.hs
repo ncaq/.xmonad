@@ -6,6 +6,7 @@
 import Data.Map as M
 import Data.Monoid
 import Graphics.X11.Xlib
+import Text.Regex.Posix
 import XMonad
 import XMonad.Actions.WindowGo
 import XMonad.Hooks.DynamicLog
@@ -110,7 +111,7 @@ keyBind conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
   , ((modKey, xK_e), runOrRaise "evince"           (className =? "Evince"))
   , ((modKey, xK_g), runOrRaise "gimp"             (className =? "Gimp"))
   , ((modKey, xK_m), runOrRaise "rhythmbox"        (className =? "Rhythmbox"))
-  , ((modKey, xK_o), runOrRaise "libreoffice"      (className =? "libreoffice-writer"))
+  , ((modKey, xK_o), runOrRaise "libreoffice"      (className ~? "libreoffice"))
   , ((modKey, xK_v), runOrRaise "inkscape"         (className =? "Inkscape"))
   , ((modKey, xK_w), runOrRaise "viewnior"         (className =? "Viewnior"))
 
@@ -123,6 +124,9 @@ keyBind conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
 
 xmonadRestart :: X ()
 xmonadRestart = spawn "if type xmonad; then xmonad --recompile && xmonad --restart; else xmessage xmonad not in \\$PATH: \"$PATH\"; fi"
+
+(~?)   :: Query String -> String -> Query Bool
+a ~? b = fmap (=~ b) a
 
 startUp :: X ()
 startUp = spawn "dropbox"
