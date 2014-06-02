@@ -4,12 +4,12 @@
 Config { font = "xft:Ricty"
        , bgColor = "#002b36"
        , fgColor = "#839496"
-       , position = Top
+       , position = Static {xpos = 100,ypos = 0,width = 1820,height = 16}
        , lowerOnStart = False
-       , commands = [ Run Date "%m/%d/%a %H-%M-%S" "date" 10
+       , commands = [ Run StdinReader
+                    , Run Date "%m/%d/%a %H-%M-%S" "date" 10
                     , Run Cpu ["-t","idle=<idle>%"] 100
                     , Run Memory ["-t","used=<used>"] 100
-                    , Run StdinReader
                     ]
        , sepChar = "%"
        , alignSep = "{}"
