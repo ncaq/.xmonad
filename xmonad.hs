@@ -124,17 +124,26 @@ keyBind conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
         | (key, sc) <- zip [xK_1, xK_2, xK_3] [0..]
         , (f, m) <- [(view, 0), (shift, shiftMask)]]
 
+(~?)   :: Query String -> String -> Query Bool
+a ~? b = fmap (=~ b) a
+
 xmonadRestart :: X ()
 xmonadRestart = spawn "if type xmonad; then xmonad --recompile && xmonad --restart; else xmessage xmonad not in \\$PATH: \"$PATH\"; fi"
-
-disableTrackPad :: X ()
-disableTrackPad = spawn "xinput --disable CyPS/2\\ Cypress\\ Trackpad"
 
 enableTrackPad :: X ()
 enableTrackPad = spawn "xinput --enable CyPS/2\\ Cypress\\ Trackpad"
 
-(~?)   :: Query String -> String -> Query Bool
-a ~? b = fmap (=~ b) a
+disableTrackPad :: X ()
+disableTrackPad = spawn "xinput --disable CyPS/2\\ Cypress\\ Trackpad"
 
 startUp :: X ()
-startUp = spawn "dropbox"
+startUp = spawnTrayer >> spawnDropbox
+
+spawnTrayer :: X ()
+spawnTrayer = spawn "trayer --edge top --align left --widthtype pixel --width 100 --heighttype pixel --height 16"
+
+spawnDropbox :: X()
+spawnDropbox = spawn "dropbox"
+
+spawnOwnCloud :: X()
+spawnOwnCloud = spawn "owncloud"
