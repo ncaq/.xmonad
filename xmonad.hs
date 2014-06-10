@@ -129,13 +129,8 @@ xmonadRestart :: X ()
 xmonadRestart = spawn "if type xmonad; then xmonad --recompile && xmonad --restart; else xmessage xmonad not in \\$PATH: \"$PATH\"; fi"
 
 startUp :: X ()
-startUp = spawnTrayer >> spawnDropbox
-
-spawnTrayer :: X ()
-spawnTrayer = spawn "trayer --edge top --align left --widthtype pixel --width 100 --heighttype pixel --height 16"
-
-spawnDropbox :: X()
-spawnDropbox = spawn "dropbox"
-
-spawnOwnCloud :: X()
-spawnOwnCloud = spawn "owncloud"
+startUp = spawn "trayer --edge top --align left --widthtype pixel --width 100 --heighttype pixel --height 16" >>
+          spawn "ibus-daemon --xim" >>
+          spawn "gnome-keyring-daemon" >>
+          spawn "nm-applet" >>
+          spawn "dropbox"
