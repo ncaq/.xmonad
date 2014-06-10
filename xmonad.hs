@@ -137,13 +137,8 @@ disableTrackPad :: X ()
 disableTrackPad = spawn "xinput --disable CyPS/2\\ Cypress\\ Trackpad"
 
 startUp :: X ()
-startUp = spawnTrayer >> spawnDropbox
-
-spawnTrayer :: X ()
-spawnTrayer = spawn "trayer --edge top --align left --widthtype pixel --width 100 --heighttype pixel --height 16"
-
-spawnDropbox :: X()
-spawnDropbox = spawn "dropbox"
-
-spawnOwnCloud :: X()
-spawnOwnCloud = spawn "owncloud"
+startUp = spawn "trayer --edge top --align left --widthtype pixel --width 100 --heighttype pixel --height 16" >>
+          spawn "ibus-daemon --xim" >>
+          spawn "gnome-keyring-daemon" >>
+          spawn "nm-applet" >>
+          spawn "dropbox"
