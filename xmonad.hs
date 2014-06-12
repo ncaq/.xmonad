@@ -3,8 +3,11 @@
 -- Copyright (c) 2007,2008 Spencer Janssen
 -- Copyright (c) The Xmonad Community
 
+import Control.Monad
 import Data.Map as M
 import Data.Monoid
+import Data.Time
+import Data.Time.LocalTime()
 import Graphics.X11.Xlib
 import Text.Regex.Posix
 import XMonad
@@ -56,6 +59,9 @@ myPP = PP { ppCurrent         = wrap "[" "]"
 hideStatusBar :: XConfig t -> (KeyMask, KeySym)
 hideStatusBar _ = (superKey, xK_F11)
 
+superKey :: KeyMask
+superKey = mod4Mask
+
 firstFullLayout :: Choose Full (Choose Tall (Mirror Tall)) a
 firstFullLayout = Full ||| tiled ||| Mirror tiled
   where
@@ -68,9 +74,6 @@ windowMode :: Query (Endo WindowSet)
 windowMode = composeAll
    [manageDocks
    ]
-
-superKey :: KeyMask
-superKey = mod4Mask
 
 keyBind :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
 keyBind conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
@@ -101,6 +104,9 @@ keyBind conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
     -- toggle trackpad
   , ((noModMask,            xK_F6),     enableTrackPad)
   , ((noModMask,            xK_F7),     disableTrackPad)
+    -- screenShot
+  , ((noModMask,            xK_Print),     takeScreenShot)
+
     -- move to application
   , ((modKey, xK_h), runOrRaise "firefox"          (className =? "Firefox"))
   , ((modKey, xK_t), runOrRaise "mikutter.rb"      (className =? "Mikutter.rb"))
@@ -135,6 +141,12 @@ enableTrackPad = spawn "xinput --enable CyPS/2\\ Cypress\\ Trackpad"
 
 disableTrackPad :: X ()
 disableTrackPad = spawn "xinput --disable CyPS/2\\ Cypress\\ Trackpad"
+
+takeScreenShot :: X ()
+takeScreenShot = liftIO $ localDayTimeNumber >>= spawn . ("import -screen ~/Downloads/screenshot" ++) . (++ ".png")
+
+localDayTimeNumber :: IO String
+localDayTimeNumber = liftM ((\x -> show (localDay x) ++ "_" ++ show (localTimeOfDay x)) . zonedTimeToLocalTime) getZonedTime
 
 startUp :: X ()
 startUp = spawn "trayer --edge top --align left --widthtype pixel --width 100 --heighttype pixel --height 16" >>
