@@ -26,7 +26,7 @@ myConfig = XConfig
   , XMonad.focusedBorderColor = "#ff0000"
   , XMonad.terminal           = "lilyterm"
   , XMonad.layoutHook         = firstFullLayout
-  , XMonad.manageHook         = windowMode <+> manageHook defaultConfig
+  , XMonad.manageHook         = windowMode
   , XMonad.handleEventHook    = const $ return (All True)
   , XMonad.workspaces         = ["main","mikutter"]
   , XMonad.modMask            = superKey
@@ -143,7 +143,5 @@ localDayTimeNumber = liftM ((\x -> show (localDay x) ++ "_" ++ show (localTimeOf
 
 startUp :: X ()
 startUp = spawn "trayer --edge top --align left --widthtype pixel --width 100 --heighttype pixel --height 16" >>
-          spawn "ibus-daemon --xim" >>
-          spawn "gnome-keyring-daemon" >>
-          spawn "nm-applet" >>
+          spawn "ibus-daemon --replace" >>
           spawn "dropbox"
