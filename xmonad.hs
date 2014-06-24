@@ -152,4 +152,4 @@ startUp :: X ()
 startUp = spawn "trayer --edge top --align left --widthtype pixel --width 100 --heighttype pixel --height 16" >>
           spawn "ibus-daemon --replace" >>
           spawn "nm-applet" >>
-          spawn "dropbox"
+          spawn "owncloud"
