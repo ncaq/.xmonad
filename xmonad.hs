@@ -104,7 +104,7 @@ keyBind conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
   , ((modKey,               xK_r     ), xmonadRestart)
 
     -- screenShot
-  , ((noModMask,            xK_Print),     takeScreenShot)
+  , ((noModMask,            xK_Print ), takeScreenShot)
 
     -- move to application
   , ((modKey, xK_h), runOrRaise "firefox"          (className =? "Firefox"))
@@ -144,4 +144,4 @@ localDayTimeNumber = liftM ((\x -> show (localDay x) ++ "_" ++ show (localTimeOf
 startUp :: X ()
 startUp = spawn "trayer --edge top --align left --widthtype pixel --width 100 --heighttype pixel --height 16" >>
           spawn "ibus-daemon --replace" >>
-          spawn "dropbox"
+          spawn "owncloud"
