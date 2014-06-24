@@ -103,7 +103,7 @@ keyBind conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
   , ((modKey,               xK_r     ), xmonadRestart)
     -- toggle trackpad
   , ((noModMask,            xK_F8    ), enableTrackPad)
-  , ((noModMask,            xK_F8    ), disableTrackPad)
+  , ((noModMask,            xK_F9    ), disableTrackPad)
     -- screenShot
   , ((noModMask,            xK_Print ), takeScreenShot)
 
