@@ -143,5 +143,5 @@ localDayTimeNumber = liftM ((\x -> show (localDay x) ++ "_" ++ show (localTimeOf
 
 startUp :: X ()
 startUp = spawn "trayer --edge top --align left --widthtype pixel --width 100 --heighttype pixel --height 16" >>
-          spawn "ibus-daemon --replace" >>
-          spawn "owncloud"
+          spawn "ibus-daemon --replace --xim" >>
+          spawn "dropbox"
