@@ -4,7 +4,6 @@
 -- Copyright (c) The Xmonad Community
 
 import Control.Monad
-import Data.Map as M
 import Data.Monoid
 import Data.Time
 import Data.Time.LocalTime()
@@ -16,6 +15,7 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.StackSet
 import XMonad.Util.WorkspaceCompare
+import qualified Data.Map as M
 
 main :: IO ()
 main = xmonad =<< statusBar "xmobar" myPP hideStatusBar myConfig
@@ -146,10 +146,14 @@ takeScreenShot :: X ()
 takeScreenShot = liftIO $ localDayTimeNumber >>= spawn . ("import -screen ~/Downloads/screenshot" ++) . (++ ".png")
 
 localDayTimeNumber :: IO String
-localDayTimeNumber = liftM ((\x -> show (localDay x) ++ "_" ++ show (localTimeOfDay x)) . zonedTimeToLocalTime) getZonedTime
+localDayTimeNumber = liftM ((\x -> show (localDay x) ++ "_" ++ map toSafeChar (show (localTimeOfDay x))) . zonedTimeToLocalTime) getZonedTime
+
+toSafeChar :: Char -> Char
+toSafeChar ':' = '-'
+toSafeChar  x  = x
 
 startUp :: X ()
 startUp = spawn "trayer --edge top --align left --widthtype pixel --width 100 --heighttype pixel --height 16" >>
           spawn "ibus-daemon --replace" >>
           spawn "nm-applet" >>
-          spawn "owncloud"
+          spawn "dropbox"
