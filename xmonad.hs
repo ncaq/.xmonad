@@ -100,7 +100,7 @@ keyBind conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
   , ((modKey,               xK_comma ), sendMessage (IncMasterN 1)) -- %! Increment the number of windows in the master area
   , ((modKey,               xK_period), sendMessage (IncMasterN (-1))) -- %! Deincrement the number of windows in the master area
     -- quit, or restart
-  , ((modKey,               xK_r     ), xmonadRestart)
+  , ((modKey .|. shiftMask, xK_r     ), xmonadRestart)
     -- toggle trackpad
   , ((noModMask,            xK_F1    ), disableTrackPad)
   , ((noModMask,            xK_F2    ), enableTrackPad)
