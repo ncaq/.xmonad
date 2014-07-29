@@ -1,21 +1,21 @@
--- It original code copylight.
+-- It is original code copylight.
 -- Copyright (c) 2007,2008 Don Stewart
 -- Copyright (c) 2007,2008 Spencer Janssen
 -- Copyright (c) The Xmonad Community
 
-import Control.Monad
-import Data.Monoid
-import Data.Time
-import Data.Time.LocalTime()
-import Graphics.X11.Xlib
-import Text.Regex.Posix
-import XMonad
-import XMonad.Actions.WindowGo
-import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.ManageDocks
-import XMonad.StackSet
-import XMonad.Util.WorkspaceCompare
-import qualified Data.Map as M
+import           Control.Monad
+import qualified Data.Map                     as M
+import           Data.Monoid
+import           Data.Time
+import           Data.Time.LocalTime          ()
+import           Graphics.X11.Xlib
+import           Text.Regex.Posix
+import           XMonad
+import           XMonad.Actions.WindowGo
+import           XMonad.Hooks.DynamicLog
+import           XMonad.Hooks.ManageDocks
+import           XMonad.StackSet
+import           XMonad.Util.WorkspaceCompare
 
 main :: IO ()
 main = xmonad =<< statusBar "xmobar" myPP hideStatusBar myConfig
