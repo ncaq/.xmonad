@@ -22,8 +22,8 @@ main = xmonad =<< statusBar "xmobar" myPP hideStatusBar myConfig
 
 myConfig :: XConfig (Choose Full (Choose Tall (Mirror Tall)))
 myConfig = XConfig
-  { XMonad.normalBorderColor  = "#dddddd"
-  , XMonad.focusedBorderColor = "#ff0000"
+  { XMonad.normalBorderColor  = "#000000"
+  , XMonad.focusedBorderColor = "#000000"
   , XMonad.terminal           = "lilyterm"
   , XMonad.layoutHook         = firstFullLayout
   , XMonad.manageHook         = windowMode
@@ -56,11 +56,11 @@ myPP = PP { ppCurrent         = wrap "[" "]"
           , ppExtras          = []
           }
 
-hideStatusBar :: XConfig t -> (KeyMask, KeySym)
-hideStatusBar _ = (superKey, xK_F11)
-
 superKey :: KeyMask
 superKey = mod4Mask
+
+hideStatusBar :: XConfig t -> (KeyMask, KeySym)
+hideStatusBar _ = (superKey, xK_F11)
 
 firstFullLayout :: Choose Full (Choose Tall (Mirror Tall)) a
 firstFullLayout = Full ||| tiled ||| Mirror tiled
@@ -86,26 +86,22 @@ keyBind conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
     -- move focus up or down the window stack
   , ((modKey,               xK_Tab   ), windows focusDown) -- %! Move focus to the next window
   , ((modKey .|. shiftMask, xK_Tab   ), windows focusUp  ) -- %! Move focus to the previous window
-  , ((modKey,               xK_j     ), windows focusDown) -- %! Move focus to the next window
-  , ((modKey,               xK_k     ), windows focusUp  ) -- %! Move focus to the previous window
     -- modifying the window order
   , ((modKey,               xK_Return), windows swapMaster) -- %! Swap the focused window and the master window
-  , ((modKey .|. shiftMask, xK_j     ), windows swapDown  ) -- %! Swap the focused window with the next window
-  , ((modKey .|. shiftMask, xK_k     ), windows swapUp    ) -- %! Swap the focused window with the previous window
+  , ((modKey,               xK_j     ), windows swapDown  ) -- %! Swap the focused window with the next window
+  , ((modKey,               xK_k     ), windows swapUp    ) -- %! Swap the focused window with the previous window
     -- resizing the master/slave ratio
-  , ((modKey .|. shiftMask, xK_h     ), sendMessage Shrink) -- %! Shrink the master area
-  , ((modKey .|. shiftMask, xK_s     ), sendMessage Expand) -- %! Expand the master area
+  , ((modKey,               xK_j     ), sendMessage Expand) -- %! Expand the master area
+  , ((modKey,               xK_k     ), sendMessage Shrink) -- %! Shrink the master area
     -- floating layer support
   , ((modKey,               xK_l     ), withFocused $ windows . sink) -- %! Push window back into tiling
     -- increase or decrease number of windows in the master area
-  , ((modKey,               xK_comma ), sendMessage (IncMasterN 1)) -- %! Increment the number of windows in the master area
+  , ((modKey,               xK_comma ), sendMessage (IncMasterN 1))    -- %! Increment the number of windows in the master area
   , ((modKey,               xK_period), sendMessage (IncMasterN (-1))) -- %! Deincrement the number of windows in the master area
     -- quit, or restart
   , ((modKey .|. shiftMask, xK_r     ), xmonadRestart)
-
     -- screenShot
   , ((noModMask,            xK_Print ), takeScreenShot)
-
     -- move to application
   , ((modKey, xK_h), runOrRaise "firefox"          (className =? "Firefox"))
   , ((modKey, xK_t), runOrRaise "mikutter.rb"      (className =? "Mikutter.rb"))
