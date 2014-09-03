@@ -13,8 +13,11 @@ import           Text.Regex.Posix
 import           XMonad
 import           XMonad.Actions.WindowGo
 import           XMonad.Hooks.DynamicLog
-import           XMonad.Hooks.ManageDocks
+import           XMonad.Hooks.ManageDocks     ()
+import           XMonad.Hooks.ManageHelpers
 import           XMonad.StackSet
+import           XMonad.Util.Run
+import           XMonad.Util.SpawnOnce
 import           XMonad.Util.WorkspaceCompare
 
 main :: IO ()
@@ -73,7 +76,8 @@ firstFullLayout = Full ||| tiled ||| Mirror tiled
 windowMode :: Query (Endo WindowSet)
 windowMode = composeAll
    [ className =? "Mikutter.rb" --> doShift "mikutter"
-   , manageDocks
+   , isFullscreen               --> doFullFloat
+   , return True                --> doShift "main"
    ]
 
 keyBind :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
@@ -125,14 +129,14 @@ keyBind conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
         | (key, sc) <- zip [xK_1, xK_2, xK_3] [0..]
         , (f, m) <- [(view, 0), (shift, shiftMask)]]
 
-(~?)   :: Query String -> String -> Query Bool
+(~?) :: Query String -> String -> Query Bool
 a ~? b = fmap (=~ b) a
 
 xmonadRestart :: X ()
 xmonadRestart = spawn "if type xmonad; then xmonad --recompile && xmonad --restart; else xmessage xmonad not in \\$PATH: \"$PATH\"; fi"
 
 takeScreenShot :: X ()
-takeScreenShot = liftIO $ localDayTimeNumber >>= spawn . ("import -screen ~/Downloads/screenshot" ++) . (++ ".png")
+takeScreenShot = liftIO $ localDayTimeNumber >>= safeSpawn "import" . \time -> ["-screen", "~/Downloads/screenshot" ++ time ++ ".png"]
 
 localDayTimeNumber :: IO String
 localDayTimeNumber = liftM ((\x -> show (localDay x) ++ "_" ++ map toSafeChar (show (localTimeOfDay x))) . zonedTimeToLocalTime) getZonedTime
@@ -142,6 +146,6 @@ toSafeChar ':' = '-'
 toSafeChar  x  = x
 
 startUp :: X ()
-startUp = spawn "trayer --edge top --align left --widthtype pixel --width 100 --heighttype pixel --height 16" >>
-          spawn "ibus-daemon --replace --xim" >>
-          spawn "dropbox"
+startUp = spawnOnce     "trayer --edge top --align left --widthtype pixel --width 100 --heighttype pixel --height 16" >>
+          safeSpawn     "ibus-daemon" ["--replace", "--xim"] >>
+          safeSpawnProg "dropbox"
