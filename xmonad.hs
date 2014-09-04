@@ -64,7 +64,7 @@ superKey :: KeyMask
 superKey = mod4Mask
 
 hideStatusBar :: XConfig t -> (KeyMask, KeySym)
-hideStatusBar _ = (superKey, xK_F11)
+hideStatusBar _ = (superKey, xK_u)
 
 myLayoutHook :: XMonad.Layout.LayoutModifier.ModifiedLayout AvoidStruts (Choose Full (Choose Tall (Mirror Tall))) a
 myLayoutHook = avoidStruts $ Full ||| tiled ||| Mirror tiled
@@ -109,6 +109,7 @@ myKeys conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
   , ((modKey .|. shiftMask, xK_r     ), xmonadRestart)
     -- screenShot
   , ((noModMask,            xK_Print ), takeScreenShot)
+
     -- move to application
   , ((modKey, xK_h), runOrRaise "firefox"          (className =? "Firefox"))
   , ((modKey, xK_t), runOrRaise "mikutter.rb"      (className =? "Mikutter.rb"))
