@@ -13,8 +13,9 @@ import           Text.Regex.Posix
 import           XMonad
 import           XMonad.Actions.WindowGo
 import           XMonad.Hooks.DynamicLog
-import           XMonad.Hooks.ManageDocks     ()
+import           XMonad.Hooks.ManageDocks
 import           XMonad.Hooks.ManageHelpers
+import           XMonad.Layout.LayoutModifier
 import           XMonad.StackSet
 import           XMonad.Util.Run
 import           XMonad.Util.SpawnOnce
@@ -23,17 +24,17 @@ import           XMonad.Util.WorkspaceCompare
 main :: IO ()
 main = xmonad =<< statusBar "xmobar" myPP hideStatusBar myConfig
 
-myConfig :: XConfig (Choose Full (Choose Tall (Mirror Tall)))
+myConfig :: XConfig (ModifiedLayout AvoidStruts (Choose Full (Choose Tall (Mirror Tall))))
 myConfig = XConfig
   { XMonad.normalBorderColor  = "#000000"
   , XMonad.focusedBorderColor = "#000000"
   , XMonad.terminal           = "lilyterm"
-  , XMonad.layoutHook         = firstFullLayout
-  , XMonad.manageHook         = windowMode
+  , XMonad.layoutHook         = myLayoutHook
+  , XMonad.manageHook         = myManageHook
   , XMonad.handleEventHook    = const $ return (All True)
   , XMonad.workspaces         = ["main","mikutter"]
   , XMonad.modMask            = superKey
-  , XMonad.keys               = keyBind
+  , XMonad.keys               = myKeys
   , XMonad.mouseBindings      = mouseBindings defaultConfig
   , XMonad.borderWidth        = 0
   , XMonad.logHook            = return ()
@@ -65,23 +66,25 @@ superKey = mod4Mask
 hideStatusBar :: XConfig t -> (KeyMask, KeySym)
 hideStatusBar _ = (superKey, xK_F11)
 
-firstFullLayout :: Choose Full (Choose Tall (Mirror Tall)) a
-firstFullLayout = Full ||| tiled ||| Mirror tiled
+myLayoutHook :: XMonad.Layout.LayoutModifier.ModifiedLayout AvoidStruts (Choose Full (Choose Tall (Mirror Tall))) a
+myLayoutHook = avoidStruts $ Full ||| tiled ||| Mirror tiled
   where
      tiled   = Tall nmaster delta ratio -- default tiling algorithm partitions the screen into two panes
      nmaster = 0 -- The default number of windows in the master pane
-     ratio   = 1/2 -- Default proportion of screen occupied by master pane
-     delta   = 3/100 -- Percent of screen to increment by when resizing panes
+     ratio   = 1 / 2 -- Default proportion of screen occupied by master pane
+     delta   = 3 / 100 -- Percent of screen to increment by when resizing panes
 
-windowMode :: Query (Endo WindowSet)
-windowMode = composeAll
-   [ className =? "Mikutter.rb" --> doShift "mikutter"
+myManageHook :: Query (Endo WindowSet)
+myManageHook = composeAll
+   [ className =? "Gimp"        --> doCenterFloat
    , isFullscreen               --> doFullFloat
+
+   , className =? "Mikutter.rb" --> doShift "mikutter"
    , return True                --> doShift "main"
    ]
 
-keyBind :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
-keyBind conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
+myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
+myKeys conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
     -- launching and killing programs
   [ ((modKey .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf) -- %! Launch terminal
   , ((modKey,               xK_q     ), kill) -- %! Close the focused window
