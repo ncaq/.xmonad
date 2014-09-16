@@ -74,13 +74,17 @@ myLayoutHook = avoidStruts $ Full ||| tiled ||| Mirror tiled
      ratio   = 1 / 2 -- Default proportion of screen occupied by master pane
      delta   = 3 / 100 -- Percent of screen to increment by when resizing panes
 
+-- apply from backward
 myManageHook :: Query (Endo WindowSet)
 myManageHook = composeAll
-   [ className =? "Gimp"        --> doCenterFloat
-   , isFullscreen               --> doFullFloat
+   [
+     -- Gimp bug
+     className =? "Gimp" <&&> isDialog --> doFloat,
 
-   , className =? "Mikutter.rb" --> doShift "mikutter"
-   , return True                --> doShift "main"
+     return True --> (ask >>= doF . sink),
+
+     className =? "Mikutter.rb" --> doShift "mikutter",
+     return True                --> doShift "main"
    ]
 
 myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
@@ -102,6 +106,7 @@ myKeys conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
   , ((modKey,               xK_k     ), sendMessage Shrink) -- %! Shrink the master area
     -- floating layer support
   , ((modKey,               xK_l     ), withFocused $ windows . sink) -- %! Push window back into tiling
+  , ((modKey .|. shiftMask, xK_l     ), withFocused   XMonad.float)   -- %! windows to float
     -- increase or decrease number of windows in the master area
   , ((modKey,               xK_comma ), sendMessage (IncMasterN 1))    -- %! Increment the number of windows in the master area
   , ((modKey,               xK_period), sendMessage (IncMasterN (-1))) -- %! Deincrement the number of windows in the master area
