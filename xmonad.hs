@@ -117,7 +117,7 @@ myKeys conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
 
     -- move to application
   , ((modKey, xK_h), runOrRaise "firefox"          (className =? "Firefox"))
-  , ((modKey, xK_t), runOrRaise "mikutter.rb"      (className =? "Mikutter.rb"))
+  , ((modKey, xK_t), runOrRaise "mikutter"         (className =? "Mikutter.rb"))
   , ((modKey, xK_n), runOrRaise "lilyterm"         (className =? "Lilyterm"))
   , ((modKey, xK_s), runOrRaise "emacs"            (className =? "Emacs"))
 
