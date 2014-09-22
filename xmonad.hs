@@ -102,8 +102,8 @@ myKeys conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
   , ((modKey,               xK_j     ), windows swapDown  ) -- %! Swap the focused window with the next window
   , ((modKey,               xK_k     ), windows swapUp    ) -- %! Swap the focused window with the previous window
     -- resizing the master/slave ratio
-  , ((modKey,               xK_j     ), sendMessage Expand) -- %! Expand the master area
-  , ((modKey,               xK_k     ), sendMessage Shrink) -- %! Shrink the master area
+  , ((modKey .|. shiftMask, xK_j     ), sendMessage Expand) -- %! Expand the master area
+  , ((modKey .|. shiftMask, xK_k     ), sendMessage Shrink) -- %! Shrink the master area
     -- floating layer support
   , ((modKey,               xK_l     ), withFocused $ windows . sink) -- %! Push window back into tiling
   , ((modKey .|. shiftMask, xK_l     ), withFocused   XMonad.float)   -- %! windows to float
