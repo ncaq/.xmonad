@@ -9,6 +9,7 @@ import           Data.Monoid
 import           Data.Time
 import           Data.Time.LocalTime          ()
 import           Graphics.X11.Xlib
+import           System.Directory
 import           Text.Regex.Posix
 import           XMonad
 import           XMonad.Actions.WindowGo
@@ -145,7 +146,10 @@ xmonadRestart :: X ()
 xmonadRestart = spawn "if type xmonad; then xmonad --recompile && xmonad --restart; else xmessage xmonad not in \\$PATH: \"$PATH\"; fi"
 
 takeScreenShot :: X ()
-takeScreenShot = liftIO $ localDayTimeNumber >>= safeSpawn "import" . \time -> ["-screen", "~/Downloads/screenshot" ++ time ++ ".png"]
+takeScreenShot = do
+    home <- liftIO getHomeDirectory
+    time <- liftIO localDayTimeNumber
+    safeSpawn "import" ["-screen", home, "/Downloads/screenshot", time, ".png"]
 
 localDayTimeNumber :: IO String
 localDayTimeNumber = liftM ((\x -> show (localDay x) ++ "_" ++ map toSafeChar (show (localTimeOfDay x))) . zonedTimeToLocalTime) getZonedTime
