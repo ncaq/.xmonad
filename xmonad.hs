@@ -170,5 +170,5 @@ toSafeChar  x  = x
 startUp :: X ()
 startUp = spawnOnce     "trayer --edge top --align left --widthtype pixel --width 100 --heighttype pixel --height 16" >>
           safeSpawn     "ibus-daemon" ["--replace", "--xim"] >>
-          spawn         "nm-applet" >>
+          spawnOnce     "nm-applet" >>
           safeSpawnProg "dropbox"
