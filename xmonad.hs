@@ -158,7 +158,7 @@ takeScreenShot :: X ()
 takeScreenShot = do
     home <- liftIO getHomeDirectory
     time <- liftIO localDayTimeNumber
-    safeSpawn "import" ["-screen", home, "/Downloads/screenshot", time, ".png"]
+    safeSpawn "import" ["-screen", home ++ "/Downloads/screenshot" ++ time ++ ".png"]
 
 localDayTimeNumber :: IO String
 localDayTimeNumber = liftM ((\x -> show (localDay x) ++ "_" ++ map toSafeChar (show (localTimeOfDay x))) . zonedTimeToLocalTime) getZonedTime
