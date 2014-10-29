@@ -147,7 +147,7 @@ takeScreenShot :: Maybe Window -> X ()
 takeScreenShot mw = do
     home <- liftIO getHomeDirectory
     time <- liftIO localDayTimeNumber
-    safeSpawn "import" $ maybe [] (\w -> ["-window" ++ show w]) mw ++ [home ++ "/Downloads/screenshot" ++ time ++ ".png"]
+    safeSpawn "import" $ maybe [] (\w -> ["-window", show w]) mw ++ [home ++ "/Downloads/screenshot" ++ time ++ ".png"]
 
 localDayTimeNumber :: IO String
 localDayTimeNumber = liftM ((\x -> show (localDay x) ++ "_" ++ map toSafeChar (show (localTimeOfDay x))) . zonedTimeToLocalTime) getZonedTime
