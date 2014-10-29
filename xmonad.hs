@@ -89,53 +89,51 @@ myManageHook = composeAll
    ]
 
 myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
-myKeys conf@(XConfig {XMonad.modMask = modKey}) = M.fromList $
+myKeys conf@(XConfig {modMask = hyModMask}) = M.fromList $
     -- launching and killing programs
-  [ ((modKey .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf) -- %! Launch terminal
-  , ((modKey,               xK_q     ), kill) -- %! Close the focused window
-  , ((modKey .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf) -- %!  Reset the layouts on the current workspace to default
-  , ((modKey,               xK_space ), sendMessage NextLayout) -- %! Rotate through the available layout algorithms
+  [ ((hyModMask .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf) -- %! Launch terminal
+  , ((hyModMask,               xK_q     ), kill) -- %! Close the focused window
+  , ((hyModMask .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf) -- %!  Reset the layouts on the current workspace to default
+  , ((hyModMask,               xK_space ), sendMessage NextLayout) -- %! Rotate through the available layout algorithms
     -- move focus up or down the window stack
-  , ((modKey,               xK_Tab   ), windows focusDown) -- %! Move focus to the next window
-  , ((modKey .|. shiftMask, xK_Tab   ), windows focusUp  ) -- %! Move focus to the previous window
+  , ((hyModMask,               xK_Tab   ), windows focusDown) -- %! Move focus to the next window
+  , ((hyModMask .|. shiftMask, xK_Tab   ), windows focusUp  ) -- %! Move focus to the previous window
     -- modifying the window order
-  , ((modKey,               xK_Return), windows swapMaster) -- %! Swap the focused window and the master window
-  , ((modKey,               xK_j     ), windows swapDown  ) -- %! Swap the focused window with the next window
-  , ((modKey,               xK_k     ), windows swapUp    ) -- %! Swap the focused window with the previous window
+  , ((hyModMask,               xK_Return), windows swapMaster) -- %! Swap the focused window and the master window
+  , ((hyModMask,               xK_j     ), windows swapDown  ) -- %! Swap the focused window with the next window
+  , ((hyModMask,               xK_k     ), windows swapUp    ) -- %! Swap the focused window with the previous window
     -- resizing the master/slave ratio
-  , ((modKey .|. shiftMask, xK_j     ), sendMessage Expand) -- %! Expand the master area
-  , ((modKey .|. shiftMask, xK_k     ), sendMessage Shrink) -- %! Shrink the master area
+  , ((hyModMask .|. shiftMask, xK_j     ), sendMessage Expand) -- %! Expand the master area
+  , ((hyModMask .|. shiftMask, xK_k     ), sendMessage Shrink) -- %! Shrink the master area
     -- floating layer support
-  , ((modKey,               xK_l     ), withFocused $ windows . sink) -- %! Push window back into tiling
-  , ((modKey .|. shiftMask, xK_l     ), withFocused   XMonad.float)   -- %! windows to float
+  , ((hyModMask,               xK_l     ), withFocused $ windows . sink) -- %! Push window back into tiling
+  , ((hyModMask .|. shiftMask, xK_l     ), withFocused   XMonad.float)   -- %! windows to float
     -- increase or decrease number of windows in the master area
-  , ((modKey,               xK_comma ), sendMessage (IncMasterN 1))    -- %! Increment the number of windows in the master area
-  , ((modKey,               xK_period), sendMessage (IncMasterN (-1))) -- %! Deincrement the number of windows in the master area
+  , ((hyModMask,               xK_comma ), sendMessage (IncMasterN 1))    -- %! Increment the number of windows in the master area
+  , ((hyModMask,               xK_period), sendMessage (IncMasterN (-1))) -- %! Deincrement the number of windows in the master area
     -- quit, or restart
-  , ((modKey .|. shiftMask, xK_r     ), xmonadRestart)
+  , ((hyModMask .|. shiftMask, xK_r     ), xmonadRestart)
     -- screenShot
-  , ((noModMask,            xK_Print ), takeScreenShot)
-
+  , ((noModMask,               xK_Print ), withFocused $ takeScreenShot . Just)
+  , ((noModMask .|. shiftMask, xK_Print ), takeScreenShot Nothing)
     -- move to application
-  , ((modKey, xK_h), runOrRaise "firefox"          (className =? "Firefox"))
-  , ((modKey, xK_t), runOrRaise "mikutter"         (className =? "Mikutter.rb"))
-  , ((modKey, xK_n), runOrRaise "lilyterm"         (className =? "Lilyterm"))
-  , ((modKey, xK_s), runOrRaise "emacs"            (className =? "Emacs"))
-
-  , ((modKey, xK_b), runOrRaise "keepassx"         (className =? "Keepassx"))
-  , ((modKey, xK_c), runOrRaise "chromium-browser" (className =? "Chromium-browser"))
-  , ((modKey, xK_d), runOrRaise "thunderbird"      (className =? "Thunderbird"))
-  , ((modKey, xK_e), runOrRaise "evince"           (className =? "Evince"))
-  , ((modKey, xK_g), runOrRaise "gimp"             (className =? "Gimp"))
-  , ((modKey, xK_m), runOrRaise "rhythmbox"        (className =? "Rhythmbox"))
-  , ((modKey, xK_o), runOrRaise "libreoffice"      (className ~? "libreoffice"))
-  , ((modKey, xK_v), runOrRaise "inkscape"         (className =? "Inkscape"))
-  , ((modKey, xK_w), runOrRaise "viewnior"         (className =? "Viewnior"))
-
+  , ((hyModMask, xK_h), runOrRaise "firefox"          (className =? "Firefox"))
+  , ((hyModMask, xK_t), runOrRaise "mikutter"         (className =? "Mikutter.rb"))
+  , ((hyModMask, xK_n), runOrRaise "lilyterm"         (className =? "Lilyterm"))
+  , ((hyModMask, xK_s), runOrRaise "emacs"            (className =? "Emacs"))
+  , ((hyModMask, xK_b), runOrRaise "keepassx"         (className =? "Keepassx"))
+  , ((hyModMask, xK_c), runOrRaise "chromium-browser" (className =? "Chromium-browser"))
+  , ((hyModMask, xK_d), runOrRaise "thunderbird"      (className =? "Thunderbird"))
+  , ((hyModMask, xK_e), runOrRaise "evince"           (className =? "Evince"))
+  , ((hyModMask, xK_g), runOrRaise "gimp"             (className =? "Gimp"))
+  , ((hyModMask, xK_m), runOrRaise "rhythmbox"        (className =? "Rhythmbox"))
+  , ((hyModMask, xK_o), runOrRaise "libreoffice"      (className ~? "libreoffice"))
+  , ((hyModMask, xK_v), runOrRaise "inkscape"         (className =? "Inkscape"))
+  , ((hyModMask, xK_w), runOrRaise "viewnior"         (className =? "Viewnior"))
   ]
     ++
   -- workspace
-  [((m .|. modKey, key), screenWorkspace sc >>= flip whenJust (windows . f))
+  [((m .|. hyModMask, key), screenWorkspace sc >>= flip whenJust (windows . f))
         | (key, sc) <- zip [xK_1, xK_2, xK_3] [0..]
         , (f, m) <- [(view, 0), (shift, shiftMask)]]
 
@@ -145,11 +143,11 @@ a ~? b = fmap (=~ b) a
 xmonadRestart :: X ()
 xmonadRestart = spawn "if type xmonad; then xmonad --recompile && xmonad --restart; else xmessage xmonad not in \\$PATH: \"$PATH\"; fi"
 
-takeScreenShot :: X ()
-takeScreenShot = do
+takeScreenShot :: Maybe Window -> X ()
+takeScreenShot mw = do
     home <- liftIO getHomeDirectory
     time <- liftIO localDayTimeNumber
-    safeSpawn "import" [home ++ "/Downloads/screenshot" ++ time ++ ".png"]
+    safeSpawn "import" $ maybe [] (\w -> ["-window" ++ show w]) mw ++ [home ++ "/Downloads/screenshot" ++ time ++ ".png"]
 
 localDayTimeNumber :: IO String
 localDayTimeNumber = liftM ((\x -> show (localDay x) ++ "_" ++ map toSafeChar (show (localTimeOfDay x))) . zonedTimeToLocalTime) getZonedTime
