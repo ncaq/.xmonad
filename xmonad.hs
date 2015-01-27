@@ -106,8 +106,8 @@ myKeys conf@(XConfig {modMask = hyModMask}) = M.fromList $
   , ((hyModMask .|. shiftMask, xK_j     ), sendMessage Expand) -- %! Expand the master area
   , ((hyModMask .|. shiftMask, xK_k     ), sendMessage Shrink) -- %! Shrink the master area
     -- floating layer support
-  , ((hyModMask,               xK_l     ), withFocused $ windows . sink) -- %! Push window back into tiling
-  , ((hyModMask .|. shiftMask, xK_l     ), withFocused   XMonad.float)   -- %! windows to float
+  , ((hyModMask,               xK_f     ), withFocused $ windows . sink) -- %! Push window back into tiling
+  , ((hyModMask .|. shiftMask, xK_f     ), withFocused   XMonad.float)   -- %! windows to float
     -- increase or decrease number of windows in the master area
   , ((hyModMask,               xK_comma ), sendMessage (IncMasterN 1))    -- %! Increment the number of windows in the master area
   , ((hyModMask,               xK_period), sendMessage (IncMasterN (-1))) -- %! Deincrement the number of windows in the master area
@@ -117,19 +117,19 @@ myKeys conf@(XConfig {modMask = hyModMask}) = M.fromList $
   , ((noModMask,               xK_Print ), withFocused $ takeScreenShot . Just)
   , ((noModMask .|. shiftMask, xK_Print ), takeScreenShot Nothing)
     -- move to application
-  , ((hyModMask, xK_h), runOrRaise "firefox"          (className =? "Firefox"))
-  , ((hyModMask, xK_t), runOrRaise "mikutter"         (className =? "Mikutter.rb"))
-  , ((hyModMask, xK_n), runOrRaise "lilyterm"         (className =? "Lilyterm"))
-  , ((hyModMask, xK_s), runOrRaise "emacs"            (className =? "Emacs"))
   , ((hyModMask, xK_b), runOrRaise "keepassx"         (className =? "Keepassx"))
   , ((hyModMask, xK_c), runOrRaise "chromium-browser" (className =? "Chromium-browser"))
-  , ((hyModMask, xK_d), runOrRaise "thunderbird"      (className =? "Thunderbird"))
-  , ((hyModMask, xK_e), runOrRaise "evince"           (className =? "Evince"))
   , ((hyModMask, xK_g), runOrRaise "gimp"             (className =? "Gimp"))
-  , ((hyModMask, xK_m), runOrRaise "rhythmbox"        (className =? "Rhythmbox"))
-  , ((hyModMask, xK_o), runOrRaise "libreoffice"      (className ~? "libreoffice"))
-  , ((hyModMask, xK_v), runOrRaise "inkscape"         (className =? "Inkscape"))
-  , ((hyModMask, xK_w), runOrRaise "viewnior"         (className =? "Viewnior"))
+  , ((hyModMask, xK_h), runOrRaise "firefox"          (className =? "Firefox"))
+  , ((hyModMask, xK_l), runOrRaise "libreoffice"      (className ~? "libreoffice"))
+  , ((hyModMask, xK_m), runOrRaise "thunderbird"      (className =? "Thunderbird"))
+  , ((hyModMask, xK_n), runOrRaise "lilyterm"         (className =? "Lilyterm"))
+  , ((hyModMask, xK_r), runOrRaise "rhythmbox"        (className =? "Rhythmbox"))
+  , ((hyModMask, xK_s), runOrRaise "emacs"            (className =? "Emacs"))
+  , ((hyModMask, xK_t), runOrRaise "mikutter"         (className =? "Mikutter.rb"))
+  , ((hyModMask, xK_v), runOrRaise "viewnior"         (className =? "Viewnior"))
+  , ((hyModMask, xK_w), runOrRaise "inkscape"         (className =? "Inkscape"))
+  , ((hyModMask, xK_z), runOrRaise "evince"           (className =? "Evince"))
   ]
     ++
   -- workspace
