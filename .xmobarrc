@@ -9,8 +9,8 @@ Config { font = "xft:Ricty"
        }
        , lowerOnStart = False
        , commands = [ Run StdinReader
-                    , Run MultiCpu ["-t", "autototal=<autototal>"] 40
-                    , Run Memory ["-t", "used=<used>"] 40
+                    , Run MultiCpu ["-t", "cpu=<autototal>"] 40
+                    , Run Memory ["-t", "mem=<used>"] 40
                     , Run Date "%m/%d/%a %H-%M-%S" "date" 10
                     ]
        , sepChar = "%"
