@@ -5,7 +5,7 @@ Config { font = "xft:Ricty"
        , lowerOnStart = False
        , commands = [ Run StdinReader
                     , Run Date "%m/%d/%a %H-%M-%S" "date" 10
-                    , Run Cpu ["-t","total=<total>%"] 100
+                    , Run Cpu ["-t", "total=<total>% iowait=<iowait>%"] 100
                     , Run Memory ["-t","used=<used>"] 100
                     ]
        , sepChar = "%"
