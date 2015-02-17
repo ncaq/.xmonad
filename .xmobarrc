@@ -1,6 +1,3 @@
--- It original code copylight.
--- Copyright (c) Andrea Rossato
-
 Config { font = "xft:Ricty"
        , bgColor = "#002b36"
        , fgColor = "#839496"
@@ -8,7 +5,7 @@ Config { font = "xft:Ricty"
        , lowerOnStart = False
        , commands = [ Run StdinReader
                     , Run Date "%m/%d/%a %H-%M-%S" "date" 10
-                    , Run Cpu ["-t","idle=<idle>%"] 100
+                    , Run Cpu ["-t","total=<total>%"] 100
                     , Run Memory ["-t","used=<used>"] 100
                     ]
        , sepChar = "%"
