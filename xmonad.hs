@@ -1,8 +1,3 @@
--- It is original code copylight.
--- Copyright (c) 2007,2008 Don Stewart
--- Copyright (c) 2007,2008 Spencer Janssen
--- Copyright (c) The Xmonad Community
-
 import           Control.Monad
 import qualified Data.Map                     as M
 import           Data.Monoid
@@ -89,7 +84,7 @@ myManageHook = composeAll
    ]
 
 myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
-myKeys conf@(XConfig {modMask = hyModMask}) = M.fromList $
+myKeys conf@(XConfig {modMask = hyModMask}) = M.fromList
     -- launching and killing programs
   [ ((hyModMask .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf) -- %! Launch terminal
   , ((hyModMask,               xK_q     ), kill) -- %! Close the focused window
@@ -131,11 +126,6 @@ myKeys conf@(XConfig {modMask = hyModMask}) = M.fromList $
   , ((hyModMask, xK_w), runOrRaise "inkscape"         (className =? "Inkscape"))
   , ((hyModMask, xK_z), runOrRaise "evince"           (className =? "Evince"))
   ]
-    ++
-  -- workspace
-  [((m .|. hyModMask, key), screenWorkspace sc >>= flip whenJust (windows . f))
-        | (key, sc) <- zip [xK_1, xK_2, xK_3] [0..]
-        , (f, m) <- [(view, 0), (shift, shiftMask)]]
 
 (~?) :: Query String -> String -> Query Bool
 a ~? b = fmap (=~ b) a
