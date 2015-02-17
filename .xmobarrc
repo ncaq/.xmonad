@@ -9,11 +9,11 @@ Config { font = "xft:Ricty"
        }
        , lowerOnStart = False
        , commands = [ Run StdinReader
-                    , Run Date "%m/%d/%a %H-%M-%S" "date" 10
-                    , Run Cpu ["-t", "total=<total>% iowait=<iowait>%"] 100
+                    , Run MultiCpu ["-t", "cpu=<autototal>%"] 100
                     , Run Memory ["-t", "used=<used>"] 100
+                    , Run Date "%m/%d/%a %H-%M-%S" "date" 10
                     ]
        , sepChar = "%"
        , alignSep = "{}"
-       , template = "%StdinReader% {} %cpu% %memory% <fc=#b58900>%date%</fc>"
+       , template = "%StdinReader% {} %multicpu% %memory% <fc=#b58900>%date%</fc>"
        }
