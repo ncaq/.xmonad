@@ -29,7 +29,7 @@ myConfig = XConfig
   , XMonad.manageHook         = myManageHook
   , XMonad.handleEventHook    = const $ return (All True)
   , XMonad.workspaces         = ["main","mikutter"]
-  , XMonad.modMask            = superKey
+  , XMonad.modMask            = hyModMask
   , XMonad.keys               = myKeys
   , XMonad.mouseBindings      = mouseBindings defaultConfig
   , XMonad.borderWidth        = 0
@@ -56,11 +56,11 @@ myPP = PP { ppCurrent         = wrap "[" "]"
           , ppExtras          = []
           }
 
-superKey :: KeyMask
-superKey = mod4Mask
+hyModMask :: KeyMask
+hyModMask = mod4Mask
 
 hideStatusBar :: XConfig t -> (KeyMask, KeySym)
-hideStatusBar _ = (superKey, xK_u)
+hideStatusBar _ = (hyModMask, xK_u)
 
 myLayoutHook :: XMonad.Layout.LayoutModifier.ModifiedLayout AvoidStruts (Choose Full (Choose Tall (Mirror Tall))) a
 myLayoutHook = avoidStruts $ Full ||| tiled ||| Mirror tiled
@@ -84,7 +84,7 @@ myManageHook = composeAll
    ]
 
 myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
-myKeys conf@(XConfig {modMask = hyModMask}) = M.fromList
+myKeys conf = M.fromList
     -- launching and killing programs
   [ ((hyModMask .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf) -- %! Launch terminal
   , ((hyModMask,               xK_q     ), kill) -- %! Close the focused window
