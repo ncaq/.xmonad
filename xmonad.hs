@@ -29,7 +29,7 @@ myConfig = XConfig
   , XMonad.manageHook         = myManageHook
   , XMonad.handleEventHook    = const $ return (All True)
   , XMonad.workspaces         = ["main","mikutter"]
-  , XMonad.modMask            = hyModMask
+  , XMonad.modMask            = hyperMask
   , XMonad.keys               = myKeys
   , XMonad.mouseBindings      = mouseBindings defaultConfig
   , XMonad.borderWidth        = 0
@@ -56,11 +56,11 @@ myPP = PP { ppCurrent         = wrap "[" "]"
           , ppExtras          = []
           }
 
-hyModMask :: KeyMask
-hyModMask = mod4Mask
+hyperMask :: KeyMask
+hyperMask = mod4Mask
 
 hideStatusBar :: XConfig t -> (KeyMask, KeySym)
-hideStatusBar _ = (hyModMask, xK_u)
+hideStatusBar _ = (hyperMask, xK_u)
 
 myLayoutHook :: XMonad.Layout.LayoutModifier.ModifiedLayout AvoidStruts (Choose Full (Choose Tall (Mirror Tall))) a
 myLayoutHook = avoidStruts $ Full ||| tiled ||| Mirror tiled
@@ -86,45 +86,45 @@ myManageHook = composeAll
 myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
 myKeys conf = M.fromList
     -- launching and killing programs
-  [ ((hyModMask .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf) -- %! Launch terminal
-  , ((hyModMask,               xK_q     ), kill) -- %! Close the focused window
-  , ((hyModMask .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf) -- %!  Reset the layouts on the current workspace to default
-  , ((hyModMask,               xK_space ), sendMessage NextLayout) -- %! Rotate through the available layout algorithms
+  [ ((hyperMask .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf) -- %! Launch terminal
+  , ((hyperMask,               xK_q     ), kill) -- %! Close the focused window
+  , ((hyperMask .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf) -- %!  Reset the layouts on the current workspace to default
+  , ((hyperMask,               xK_space ), sendMessage NextLayout) -- %! Rotate through the available layout algorithms
     -- move focus up or down the window stack
-  , ((hyModMask,               xK_Tab   ), windows focusDown) -- %! Move focus to the next window
-  , ((hyModMask .|. shiftMask, xK_Tab   ), windows focusUp  ) -- %! Move focus to the previous window
+  , ((hyperMask,               xK_Tab   ), windows focusDown) -- %! Move focus to the next window
+  , ((hyperMask .|. shiftMask, xK_Tab   ), windows focusUp  ) -- %! Move focus to the previous window
     -- modifying the window order
-  , ((hyModMask,               xK_Return), windows swapMaster) -- %! Swap the focused window and the master window
-  , ((hyModMask,               xK_j     ), windows swapDown  ) -- %! Swap the focused window with the next window
-  , ((hyModMask,               xK_k     ), windows swapUp    ) -- %! Swap the focused window with the previous window
+  , ((hyperMask,               xK_Return), windows swapMaster) -- %! Swap the focused window and the master window
+  , ((hyperMask,               xK_j     ), windows swapDown  ) -- %! Swap the focused window with the next window
+  , ((hyperMask,               xK_k     ), windows swapUp    ) -- %! Swap the focused window with the previous window
     -- resizing the master/slave ratio
-  , ((hyModMask .|. shiftMask, xK_j     ), sendMessage Expand) -- %! Expand the master area
-  , ((hyModMask .|. shiftMask, xK_k     ), sendMessage Shrink) -- %! Shrink the master area
+  , ((hyperMask .|. shiftMask, xK_j     ), sendMessage Expand) -- %! Expand the master area
+  , ((hyperMask .|. shiftMask, xK_k     ), sendMessage Shrink) -- %! Shrink the master area
     -- floating layer support
-  , ((hyModMask,               xK_f     ), withFocused $ windows . sink) -- %! Push window back into tiling
-  , ((hyModMask .|. shiftMask, xK_f     ), withFocused   XMonad.float)   -- %! windows to float
+  , ((hyperMask,               xK_f     ), withFocused $ windows . sink) -- %! Push window back into tiling
+  , ((hyperMask .|. shiftMask, xK_f     ), withFocused   XMonad.float)   -- %! windows to float
     -- increase or decrease number of windows in the master area
-  , ((hyModMask,               xK_comma ), sendMessage (IncMasterN 1))    -- %! Increment the number of windows in the master area
-  , ((hyModMask,               xK_period), sendMessage (IncMasterN (-1))) -- %! Deincrement the number of windows in the master area
+  , ((hyperMask,               xK_comma ), sendMessage (IncMasterN 1))    -- %! Increment the number of windows in the master area
+  , ((hyperMask,               xK_period), sendMessage (IncMasterN (-1))) -- %! Deincrement the number of windows in the master area
     -- quit, or restart
-  , ((hyModMask .|. shiftMask, xK_r     ), xmonadRestart)
+  , ((hyperMask .|. shiftMask, xK_r     ), xmonadRestart)
     -- screenShot
   , ((noModMask,               xK_Print ), withFocused $ takeScreenShot . Just)
   , ((noModMask .|. shiftMask, xK_Print ), takeScreenShot Nothing)
     -- move to application
-  , ((hyModMask, xK_b), runOrRaise "keepassx"         (className =? "Keepassx"))
-  , ((hyModMask, xK_c), runOrRaise "chromium-browser" (className =? "Chromium-browser"))
-  , ((hyModMask, xK_g), runOrRaise "gimp"             (className =? "Gimp"))
-  , ((hyModMask, xK_h), runOrRaise "firefox"          (className =? "Firefox"))
-  , ((hyModMask, xK_l), runOrRaise "libreoffice"      (className ~? "libreoffice"))
-  , ((hyModMask, xK_m), runOrRaise "thunderbird"      (className =? "Thunderbird"))
-  , ((hyModMask, xK_n), runOrRaise "lilyterm"         (className =? "Lilyterm"))
-  , ((hyModMask, xK_r), runOrRaise "rhythmbox"        (className =? "Rhythmbox"))
-  , ((hyModMask, xK_s), runOrRaise "emacs"            (className =? "Emacs"))
-  , ((hyModMask, xK_t), runOrRaise "mikutter"         (className =? "Mikutter.rb"))
-  , ((hyModMask, xK_v), runOrRaise "viewnior"         (className =? "Viewnior"))
-  , ((hyModMask, xK_w), runOrRaise "inkscape"         (className =? "Inkscape"))
-  , ((hyModMask, xK_z), runOrRaise "evince"           (className =? "Evince"))
+  , ((hyperMask, xK_b), runOrRaise "keepassx"         (className =? "Keepassx"))
+  , ((hyperMask, xK_c), runOrRaise "chromium-browser" (className =? "Chromium-browser"))
+  , ((hyperMask, xK_g), runOrRaise "gimp"             (className =? "Gimp"))
+  , ((hyperMask, xK_h), runOrRaise "firefox"          (className =? "Firefox"))
+  , ((hyperMask, xK_l), runOrRaise "libreoffice"      (className ~? "libreoffice"))
+  , ((hyperMask, xK_m), runOrRaise "thunderbird"      (className =? "Thunderbird"))
+  , ((hyperMask, xK_n), runOrRaise "lilyterm"         (className =? "Lilyterm"))
+  , ((hyperMask, xK_r), runOrRaise "rhythmbox"        (className =? "Rhythmbox"))
+  , ((hyperMask, xK_s), runOrRaise "emacs"            (className =? "Emacs"))
+  , ((hyperMask, xK_t), runOrRaise "mikutter"         (className =? "Mikutter.rb"))
+  , ((hyperMask, xK_v), runOrRaise "viewnior"         (className =? "Viewnior"))
+  , ((hyperMask, xK_w), runOrRaise "inkscape"         (className =? "Inkscape"))
+  , ((hyperMask, xK_z), runOrRaise "evince"           (className =? "Evince"))
   ]
 
 (~?) :: Query String -> String -> Query Bool
