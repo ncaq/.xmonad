@@ -73,15 +73,11 @@ myLayoutHook = avoidStruts $ Full ||| tiled ||| Mirror tiled
 -- apply from backward
 myManageHook :: Query (Endo WindowSet)
 myManageHook = composeAll
-   [
-     -- Gimp bug
-     className =? "Gimp" <&&> isDialog --> doFloat,
+               [ manageDocks
 
-     return True --> (ask >>= doF . sink),
-
-     className =? "Mikutter.rb" --> doShift "mikutter",
-     return True                --> doShift "main"
-   ]
+               , className =? "Mikutter.rb" --> doShift "mikutter"
+               , return True                --> doShift "main"
+               ]
 
 myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
 myKeys conf = M.fromList
