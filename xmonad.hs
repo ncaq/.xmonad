@@ -1,4 +1,5 @@
 import           Control.Monad
+import           Data.Bits
 import qualified Data.Map                     as M
 import           Data.Monoid
 import           Data.Time
@@ -10,7 +11,7 @@ import           XMonad
 import           XMonad.Actions.WindowGo
 import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.ManageDocks
-import           XMonad.Hooks.ManageHelpers
+import           XMonad.Hooks.ManageHelpers   ()
 import           XMonad.Layout.LayoutModifier
 import           XMonad.StackSet
 import           XMonad.Util.Run
@@ -56,9 +57,6 @@ myPP = PP { ppCurrent         = wrap "[" "]"
           , ppExtras          = []
           }
 
-hyperMask :: KeyMask
-hyperMask = mod4Mask
-
 hideStatusBar :: XConfig t -> (KeyMask, KeySym)
 hideStatusBar _ = (hyperMask, xK_u)
 
@@ -82,9 +80,9 @@ myManageHook = composeAll
 myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
 myKeys conf = M.fromList
     -- launching and killing programs
-  [ ((hyperMask .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf) -- %! Launch terminal
+  [ ((hyperMask .|. alterMask, xK_Return), spawn $ XMonad.terminal conf) -- %! Launch terminal
   , ((hyperMask,               xK_q     ), kill) -- %! Close the focused window
-  , ((hyperMask .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf) -- %!  Reset the layouts on the current workspace to default
+  , ((hyperMask .|. alterMask, xK_space ), setLayout $ XMonad.layoutHook conf) -- %!  Reset the layouts on the current workspace to default
   , ((hyperMask,               xK_space ), sendMessage NextLayout) -- %! Rotate through the available layout algorithms
     -- move focus up or down the window stack
   , ((hyperMask,               xK_Tab   ), windows focusDown) -- %! Move focus to the next window
@@ -94,19 +92,19 @@ myKeys conf = M.fromList
   , ((hyperMask,               xK_j     ), windows swapDown  ) -- %! Swap the focused window with the next window
   , ((hyperMask,               xK_k     ), windows swapUp    ) -- %! Swap the focused window with the previous window
     -- resizing the master/slave ratio
-  , ((hyperMask .|. shiftMask, xK_j     ), sendMessage Expand) -- %! Expand the master area
-  , ((hyperMask .|. shiftMask, xK_k     ), sendMessage Shrink) -- %! Shrink the master area
+  , ((hyperMask .|. alterMask, xK_j     ), sendMessage Expand) -- %! Expand the master area
+  , ((hyperMask .|. alterMask, xK_k     ), sendMessage Shrink) -- %! Shrink the master area
     -- floating layer support
   , ((hyperMask,               xK_f     ), withFocused $ windows . sink) -- %! Push window back into tiling
-  , ((hyperMask .|. shiftMask, xK_f     ), withFocused   XMonad.float)   -- %! windows to float
+  , ((hyperMask .|. alterMask, xK_f     ), withFocused   XMonad.float)   -- %! windows to float
     -- increase or decrease number of windows in the master area
   , ((hyperMask,               xK_comma ), sendMessage (IncMasterN 1))    -- %! Increment the number of windows in the master area
   , ((hyperMask,               xK_period), sendMessage (IncMasterN (-1))) -- %! Deincrement the number of windows in the master area
     -- quit, or restart
-  , ((hyperMask .|. shiftMask, xK_r     ), xmonadRestart)
+  , ((hyperMask .|. alterMask, xK_r     ), xmonadRestart)
     -- screenShot
   , ((noModMask,               xK_Print ), withFocused $ takeScreenShot . Just)
-  , ((noModMask .|. shiftMask, xK_Print ), takeScreenShot Nothing)
+  , ((noModMask .|. alterMask, xK_Print ), takeScreenShot Nothing)
     -- move to application
   , ((hyperMask, xK_b), runOrRaise "keepassx"         (className =? "Keepassx"))
   , ((hyperMask, xK_c), runOrRaise "chromium-browser" (className =? "Chromium-browser"))
@@ -122,6 +120,12 @@ myKeys conf = M.fromList
   , ((hyperMask, xK_w), runOrRaise "inkscape"         (className =? "Inkscape"))
   , ((hyperMask, xK_z), runOrRaise "evince"           (className =? "Evince"))
   ]
+
+hyperMask :: KeyMask
+hyperMask = mod4Mask
+
+alterMask :: KeyMask
+alterMask = mod1Mask
 
 (~?) :: Query String -> String -> Query Bool
 a ~? b = fmap (=~ b) a
