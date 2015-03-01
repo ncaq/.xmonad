@@ -80,32 +80,23 @@ myManageHook = composeAll
 
 myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
 myKeys conf = M.fromList
-    -- launching and killing programs
-  [ ((hyperMask .|. alterMask, xK_Return), spawn $ XMonad.terminal conf) -- %! Launch terminal
-  , ((hyperMask,               xK_q     ), kill) -- %! Close the focused window
-  , ((hyperMask .|. alterMask, xK_space ), setLayout $ XMonad.layoutHook conf) -- %!  Reset the layouts on the current workspace to default
-  , ((hyperMask,               xK_space ), sendMessage NextLayout) -- %! Rotate through the available layout algorithms
-    -- move focus up or down the window stack
-  , ((hyperMask,               xK_Tab   ), windows focusDown) -- %! Move focus to the next window
-  , ((hyperMask .|. shiftMask, xK_Tab   ), windows focusUp  ) -- %! Move focus to the previous window
-    -- modifying the window order
-  , ((hyperMask,               xK_Return), windows swapMaster) -- %! Swap the focused window and the master window
-  , ((hyperMask,               xK_j     ), windows swapDown  ) -- %! Swap the focused window with the next window
-  , ((hyperMask,               xK_k     ), windows swapUp    ) -- %! Swap the focused window with the previous window
-    -- resizing the master/slave ratio
-  , ((hyperMask .|. alterMask, xK_j     ), sendMessage Expand) -- %! Expand the master area
-  , ((hyperMask .|. alterMask, xK_k     ), sendMessage Shrink) -- %! Shrink the master area
-    -- floating layer support
-  , ((hyperMask,               xK_f     ), withFocused $ windows . sink) -- %! Push window back into tiling
-  , ((hyperMask .|. alterMask, xK_f     ), withFocused   XMonad.float)   -- %! windows to float
-    -- increase or decrease number of windows in the master area
-  , ((hyperMask,               xK_comma ), sendMessage (IncMasterN 1))    -- %! Increment the number of windows in the master area
-  , ((hyperMask,               xK_period), sendMessage (IncMasterN (-1))) -- %! Deincrement the number of windows in the master area
-    -- quit, or restart
-  , ((hyperMask .|. alterMask, xK_r     ), xmonadRestart)
-    -- screenShot
-  , ((noModMask,               xK_Print ), withFocused $ takeScreenShot . Just)
-  , ((noModMask .|. alterMask, xK_Print ), takeScreenShot Nothing)
+  [ ((hyperMask,               xK_space ), sendMessage NextLayout)             -- Rotate through the available layout algorithms
+  , ((hyperMask .|. alterMask, xK_space ), setLayout $ XMonad.layoutHook conf) -- Reset the layouts on the current workspace to default
+  , ((hyperMask,               xK_Tab   ), windows focusDown)                  -- Move focus to the next window
+  , ((hyperMask .|. shiftMask, xK_Tab   ), windows focusUp)                    -- Move focus to the previous window
+  , ((hyperMask,               xK_comma ), sendMessage (IncMasterN 1))         -- Increment the number of windows in the master area
+  , ((hyperMask,               xK_period), sendMessage (IncMasterN (-1)))      -- Deincrement the number of windows in the master area
+  , ((hyperMask,               xK_Return), windows swapMaster)                 -- Swap the focused window and the master window
+  , ((hyperMask,               xK_j     ), windows swapDown)                   -- Swap the focused window with the next window
+  , ((hyperMask,               xK_k     ), windows swapUp)                     -- Swap the focused window with the previous window
+  , ((hyperMask .|. alterMask, xK_j     ), sendMessage Expand)                 -- Expand the master area
+  , ((hyperMask .|. alterMask, xK_k     ), sendMessage Shrink)                 -- Shrink the master area
+  , ((hyperMask,               xK_f     ), withFocused $ windows . sink)       -- Push window back into tiling
+  , ((hyperMask .|. alterMask, xK_f     ), withFocused XMonad.float)           -- Window to float
+  , ((hyperMask .|. alterMask, xK_r     ), xmonadRestart)                      -- Apply setting
+  , ((hyperMask,               xK_q     ), kill)                               -- Close the focused window
+  , ((noModMask,               xK_Print ), withFocused $ screenShot . Just)    -- ScreenShot wait
+  , ((noModMask .|. alterMask, xK_Print ), screenShot Nothing)                 -- ScreenShot from focus window
     -- move to application
   , ((hyperMask, xK_b), runOrRaise "keepassx"         (className =? "Keepassx"))
   , ((hyperMask, xK_c), runOrRaise "chromium-browser" (className =? "Chromium-browser"))
@@ -134,8 +125,8 @@ a ~? b = fmap (=~ b) a
 xmonadRestart :: X ()
 xmonadRestart = spawn "if type xmonad; then xmonad --recompile && xmonad --restart; else xmessage xmonad not in \\$PATH: \"$PATH\"; fi"
 
-takeScreenShot :: Maybe Window -> X ()
-takeScreenShot mw = do
+screenShot :: Maybe Window -> X ()
+screenShot mw = do
     home <- liftIO getHomeDirectory
     time <- liftIO localDayTimeNumber
     safeSpawn "import" $ maybe [] (\w -> ["-window", show w]) mw ++ [home ++ "/Downloads/screenshot" ++ time ++ ".png"]
