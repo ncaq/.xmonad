@@ -91,8 +91,8 @@ myKeys conf = M.fromList
   , ((hyperMask,               xK_k     ), windows swapUp)                     -- Swap the focused window with the previous window
   , ((hyperMask .|. alterMask, xK_j     ), sendMessage Expand)                 -- Expand the master area
   , ((hyperMask .|. alterMask, xK_k     ), sendMessage Shrink)                 -- Shrink the master area
-  , ((hyperMask,               xK_f     ), withFocused $ windows . sink)       -- Push window back into tiling
-  , ((hyperMask .|. alterMask, xK_f     ), withFocused XMonad.float)           -- Window to float
+  , ((hyperMask,               xK_p     ), withFocused $ windows . sink)       -- Push window back into tiling
+  , ((hyperMask .|. alterMask, xK_p     ), withFocused XMonad.float)           -- Window to float
   , ((hyperMask .|. alterMask, xK_r     ), xmonadRestart)                      -- Apply setting
   , ((hyperMask,               xK_q     ), kill)                               -- Close the focused window
   , ((noModMask,               xK_Print ), withFocused $ screenShot . Just)    -- ScreenShot wait
@@ -100,16 +100,16 @@ myKeys conf = M.fromList
     -- move to application
   , ((hyperMask, xK_b), runOrRaise "keepassx"         (className =? "Keepassx"))
   , ((hyperMask, xK_c), runOrRaise "chromium-browser" (className =? "Chromium-browser"))
+  , ((hyperMask, xK_f), runOrRaise "inkscape"         (className =? "Inkscape"))
   , ((hyperMask, xK_g), runOrRaise "gimp"             (className =? "Gimp"))
   , ((hyperMask, xK_h), runOrRaise "firefox"          (className =? "Firefox"))
   , ((hyperMask, xK_l), runOrRaise "libreoffice"      (className ~? "libreoffice"))
   , ((hyperMask, xK_m), runOrRaise "thunderbird"      (className =? "Thunderbird"))
-  , ((hyperMask, xK_n), runOrRaise "lilyterm"         (className =? "Lilyterm"))
+  , ((hyperMask, xK_n), runOrRaise "emacs"            (className =? "Emacs"))
   , ((hyperMask, xK_r), runOrRaise "rhythmbox"        (className =? "Rhythmbox"))
   , ((hyperMask, xK_s), runOrRaise "mikutter"         (className =? "Mikutter.rb"))
-  , ((hyperMask, xK_t), runOrRaise "emacs"            (className =? "Emacs"))
+  , ((hyperMask, xK_t), runOrRaise "lilyterm"         (className =? "Lilyterm"))
   , ((hyperMask, xK_v), runOrRaise "viewnior"         (className =? "Viewnior"))
-  , ((hyperMask, xK_w), runOrRaise "inkscape"         (className =? "Inkscape"))
   , ((hyperMask, xK_z), runOrRaise "evince"           (className =? "Evince"))
   ]
 
