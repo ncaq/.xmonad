@@ -103,7 +103,7 @@ myKeys conf = M.fromList
   , ((hyperMask, xK_f), runOrRaise "inkscape"         (className =? "Inkscape"))
   , ((hyperMask, xK_g), runOrRaise "gimp"             (className =? "Gimp"))
   , ((hyperMask, xK_h), runOrRaise "firefox"          (className =? "Firefox"))
-  , ((hyperMask, xK_l), runOrRaise "libreoffice"      (className ~? "libreoffice"))
+  , ((hyperMask, xK_l), runOrRaise "libreoffice"      (className ~? "Libreoffice"))
   , ((hyperMask, xK_m), runOrRaise "thunderbird"      (className =? "Thunderbird"))
   , ((hyperMask, xK_n), runOrRaise "emacs"            (className =? "Emacs"))
   , ((hyperMask, xK_r), runOrRaise "rhythmbox"        (className =? "Rhythmbox"))
