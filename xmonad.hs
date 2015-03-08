@@ -1,5 +1,5 @@
 import           Control.Monad
-import           Data.Bits
+import           Data.Bits                    ()
 import qualified Data.Map                     as M
 import           Data.Monoid
 import           Data.Time
@@ -14,6 +14,7 @@ import           XMonad.Hooks.ManageDocks
 import           XMonad.Hooks.ManageHelpers
 import           XMonad.Layout.LayoutModifier
 import           XMonad.StackSet
+import           XMonad.Util.EZConfig
 import           XMonad.Util.Run
 import           XMonad.Util.SpawnOnce
 import           XMonad.Util.WorkspaceCompare
@@ -30,7 +31,7 @@ myConfig = XConfig
   , XMonad.manageHook         = myManageHook
   , XMonad.handleEventHook    = const $ return (All True)
   , XMonad.workspaces         = ["main","mikutter"]
-  , XMonad.modMask            = hyperMask
+  , XMonad.modMask            = mod4Mask
   , XMonad.keys               = myKeys
   , XMonad.mouseBindings      = mouseBindings defaultConfig
   , XMonad.borderWidth        = 0
@@ -58,7 +59,7 @@ myPP = PP { ppCurrent         = wrap "[" "]"
           }
 
 hideStatusBar :: XConfig t -> (KeyMask, KeySym)
-hideStatusBar _ = (hyperMask, xK_u)
+hideStatusBar conf = (modMask conf, xK_u)
 
 myLayoutHook :: XMonad.Layout.LayoutModifier.ModifiedLayout AvoidStruts (Choose Full (Choose Tall (Mirror Tall))) a
 myLayoutHook = avoidStruts $ Full ||| tiled ||| Mirror tiled
@@ -79,45 +80,39 @@ myManageHook = composeAll
                ]
 
 myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
-myKeys conf = M.fromList
-  [ ((hyperMask,               xK_space ), sendMessage NextLayout)             -- Rotate through the available layout algorithms
-  , ((hyperMask .|. alterMask, xK_space ), setLayout $ XMonad.layoutHook conf) -- Reset the layouts on the current workspace to default
-  , ((hyperMask,               xK_Tab   ), windows focusDown)                  -- Move focus to the next window
-  , ((hyperMask .|. shiftMask, xK_Tab   ), windows focusUp)                    -- Move focus to the previous window
-  , ((hyperMask,               xK_comma ), sendMessage (IncMasterN 1))         -- Increment the number of windows in the master area
-  , ((hyperMask,               xK_period), sendMessage (IncMasterN (-1)))      -- Deincrement the number of windows in the master area
-  , ((hyperMask,               xK_Return), windows swapMaster)                 -- Swap the focused window and the master window
-  , ((hyperMask,               xK_j     ), windows swapDown)                   -- Swap the focused window with the next window
-  , ((hyperMask,               xK_k     ), windows swapUp)                     -- Swap the focused window with the previous window
-  , ((hyperMask .|. alterMask, xK_j     ), sendMessage Expand)                 -- Expand the master area
-  , ((hyperMask .|. alterMask, xK_k     ), sendMessage Shrink)                 -- Shrink the master area
-  , ((hyperMask,               xK_p     ), withFocused $ windows . sink)       -- Push window back into tiling
-  , ((hyperMask .|. alterMask, xK_p     ), withFocused XMonad.float)           -- Window to float
-  , ((hyperMask .|. alterMask, xK_r     ), xmonadRestart)                      -- Apply setting
-  , ((hyperMask,               xK_q     ), kill)                               -- Close the focused window
-  , ((noModMask,               xK_Print ), withFocused $ screenShot . Just)    -- ScreenShot wait
-  , ((noModMask .|. alterMask, xK_Print ), screenShot Nothing)                 -- ScreenShot from focus window
-    -- move to application
-  , ((hyperMask, xK_b), runOrRaise "keepassx"         (className =? "Keepassx"))
-  , ((hyperMask, xK_c), runOrRaise "chromium-browser" (className =? "Chromium-browser"))
-  , ((hyperMask, xK_f), runOrRaise "inkscape"         (className =? "Inkscape"))
-  , ((hyperMask, xK_g), runOrRaise "gimp"             (className =? "Gimp"))
-  , ((hyperMask, xK_h), runOrRaise "firefox"          (className =? "Firefox"))
-  , ((hyperMask, xK_l), runOrRaise "libreoffice"      (className ~? "Libreoffice"))
-  , ((hyperMask, xK_m), runOrRaise "thunderbird"      (className =? "Thunderbird"))
-  , ((hyperMask, xK_n), runOrRaise "emacs"            (className =? "Emacs"))
-  , ((hyperMask, xK_r), runOrRaise "rhythmbox"        (className =? "Rhythmbox"))
-  , ((hyperMask, xK_s), runOrRaise "mikutter"         (className =? "Mikutter.rb"))
-  , ((hyperMask, xK_t), runOrRaise "lilyterm"         (className =? "Lilyterm"))
-  , ((hyperMask, xK_v), runOrRaise "viewnior"         (className =? "Viewnior"))
-  , ((hyperMask, xK_z), runOrRaise "evince"           (className =? "Evince"))
-  ]
-
-hyperMask :: KeyMask
-hyperMask = mod4Mask
-
-alterMask :: KeyMask
-alterMask = mod1Mask
+myKeys conf = mkKeymap conf
+              [ ("M-<space>",   sendMessage NextLayout)             -- Rotate through the available layout algorithms
+              , ("M-S-<space>", setLayout $ XMonad.layoutHook conf) -- Reset the layouts on the current workspace to default
+              , ("M-<tab>",     windows focusDown)                  -- Move focus to the next window
+              , ("M-S-<tab>",   windows focusUp)                    -- Move focus to the previous window
+              , ("M-,",         sendMessage (IncMasterN 1))         -- Increment the number of windows in the master area
+              , ("M-.",         sendMessage (IncMasterN (-1)))      -- Deincrement the number of windows in the master area
+              , ("M-<return>",  windows swapMaster)                 -- Swap the focused window and the master window
+              , ("M-j",         windows swapDown)                   -- Swap the focused window with the next window
+              , ("M-k",         windows swapUp)                     -- Swap the focused window with the previous window
+              , ("M-S-j",       sendMessage Expand)                 -- Expand the master area
+              , ("M-S-k",       sendMessage Shrink)                 -- Shrink the master area
+              , ("M-p",         withFocused $ windows . sink)       -- Push window back into tiling
+              , ("M-S-p",       withFocused XMonad.float)           -- Window to float
+              , ("M-S-r",       xmonadRestart)                      -- Apply setting
+              , ("M-q",         kill)                               -- Close the focused window
+              , ("<print>",     withFocused $ screenShot . Just)    -- ScreenShot wait
+              , ("M-<print>",   screenShot Nothing)                 -- ScreenShot from focus window
+                -- move to application
+              , ("M-b", runOrRaise "keepassx"         (className =? "Keepassx"))
+              , ("M-c", runOrRaise "chromium-browser" (className =? "Chromium-browser"))
+              , ("M-f", runOrRaise "inkscape"         (className =? "Inkscape"))
+              , ("M-g", runOrRaise "gimp"             (className =? "Gimp"))
+              , ("M-h", runOrRaise "firefox"          (className =? "Firefox"))
+              , ("M-l", runOrRaise "libreoffice"      (className ~? "Libreoffice"))
+              , ("M-m", runOrRaise "thunderbird"      (className =? "Thunderbird"))
+              , ("M-n", runOrRaise "emacs"            (className =? "Emacs"))
+              , ("M-r", runOrRaise "rhythmbox"        (className =? "Rhythmbox"))
+              , ("M-s", runOrRaise "mikutter"         (className =? "Mikutter.rb"))
+              , ("M-t", runOrRaise "lilyterm"         (className =? "Lilyterm"))
+              , ("M-v", runOrRaise "viewnior"         (className =? "Viewnior"))
+              , ("M-z", runOrRaise "evince"           (className =? "Evince"))
+              ]
 
 (~?) :: Query String -> String -> Query Bool
 a ~? b = fmap (=~ b) a
