@@ -107,6 +107,6 @@ disableTrackPad = spawn "xinput --disable CyPS/2\\ Cypress\\ Trackpad"
 
 myStartUp :: X ()
 myStartUp = do
-    spawnOnce "trayer --edge top --align right --widthtype pixel --width 100 --heighttype pixel --height 16"
+    spawnOnce "trayer --edge top --align left --margin 1820 --widthtype pixel --width 100 --heighttype pixel --height 16"
     spawnOnce "nm-applet"
     spawnOnce "ibus-daemon --xim --replace"
