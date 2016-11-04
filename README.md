@@ -7,3 +7,13 @@ It is my xmonad and xmobar setting
 [xmonad](http://xmonad.org/)
 [xmonad-contrib](http://xmonad.org/xmonad-docs/xmonad-contrib/)
 [xmobar](http://projects.haskell.org/xmobar/)
+
+# how to build
+
+append `.stack/global-project/stack.yaml`
+
+~~~yaml
+flags:
+  xmobar:
+    with_xft: true
+~~~

@@ -1,23 +1,20 @@
-Config { font = "xft:Ricty"
+Config { font = "xft:Ricty:antialias=true"
        , bgColor = "#002b36"
        , fgColor = "#839496"
        , position = Static
-       { xpos   = 100
+       { xpos   = 0
        , ypos   = 0
        , width  = 1820
        , height = 16
        }
        , lowerOnStart = False
        , commands = [ Run StdinReader
-                    , Run MultiCpu ["-t", "cpu=<autototal>"] 40
-                    , Run Memory ["-t", "mem=<used>"] 40
-                    , Run Swap ["-t", "swap=<used>"] 600
-                    , Run Date "%m/%d/%a %H-%M-%S" "date" 10
-                    , Run Cpu ["-t","idle=<idle>%"] 100
-                    , Run Memory ["-t","used=<used>"] 100
-                    , Run BatteryP ["BAT0"] ["-t" , "wat:<watts> battery:<left>%/<timeleft>"] 600
+                    , Run Cpu [] 100
+                    , Run Memory ["-t", "Mem: <used>M"] 100
+                    , Run Swap [] 100
+                    , Run Date "%F %T" "date" 10
                     ]
        , sepChar = "%"
        , alignSep = "{}"
-       , template = "%StdinReader% {} %cpu% %memory% %battery% <fc=#b58900>%date%</fc>"
+       , template = "%StdinReader% {} %cpu% %memory% %swap% %date%"
        }

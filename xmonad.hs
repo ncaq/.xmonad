@@ -1,141 +1,103 @@
-import           Control.Monad
-import           Data.Bits                    ()
-import qualified Data.Map                     as M
-import           Data.Monoid
-import           Data.Time
-import           Data.Time.LocalTime          ()
+{-# LANGUAGE NamedFieldPuns    #-}
+{-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE OverloadedStrings #-}
+
+import           ClassyPrelude
 import           Graphics.X11.Xlib
-import           System.Directory
+import           System.Exit
 import           Text.Regex.Posix
 import           XMonad
 import           XMonad.Actions.WindowGo
 import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.ManageDocks
-import           XMonad.Hooks.ManageHelpers
-import           XMonad.Layout.LayoutModifier
 import           XMonad.StackSet
-import           XMonad.Util.EZConfig
-import           XMonad.Util.Run
 import           XMonad.Util.SpawnOnce
-import           XMonad.Util.WorkspaceCompare
 
 main :: IO ()
 main = xmonad =<< statusBar "xmobar" myPP hideStatusBar myConfig
 
-myConfig :: XConfig (ModifiedLayout AvoidStruts (Choose Full (Choose Tall (Mirror Tall))))
-myConfig = XConfig
-  { XMonad.normalBorderColor  = "#000000"
-  , XMonad.focusedBorderColor = "#000000"
-  , XMonad.terminal           = "lilyterm"
-  , XMonad.layoutHook         = myLayoutHook
-  , XMonad.manageHook         = myManageHook
-  , XMonad.handleEventHook    = const $ return (All True)
-  , XMonad.workspaces         = ["main","mikutter"]
-  , XMonad.modMask            = superKey
-  , XMonad.keys               = myKeys
-  , XMonad.mouseBindings      = mouseBindings defaultConfig
-  , XMonad.borderWidth        = 0
-  , XMonad.logHook            = return ()
-  , XMonad.startupHook        = startUp
-  , XMonad.focusFollowsMouse  = False
-  , XMonad.clickJustFocuses   = True
-  }
+myConfig = def
+    { borderWidth       = 0
+    , XMonad.workspaces = ["main", "mikutter"]
+    , layoutHook        = myLayoutHook
+    , terminal          = "lilyterm"
+    , modMask           = mod4Mask
+    , XMonad.keys       = myKeys
+    , startupHook       = myStartUp
+    , manageHook        = myManageHook
+    , focusFollowsMouse = False
+    }
 
 myPP :: PP
-myPP = PP { ppCurrent         = wrap "[" "]"
-          , ppVisible         = wrap "(" ")"
-          , ppHidden          = id
-          , ppHiddenNoWindows = id
-          , ppUrgent          = id
-          , ppSep             = ":"
-          , ppWsSep           = ""
-          , ppTitle           = id
-          , ppTitleSanitize   = id
-          , ppLayout          = id
-          , ppOrder           = id
-          , ppOutput          = putStr
-          , ppSort            = getSortByIndex
-          , ppExtras          = []
-          }
+myPP = def { ppCurrent = wrap "[" "]"
+           , ppVisible = wrap "(" ")"
+           , ppSep     = ":"
+           , ppWsSep   = ""
+           }
 
 hideStatusBar :: XConfig t -> (KeyMask, KeySym)
-hideStatusBar conf = (modMask conf, xK_u)
+hideStatusBar XConfig{modMask} = (modMask, xK_u)
 
-myLayoutHook :: XMonad.Layout.LayoutModifier.ModifiedLayout AvoidStruts (Choose Full (Choose Tall (Mirror Tall))) a
 myLayoutHook = avoidStruts $ Full ||| tiled ||| Mirror tiled
-  where
-     tiled   = Tall nmaster delta ratio -- default tiling algorithm partitions the screen into two panes
-     nmaster = 0 -- The default number of windows in the master pane
-     ratio   = 1 / 2 -- Default proportion of screen occupied by master pane
-     delta   = 3 / 100 -- Percent of screen to increment by when resizing panes
+  where tiled = Tall 0 (1 / 2) (3 / 100)
 
--- apply from backward
-myManageHook :: Query (Endo WindowSet)
+myManageHook :: ManageHook
 myManageHook = composeAll
                [ manageDocks
-               , className =? "Gimp" <&&> isDialog --> doFloat
-
                , className =? "Mikutter.rb" --> doShift "mikutter"
                , return True                --> doShift "main"
                ]
 
-myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
-myKeys conf@(XConfig {modMask = hyModMask}) = M.fromList $
-    -- launching and killing programs
-  [ ((hyModMask .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf) -- %! Launch terminal
-  , ((hyModMask,               xK_q     ), kill) -- %! Close the focused window
-  , ((hyModMask .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf) -- %!  Reset the layouts on the current workspace to default
-  , ((hyModMask,               xK_space ), sendMessage NextLayout) -- %! Rotate through the available layout algorithms
+myKeys :: XConfig Layout -> Map (KeyMask, KeySym) (X ())
+myKeys conf@(XConfig{modMask}) = mapFromList $
+    [ ((modMask,               xK_q     ), kill)
+    , ((modMask .|. shiftMask, xK_q     ), io $ exitWith ExitSuccess)
+    , ((modMask,               xK_space ), sendMessage NextLayout)
+    , ((modMask .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
+    , ((modMask,               xK_semicolon), refresh)
     -- move focus up or down the window stack
-  , ((hyModMask,               xK_Tab   ), windows focusDown) -- %! Move focus to the next window
-  , ((hyModMask .|. shiftMask, xK_Tab   ), windows focusUp  ) -- %! Move focus to the previous window
+    , ((modMask,               xK_Tab   ), windows focusDown)
+    , ((modMask .|. shiftMask, xK_Tab   ), windows focusUp  )
+    , ((modMask,               xK_j     ), windows focusDown)
+    , ((modMask,               xK_k     ), windows focusUp  )
     -- modifying the window order
-  , ((hyModMask,               xK_Return), windows swapMaster) -- %! Swap the focused window and the master window
-  , ((hyModMask,               xK_j     ), windows swapDown  ) -- %! Swap the focused window with the next window
-  , ((hyModMask,               xK_k     ), windows swapUp    ) -- %! Swap the focused window with the previous window
+    , ((modMask,               xK_Return), windows swapMaster)
+    , ((modMask .|. shiftMask, xK_j     ), windows swapDown  )
+    , ((modMask .|. shiftMask, xK_k     ), windows swapUp    )
     -- resizing the master/slave ratio
-  , ((hyModMask .|. shiftMask, xK_j     ), sendMessage Expand) -- %! Expand the master area
-  , ((hyModMask .|. shiftMask, xK_k     ), sendMessage Shrink) -- %! Shrink the master area
+    , ((modMask,               xK_a     ), sendMessage Shrink)
+    , ((modMask,               xK_e     ), sendMessage Expand)
     -- floating layer support
-  , ((hyModMask,               xK_l     ), withFocused $ windows . sink) -- %! Push window back into tiling
-  , ((hyModMask .|. shiftMask, xK_l     ), withFocused   XMonad.float)   -- %! windows to float
+    , ((modMask,               xK_p     ), withFocused $ windows . sink)
     -- increase or decrease number of windows in the master area
-  , ((hyModMask,               xK_comma ), sendMessage (IncMasterN 1))    -- %! Increment the number of windows in the master area
-  , ((hyModMask,               xK_period), sendMessage (IncMasterN (-1))) -- %! Deincrement the number of windows in the master area
-    -- quit, or restart
-  , ((hyModMask .|. shiftMask, xK_r     ), xmonadRestart)
+    , ((modMask,               xK_comma ), sendMessage (IncMasterN 1))
+    , ((modMask,               xK_period), sendMessage (IncMasterN (-1)))
     -- toggle trackpad
-  , ((noModMask,               xK_F1    ), disableTrackPad)
-  , ((noModMask,               xK_F2    ), enableTrackPad)
-    -- screenShot
-  , ((noModMask,               xK_Print ), withFocused $ takeScreenShot . Just)
-  , ((noModMask .|. shiftMask, xK_Print ), takeScreenShot Nothing)
+    , ((noModMask,             xK_F1    ), disableTrackPad)
+    , ((noModMask,             xK_F2    ), enableTrackPad)
     -- move to application
-  , ((hyModMask, xK_h), runOrRaise "firefox"          (className =? "Firefox"))
-  , ((hyModMask, xK_t), runOrRaise "mikutter"         (className =? "Mikutter.rb"))
-  , ((hyModMask, xK_n), runOrRaise "lilyterm"         (className =? "Lilyterm"))
-  , ((hyModMask, xK_s), runOrRaise "emacs"            (className =? "Emacs"))
-  , ((hyModMask, xK_b), runOrRaise "keepassx"         (className =? "Keepassx"))
-  , ((hyModMask, xK_c), runOrRaise "chromium-browser" (className =? "Chromium-browser"))
-  , ((hyModMask, xK_d), runOrRaise "thunderbird"      (className =? "Thunderbird"))
-  , ((hyModMask, xK_e), runOrRaise "evince"           (className =? "Evince"))
-  , ((hyModMask, xK_g), runOrRaise "gimp"             (className =? "Gimp"))
-  , ((hyModMask, xK_m), runOrRaise "rhythmbox"        (className =? "Rhythmbox"))
-  , ((hyModMask, xK_o), runOrRaise "libreoffice"      (className ~? "libreoffice"))
-  , ((hyModMask, xK_v), runOrRaise "inkscape"         (className =? "Inkscape"))
-  , ((hyModMask, xK_w), runOrRaise "viewnior"         (className =? "Viewnior"))
-  ]
-    ++
-  -- workspace
-  [((m .|. hyModMask, key), screenWorkspace sc >>= flip whenJust (windows . f))
-        | (key, sc) <- zip [xK_1, xK_2, xK_3] [0..]
-        , (f, m) <- [(view, 0), (shift, shiftMask)]]
+    , ((modMask, xK_f), runOrRaiseNext "libreoffice"      (className ~? "libreoffice"))
+    , ((modMask, xK_g), runOrRaiseNext "gimp"             (className =? "Gimp"))
+    , ((modMask, xK_c), runOrRaiseNext "chromium-browser" (className =? "Chromium-browser"))
+    , ((modMask, xK_r), runOrRaiseNext "evince"           (className =? "Evince"))
+
+    , ((modMask, xK_h), runOrRaiseNext "firefox"          (className =? "Firefox"))
+    , ((modMask, xK_t), runOrRaiseNext "lilyterm"         (className =? "Lilyterm"))
+    , ((modMask, xK_n), runOrRaiseNext "emacs"            (className =? "Emacs"))
+    , ((modMask, xK_s), runOrRaiseNext "mikutter"         (className =? "Mikutter.rb"))
+
+    , ((modMask, xK_b), runOrRaiseNext "keepassx"         (className =? "Keepassx"))
+    , ((modMask, xK_m), runOrRaiseNext "thunderbird"      (className =? "Thunderbird"))
+    ]
+    <>
+    -- mod-[1..9] %! Switch to workspace N
+    -- mod-shift-[1..9] %! Move client to workspace N
+    [((m .|. modMask, k), windows $ f i)
+        | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
+        , (f, m) <- [(greedyView, 0), (shift, shiftMask)]]
 
 (~?) :: Query String -> String -> Query Bool
 a ~? b = fmap (=~ b) a
-
-xmonadRestart :: X ()
-xmonadRestart = spawn "if type xmonad; then xmonad --recompile && xmonad --restart; else xmessage xmonad not in \\$PATH: \"$PATH\"; fi"
 
 enableTrackPad :: X ()
 enableTrackPad = spawn "xinput --enable CyPS/2\\ Cypress\\ Trackpad"
@@ -143,21 +105,7 @@ enableTrackPad = spawn "xinput --enable CyPS/2\\ Cypress\\ Trackpad"
 disableTrackPad :: X ()
 disableTrackPad = spawn "xinput --disable CyPS/2\\ Cypress\\ Trackpad"
 
-takeScreenShot :: Maybe Window -> X ()
-takeScreenShot mw = do
-    home <- liftIO getHomeDirectory
-    time <- liftIO localDayTimeNumber
-    safeSpawn "import" $ maybe [] (\w -> ["-window", show w]) mw ++ [home ++ "/Downloads/screenshot" ++ time ++ ".png"]
-
-localDayTimeNumber :: IO String
-localDayTimeNumber = liftM ((\x -> show (localDay x) ++ "_" ++ map toSafeChar (show (localTimeOfDay x))) . zonedTimeToLocalTime) getZonedTime
-
-toSafeChar :: Char -> Char
-toSafeChar ':' = '-'
-toSafeChar  x  = x
-
-startUp :: X ()
-startUp = spawnOnce     "trayer --edge top --align left --widthtype pixel --width 100 --heighttype pixel --height 16" >>
-          safeSpawn     "ibus-daemon" ["--replace", "--xim"] >>
-          spawnOnce     "nm-applet" >>
-          safeSpawnProg "dropbox"
+myStartUp :: X ()
+myStartUp = do
+    spawnOnce "trayer --edge top --align right --widthtype pixel --width 100 --heighttype pixel --height 16"
+    spawnOnce "nm-applet"
