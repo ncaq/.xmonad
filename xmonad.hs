@@ -109,3 +109,4 @@ myStartUp :: X ()
 myStartUp = do
     spawnOnce "trayer --edge top --align right --widthtype pixel --width 100 --heighttype pixel --height 16"
     spawnOnce "nm-applet"
+    spawnOnce "ibus-daemon --xim --replace"
