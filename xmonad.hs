@@ -31,7 +31,7 @@ myConfig = XConfig
   , XMonad.manageHook         = myManageHook
   , XMonad.handleEventHook    = const $ return (All True)
   , XMonad.workspaces         = ["main","mikutter"]
-  , XMonad.modMask            = mod4Mask
+  , XMonad.modMask            = superKey
   , XMonad.keys               = myKeys
   , XMonad.mouseBindings      = mouseBindings defaultConfig
   , XMonad.borderWidth        = 0
@@ -80,39 +80,56 @@ myManageHook = composeAll
                ]
 
 myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
-myKeys conf = mkKeymap conf
-              [ ("M-<space>",   sendMessage NextLayout)             -- Rotate through the available layout algorithms
-              , ("M-S-<space>", setLayout $ XMonad.layoutHook conf) -- Reset the layouts on the current workspace to default
-              , ("M-<tab>",     windows focusDown)                  -- Move focus to the next window
-              , ("M-S-<tab>",   windows focusUp)                    -- Move focus to the previous window
-              , ("M-,",         sendMessage (IncMasterN 1))         -- Increment the number of windows in the master area
-              , ("M-.",         sendMessage (IncMasterN (-1)))      -- Deincrement the number of windows in the master area
-              , ("M-<return>",  windows swapMaster)                 -- Swap the focused window and the master window
-              , ("M-j",         windows swapDown)                   -- Swap the focused window with the next window
-              , ("M-k",         windows swapUp)                     -- Swap the focused window with the previous window
-              , ("M-S-j",       sendMessage Expand)                 -- Expand the master area
-              , ("M-S-k",       sendMessage Shrink)                 -- Shrink the master area
-              , ("M-p",         withFocused $ windows . sink)       -- Push window back into tiling
-              , ("M-S-p",       withFocused XMonad.float)           -- Window to float
-              , ("M-S-r",       xmonadRestart)                      -- Apply setting
-              , ("M-q",         kill)                               -- Close the focused window
-              , ("<print>",     withFocused $ screenShot . Just)    -- ScreenShot wait
-              , ("M-<print>",   screenShot Nothing)                 -- ScreenShot from focus window
-                -- move to application
-              , ("M-b", runOrRaise "keepassx"         (className =? "Keepassx"))
-              , ("M-c", runOrRaise "chromium-browser" (className =? "Chromium-browser"))
-              , ("M-f", runOrRaise "inkscape"         (className =? "Inkscape"))
-              , ("M-g", runOrRaise "gimp"             (className =? "Gimp"))
-              , ("M-h", runOrRaise "firefox"          (className =? "Firefox"))
-              , ("M-l", runOrRaise "libreoffice"      (className ~? "Libreoffice"))
-              , ("M-m", runOrRaise "thunderbird"      (className =? "Thunderbird"))
-              , ("M-n", runOrRaise "emacs"            (className =? "Emacs"))
-              , ("M-r", runOrRaise "rhythmbox"        (className =? "Rhythmbox"))
-              , ("M-s", runOrRaise "mikutter"         (className =? "Mikutter.rb"))
-              , ("M-t", runOrRaise "lilyterm"         (className =? "Lilyterm"))
-              , ("M-v", runOrRaise "viewnior"         (className =? "Viewnior"))
-              , ("M-z", runOrRaise "evince"           (className =? "Evince"))
-              ]
+myKeys conf@(XConfig {modMask = hyModMask}) = M.fromList $
+    -- launching and killing programs
+  [ ((hyModMask .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf) -- %! Launch terminal
+  , ((hyModMask,               xK_q     ), kill) -- %! Close the focused window
+  , ((hyModMask .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf) -- %!  Reset the layouts on the current workspace to default
+  , ((hyModMask,               xK_space ), sendMessage NextLayout) -- %! Rotate through the available layout algorithms
+    -- move focus up or down the window stack
+  , ((hyModMask,               xK_Tab   ), windows focusDown) -- %! Move focus to the next window
+  , ((hyModMask .|. shiftMask, xK_Tab   ), windows focusUp  ) -- %! Move focus to the previous window
+    -- modifying the window order
+  , ((hyModMask,               xK_Return), windows swapMaster) -- %! Swap the focused window and the master window
+  , ((hyModMask,               xK_j     ), windows swapDown  ) -- %! Swap the focused window with the next window
+  , ((hyModMask,               xK_k     ), windows swapUp    ) -- %! Swap the focused window with the previous window
+    -- resizing the master/slave ratio
+  , ((hyModMask .|. shiftMask, xK_j     ), sendMessage Expand) -- %! Expand the master area
+  , ((hyModMask .|. shiftMask, xK_k     ), sendMessage Shrink) -- %! Shrink the master area
+    -- floating layer support
+  , ((hyModMask,               xK_l     ), withFocused $ windows . sink) -- %! Push window back into tiling
+  , ((hyModMask .|. shiftMask, xK_l     ), withFocused   XMonad.float)   -- %! windows to float
+    -- increase or decrease number of windows in the master area
+  , ((hyModMask,               xK_comma ), sendMessage (IncMasterN 1))    -- %! Increment the number of windows in the master area
+  , ((hyModMask,               xK_period), sendMessage (IncMasterN (-1))) -- %! Deincrement the number of windows in the master area
+    -- quit, or restart
+  , ((hyModMask .|. shiftMask, xK_r     ), xmonadRestart)
+    -- toggle trackpad
+  , ((noModMask,               xK_F1    ), disableTrackPad)
+  , ((noModMask,               xK_F2    ), enableTrackPad)
+    -- screenShot
+  , ((noModMask,               xK_Print ), withFocused $ takeScreenShot . Just)
+  , ((noModMask .|. shiftMask, xK_Print ), takeScreenShot Nothing)
+    -- move to application
+  , ((hyModMask, xK_h), runOrRaise "firefox"          (className =? "Firefox"))
+  , ((hyModMask, xK_t), runOrRaise "mikutter"         (className =? "Mikutter.rb"))
+  , ((hyModMask, xK_n), runOrRaise "lilyterm"         (className =? "Lilyterm"))
+  , ((hyModMask, xK_s), runOrRaise "emacs"            (className =? "Emacs"))
+  , ((hyModMask, xK_b), runOrRaise "keepassx"         (className =? "Keepassx"))
+  , ((hyModMask, xK_c), runOrRaise "chromium-browser" (className =? "Chromium-browser"))
+  , ((hyModMask, xK_d), runOrRaise "thunderbird"      (className =? "Thunderbird"))
+  , ((hyModMask, xK_e), runOrRaise "evince"           (className =? "Evince"))
+  , ((hyModMask, xK_g), runOrRaise "gimp"             (className =? "Gimp"))
+  , ((hyModMask, xK_m), runOrRaise "rhythmbox"        (className =? "Rhythmbox"))
+  , ((hyModMask, xK_o), runOrRaise "libreoffice"      (className ~? "libreoffice"))
+  , ((hyModMask, xK_v), runOrRaise "inkscape"         (className =? "Inkscape"))
+  , ((hyModMask, xK_w), runOrRaise "viewnior"         (className =? "Viewnior"))
+  ]
+    ++
+  -- workspace
+  [((m .|. hyModMask, key), screenWorkspace sc >>= flip whenJust (windows . f))
+        | (key, sc) <- zip [xK_1, xK_2, xK_3] [0..]
+        , (f, m) <- [(view, 0), (shift, shiftMask)]]
 
 (~?) :: Query String -> String -> Query Bool
 a ~? b = fmap (=~ b) a
@@ -120,8 +137,14 @@ a ~? b = fmap (=~ b) a
 xmonadRestart :: X ()
 xmonadRestart = spawn "if type xmonad; then xmonad --recompile && xmonad --restart; else xmessage xmonad not in \\$PATH: \"$PATH\"; fi"
 
-screenShot :: Maybe Window -> X ()
-screenShot mw = do
+enableTrackPad :: X ()
+enableTrackPad = spawn "xinput --enable CyPS/2\\ Cypress\\ Trackpad"
+
+disableTrackPad :: X ()
+disableTrackPad = spawn "xinput --disable CyPS/2\\ Cypress\\ Trackpad"
+
+takeScreenShot :: Maybe Window -> X ()
+takeScreenShot mw = do
     home <- liftIO getHomeDirectory
     time <- liftIO localDayTimeNumber
     safeSpawn "import" $ maybe [] (\w -> ["-window", show w]) mw ++ [home ++ "/Downloads/screenshot" ++ time ++ ".png"]
@@ -136,4 +159,5 @@ toSafeChar  x  = x
 startUp :: X ()
 startUp = spawnOnce     "trayer --edge top --align left --widthtype pixel --width 100 --heighttype pixel --height 16" >>
           safeSpawn     "ibus-daemon" ["--replace", "--xim"] >>
+          spawnOnce     "nm-applet" >>
           safeSpawnProg "dropbox"

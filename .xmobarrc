@@ -13,8 +13,11 @@ Config { font = "xft:Ricty"
                     , Run Memory ["-t", "mem=<used>"] 40
                     , Run Swap ["-t", "swap=<used>"] 600
                     , Run Date "%m/%d/%a %H-%M-%S" "date" 10
+                    , Run Cpu ["-t","idle=<idle>%"] 100
+                    , Run Memory ["-t","used=<used>"] 100
+                    , Run BatteryP ["BAT0"] ["-t" , "wat:<watts> battery:<left>%/<timeleft>"] 600
                     ]
        , sepChar = "%"
        , alignSep = "{}"
-       , template = "%StdinReader% {} %multicpu% %memory% %swap% <fc=#b58900>%date%</fc>"
+       , template = "%StdinReader% {} %cpu% %memory% %battery% <fc=#b58900>%date%</fc>"
        }
