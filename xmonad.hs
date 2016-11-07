@@ -96,6 +96,7 @@ myKeys conf@(XConfig{modMask}) = mapFromList $
 
     , ((modMask, xK_b), runOrRaiseNext "keepassx"         (className =? "Keepassx"))
     , ((modMask, xK_m), runOrRaiseNext "thunderbird"      (className =? "Thunderbird"))
+    , ((modMask, xK_v), runOrRaiseNext "vlc"              (className =? "Vlc"))
     ]
     <>
     -- mod-[1..9] %! Switch to workspace N
