@@ -86,7 +86,7 @@ myKeys conf@(XConfig{modMask}) = mapFromList $
     -- move to application
     , ((modMask, xK_f), runOrRaiseNext "libreoffice"      (className ~? "libreoffice"))
     , ((modMask, xK_g), runOrRaiseNext "gimp"             (className =? "Gimp"))
-    , ((modMask, xK_c), runOrRaiseNext "chromium-browser" (className =? "Chromium-browser"))
+    , ((modMask, xK_c), runOrRaiseNext "chromium-browser" (className =? "Chromium-browser-chromium"))
     , ((modMask, xK_r), runOrRaiseNext "evince"           (className =? "Evince"))
     , ((modMask, xK_d), runOrRaiseNext "slack"            (className =? "Slack"))
     , ((modMask, xK_h), runOrRaiseNext "firefox"          (className =? "Firefox"))
