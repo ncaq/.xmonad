@@ -13,8 +13,9 @@ Config { font = "xft:Ricty:antialias=true"
                     , Run Memory ["-t", "Mem: <used>M"] 100
                     , Run Swap [] 100
                     , Run Date "%F %T" "date" 10
+                    , Run Battery ["BAT0"] 500
                     ]
        , sepChar = "%"
        , alignSep = "{}"
-       , template = "%StdinReader% {} %cpu% %memory% %swap% %date%"
+       , template = "%StdinReader% {} %cpu% %memory% %swap% %battery% %date%"
        }
