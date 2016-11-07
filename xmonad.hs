@@ -103,10 +103,10 @@ myKeys conf@(XConfig{modMask}) = mapFromList $
 a ~? b = fmap (=~ b) a
 
 enableTrackPad :: X ()
-enableTrackPad = spawn "xinput --enable CyPS/2\\ Cypress\\ Trackpad"
+enableTrackPad = spawn "xinput --enable 'DLL075B:01 06CB:76AF Touchpad'"
 
 disableTrackPad :: X ()
-disableTrackPad = spawn "xinput --disable CyPS/2\\ Cypress\\ Trackpad"
+disableTrackPad = spawn "xinput --disable 'DLL075B:01 06CB:76AF Touchpad'"
 
 myStartUp :: X ()
 myStartUp = do
