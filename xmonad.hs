@@ -88,12 +88,11 @@ myKeys conf@(XConfig{modMask}) = mapFromList $
     , ((modMask, xK_g), runOrRaiseNext "gimp"             (className =? "Gimp"))
     , ((modMask, xK_c), runOrRaiseNext "chromium-browser" (className =? "Chromium-browser"))
     , ((modMask, xK_r), runOrRaiseNext "evince"           (className =? "Evince"))
-
+    , ((modMask, xK_d), runOrRaiseNext "slack"            (className =? "Slack"))
     , ((modMask, xK_h), runOrRaiseNext "firefox"          (className =? "Firefox"))
     , ((modMask, xK_t), runOrRaiseNext "lilyterm"         (className =? "Lilyterm"))
     , ((modMask, xK_n), runOrRaiseNext "emacs"            (className =? "Emacs"))
     , ((modMask, xK_s), runOrRaiseNext "mikutter"         (className =? "Mikutter.rb"))
-
     , ((modMask, xK_b), runOrRaiseNext "keepassx"         (className =? "Keepassx"))
     , ((modMask, xK_m), runOrRaiseNext "thunderbird"      (className =? "Thunderbird"))
     , ((modMask, xK_v), runOrRaiseNext "vlc"              (className =? "Vlc"))
