@@ -80,8 +80,9 @@ myKeys conf@(XConfig{modMask}) = mapFromList $
     -- toggle trackpad
     , ((noModMask,             xK_F1    ), disableTrackPad)
     , ((noModMask,             xK_F2    ), enableTrackPad)
-    -- screenShot
-    , ((noModMask,             xK_Print ), takeScreenShot )
+    -- misc
+    , ((noModMask,             xK_Print ), takeScreenShot)
+    , ((modMask,               xK_l     ), spawn "dm-tool lock")
     -- move to application
     , ((modMask, xK_f), runOrRaiseNext "libreoffice"      (className ~? "libreoffice"))
     , ((modMask, xK_g), runOrRaiseNext "gimp"             (className =? "Gimp"))
