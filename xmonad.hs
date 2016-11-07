@@ -3,7 +3,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 import           ClassyPrelude
+import           Data.Time
 import           Graphics.X11.Xlib
+import           System.Directory
 import           System.Exit
 import           Text.Regex.Posix
 import           XMonad
@@ -55,9 +57,9 @@ myKeys :: XConfig Layout -> Map (KeyMask, KeySym) (X ())
 myKeys conf@(XConfig{modMask}) = mapFromList $
     [ ((modMask,               xK_q     ), kill)
     , ((modMask .|. shiftMask, xK_q     ), io $ exitWith ExitSuccess)
+    , ((modMask .|. shiftMask, xK_r     ), xmonadRestart)
     , ((modMask,               xK_space ), sendMessage NextLayout)
     , ((modMask .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
-    , ((modMask,               xK_semicolon), refresh)
     -- move focus up or down the window stack
     , ((modMask,               xK_Tab   ), windows focusDown)
     , ((modMask .|. shiftMask, xK_Tab   ), windows focusUp  )
@@ -78,6 +80,8 @@ myKeys conf@(XConfig{modMask}) = mapFromList $
     -- toggle trackpad
     , ((noModMask,             xK_F1    ), disableTrackPad)
     , ((noModMask,             xK_F2    ), enableTrackPad)
+    -- screenShot
+    , ((noModMask,             xK_Print ), takeScreenShot )
     -- move to application
     , ((modMask, xK_f), runOrRaiseNext "libreoffice"      (className ~? "libreoffice"))
     , ((modMask, xK_g), runOrRaiseNext "gimp"             (className =? "Gimp"))
@@ -102,11 +106,20 @@ myKeys conf@(XConfig{modMask}) = mapFromList $
 (~?) :: Query String -> String -> Query Bool
 a ~? b = fmap (=~ b) a
 
+xmonadRestart :: X ()
+xmonadRestart = spawn "stack exec -- xmonad --recompile && stack exec -- xmonad --restart"
+
 enableTrackPad :: X ()
 enableTrackPad = spawn "xinput --enable 'DLL075B:01 06CB:76AF Touchpad'"
 
 disableTrackPad :: X ()
 disableTrackPad = spawn "xinput --disable 'DLL075B:01 06CB:76AF Touchpad'"
+
+takeScreenShot :: X ()
+takeScreenShot = do
+    home <- liftIO getHomeDirectory
+    time <- liftIO $ formatTime defaultTimeLocale (iso8601DateFormat (Just "%T")) <$> getCurrentTime
+    spawn $ concat ["import", " ", home, "/Pictures/", time, ".png"]
 
 myStartUp :: X ()
 myStartUp = do
