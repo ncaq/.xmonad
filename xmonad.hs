@@ -10,12 +10,14 @@ import           XMonad
 import           XMonad.Actions.WindowGo
 import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.ManageDocks
+import           XMonad.Layout.LayoutModifier
 import           XMonad.StackSet
 import           XMonad.Util.SpawnOnce
 
 main :: IO ()
 main = xmonad =<< statusBar "xmobar" myPP hideStatusBar myConfig
 
+myConfig :: XConfig (ModifiedLayout AvoidStruts (Choose Full (Choose Tall (Mirror Tall))))
 myConfig = def
     { borderWidth       = 0
     , XMonad.workspaces = ["main", "mikutter"]
@@ -38,6 +40,7 @@ myPP = def { ppCurrent = wrap "[" "]"
 hideStatusBar :: XConfig t -> (KeyMask, KeySym)
 hideStatusBar XConfig{modMask} = (modMask, xK_u)
 
+myLayoutHook :: ModifiedLayout AvoidStruts (Choose Full (Choose Tall (Mirror Tall))) a
 myLayoutHook = avoidStruts $ Full ||| tiled ||| Mirror tiled
   where tiled = Tall 0 (1 / 2) (3 / 100)
 
