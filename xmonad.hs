@@ -12,6 +12,7 @@ import           XMonad
 import           XMonad.Actions.WindowGo
 import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.ManageDocks
+import           XMonad.Hooks.ManageHelpers
 import           XMonad.Layout.LayoutModifier
 import           XMonad.StackSet
 import           XMonad.Util.SpawnOnce
@@ -49,6 +50,7 @@ myLayoutHook = avoidStruts $ Full ||| tiled ||| Mirror tiled
 myManageHook :: ManageHook
 myManageHook = composeAll
                [ manageDocks
+               , isDialog                   --> doFloat
                , className =? "Mikutter.rb" --> doShift "mikutter"
                , return True                --> doShift "main"
                ]
