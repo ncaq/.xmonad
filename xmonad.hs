@@ -121,7 +121,8 @@ disableTrackPad = spawn "xinput --disable 'DLL075B:01 06CB:76AF Touchpad'"
 takeScreenShot :: X ()
 takeScreenShot = do
     home <- liftIO getHomeDirectory
-    time <- liftIO $ formatTime defaultTimeLocale (iso8601DateFormat (Just "%T")) <$> getCurrentTime
+    time <- liftIO $ formatTime defaultTimeLocale (iso8601DateFormat (Just "%H-%M-%S")) <$>
+        getCurrentTime
     spawn $ concat ["import", " ", home, "/Pictures/", time, ".png"]
 
 myStartUp :: X ()
