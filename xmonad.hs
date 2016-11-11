@@ -113,10 +113,10 @@ xmonadRestart :: X ()
 xmonadRestart = spawn "stack exec -- xmonad --recompile && stack exec -- xmonad --restart"
 
 enableTrackPad :: X ()
-enableTrackPad = spawn "xinput --enable 'DLL075B:01 06CB:76AF Touchpad'"
+enableTrackPad = spawn "xinput --enable 'SynPS/2 Synaptics TouchPad'"
 
 disableTrackPad :: X ()
-disableTrackPad = spawn "xinput --disable 'DLL075B:01 06CB:76AF Touchpad'"
+disableTrackPad = spawn "xinput --disable 'SynPS/2 Synaptics TouchPad'"
 
 takeScreenShot :: X ()
 takeScreenShot = do
