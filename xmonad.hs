@@ -75,7 +75,7 @@ myKeys conf@(XConfig{modMask}) = mapFromList $
     , ((modMask,               xK_a     ), sendMessage Shrink)
     , ((modMask,               xK_e     ), sendMessage Expand)
     -- floating layer support
-    , ((modMask,               xK_p     ), withFocused $ windows . sink)
+    , ((modMask,               xK_semicolon), withFocused $ windows . sink)
     -- increase or decrease number of windows in the master area
     , ((modMask,               xK_comma ), sendMessage (IncMasterN 1))
     , ((modMask,               xK_period), sendMessage (IncMasterN (-1)))
