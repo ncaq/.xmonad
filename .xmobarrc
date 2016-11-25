@@ -1,4 +1,4 @@
-Config { font = "xft:Ricty:antialias=true"
+Config { font = "xft:monospace:antialias=true"
        , bgColor = "#002b36"
        , fgColor = "#93a1a1"
        , position = Static
