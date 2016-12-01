@@ -7,7 +7,7 @@ import           Data.Time
 import           Graphics.X11.Xlib
 import           System.Directory
 import           System.Exit
-import           Text.Regex.Posix
+import           Text.Regex.PCRE
 import           XMonad
 import           XMonad.Actions.WindowGo
 import           XMonad.Hooks.DynamicLog
