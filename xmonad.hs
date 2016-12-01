@@ -97,6 +97,7 @@ myKeys conf@(XConfig{modMask}) = mapFromList $
     , ((modMask, xK_s), runOrRaiseNext "mikutter"         (className =? "Mikutter.rb"))
     , ((modMask, xK_b), runOrRaiseNext "keepassx"         (className =? "Keepassx"))
     , ((modMask, xK_m), runOrRaiseNext "thunderbird"      (className =? "Thunderbird"))
+    , ((modMask, xK_w), runOrRaiseNext "nautilus"         (className =? "Nautilus"))
     , ((modMask, xK_v), runOrRaiseNext "vlc"              (className =? "Vlc"))
     ]
     <>
