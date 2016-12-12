@@ -99,6 +99,7 @@ myKeys conf@(XConfig{modMask}) = mapFromList $
     , ((modMask, xK_m), runOrRaiseNext "thunderbird"      (className =? "Thunderbird"))
     , ((modMask, xK_w), runOrRaiseNext "nautilus"         (className =? "Nautilus"))
     , ((modMask, xK_v), runOrRaiseNext "vlc"              (className =? "Vlc"))
+    , ((modMask, xK_z), runOrRaiseNext "inkscape"         (className =? "Inkscape"))
     ]
     <>
     -- mod-[1..9] %! Switch to workspace N
