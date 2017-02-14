@@ -127,8 +127,7 @@ takeScreenShot = do
     time <- liftIO $ formatTime defaultTimeLocale (iso8601DateFormat (Just "%H-%M-%S")) <$>
         getCurrentTime
     let path = concat [home, "/Pictures/", "screenshot-", time, ".png"]
-    spawn $ "import" <> " " <> path
-    spawn $ "eog" <> " " <> path
+    spawn $ concat ["import", " " , path, " && eog ", path]
 
 myStartUp :: X ()
 myStartUp = do
