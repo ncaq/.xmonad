@@ -65,12 +65,10 @@ myKeys conf@(XConfig{modMask}) = mapFromList $
     -- move focus up or down the window stack
     , ((modMask,               xK_Tab   ), windows focusDown)
     , ((modMask .|. shiftMask, xK_Tab   ), windows focusUp  )
-    , ((modMask,               xK_j     ), windows focusDown)
-    , ((modMask,               xK_k     ), windows focusUp  )
     -- modifying the window order
     , ((modMask,               xK_Return), windows swapMaster)
-    , ((modMask .|. shiftMask, xK_j     ), windows swapDown  )
-    , ((modMask .|. shiftMask, xK_k     ), windows swapUp    )
+    , ((modMask,               xK_j     ), windows swapDown  )
+    , ((modMask,               xK_k     ), windows swapUp    )
     -- resizing the master/slave ratio
     , ((modMask,               xK_a     ), sendMessage Shrink)
     , ((modMask,               xK_e     ), sendMessage Expand)
