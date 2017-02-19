@@ -18,17 +18,14 @@ import           XMonad.StackSet
 import           XMonad.Util.SpawnOnce
 
 main :: IO ()
-main = xmonad =<< statusBar "xmobar" myPP hideStatusBar myConfig
+main = statusBar "xmobar" myPP hideStatusBar myConfig >>= xmonad
 
-myConfig :: XConfig (ModifiedLayout AvoidStruts (Choose Full (Choose Tall (Mirror Tall))))
-myConfig = def
+myConfig = docks $ def
     { borderWidth       = 0
     , XMonad.workspaces = ["main", "mikutter"]
     , layoutHook        = myLayoutHook
-    , terminal          = "lilyterm"
     , modMask           = mod4Mask
     , XMonad.keys       = myKeys
-    , startupHook       = myStartUp
     , manageHook        = myManageHook
     , focusFollowsMouse = False
     }
@@ -43,14 +40,12 @@ myPP = def { ppCurrent = wrap "[" "]"
 hideStatusBar :: XConfig t -> (KeyMask, KeySym)
 hideStatusBar XConfig{modMask} = (modMask, xK_u)
 
-myLayoutHook :: ModifiedLayout AvoidStruts (Choose Full (Choose Tall (Mirror Tall))) a
-myLayoutHook = avoidStruts $ Full ||| tiled ||| Mirror tiled
+myLayoutHook = Full ||| tiled ||| Mirror tiled
   where tiled = Tall 0 (1 / 2) (3 / 100)
 
 myManageHook :: ManageHook
 myManageHook = composeAll
-               [ manageDocks
-               , isDialog                   --> doFloat
+               [ isDialog                   --> doFloat
                , className =? "Mikutter.rb" --> doShift "mikutter"
                , return True                --> doShift "main"
                ]
@@ -126,9 +121,3 @@ takeScreenShot = do
         getCurrentTime
     let path = concat [home, "/Pictures/", "screenshot-", time, ".png"]
     spawn $ concat ["import", " " , path, " && eog ", path]
-
-myStartUp :: X ()
-myStartUp = do
-    spawnOnce "trayer --edge top --align left --margin 1820 --widthtype pixel --width 100 --heighttype pixel --height 16"
-    spawnOnce "nm-applet"
-    spawnOnce "ibus-daemon --xim --replace"
