@@ -117,7 +117,6 @@ disableTrackPad = spawn "xinput --disable 'SynPS/2 Synaptics TouchPad'"
 takeScreenShot :: X ()
 takeScreenShot = do
     home <- liftIO getHomeDirectory
-    time <- liftIO $ formatTime defaultTimeLocale (iso8601DateFormat (Just "%H-%M-%S")) <$>
-        getCurrentTime
+    time <- liftIO $ formatTime defaultTimeLocale "%Y-%m-%d-%H-%M-%S" <$> getCurrentTime
     let path = concat [home, "/Pictures/", "screenshot-", time, ".png"]
     spawn $ concat ["import", " " , path, " && eog ", path]
