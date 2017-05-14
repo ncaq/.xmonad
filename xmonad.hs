@@ -79,6 +79,7 @@ myKeys conf@(XConfig{modMask}) = mapFromList $
     , ((noModMask,             xK_Print ), takeScreenShot)
     , ((modMask,               xK_l     ), spawn "dm-tool lock")
     -- move to application
+    , ((modMask, xK_p), runOrRaiseNext "skypeforlinux"    (className =? "skypeforlinux"))
     , ((modMask, xK_y), runOrRaiseNext "rhythmbox"        (className =? "Rhythmbox"))
     , ((modMask, xK_f), runOrRaiseNext "libreoffice"      (className ~? "libreoffice"))
     , ((modMask, xK_g), runOrRaiseNext "gimp"             (className =? "Gimp"))
