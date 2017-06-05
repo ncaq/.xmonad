@@ -16,5 +16,5 @@ Config { font = "xft:monospace:antialias=true"
                     ]
        , sepChar = "%"
        , alignSep = "{}"
-       , template = "%StdinReader% {} %cpu% %memory% %swap% %battery% %date%"
+       , template = "%StdinReader% {} %cpu% %memory% %battery% %date%"
        }
