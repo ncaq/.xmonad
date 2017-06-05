@@ -11,7 +11,6 @@ Config { font = "xft:monospace:antialias=true"
        , commands = [ Run StdinReader
                     , Run Cpu [] 100
                     , Run Memory ["-t", "Mem: <used>M"] 100
-                    , Run Swap [] 100
                     , Run Date "%F %a %T" "date" 10
                     , Run Battery ["BAT0"] 500
                     ]
