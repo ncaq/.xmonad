@@ -72,17 +72,19 @@ myKeys conf@(XConfig{modMask}) = mapFromList $
     -- increase or decrease number of windows in the master area
     , ((modMask,               xK_comma ), sendMessage (IncMasterN 1))
     , ((modMask,               xK_period), sendMessage (IncMasterN (-1)))
-    -- misc
+    -- toggle trackpad
     , ((noModMask,             xK_F1    ), disableTrackPad)
     , ((noModMask,             xK_F2    ), enableTrackPad)
+    -- misc
     , ((noModMask,             xK_Print ), takeScreenShot)
+    , ((modMask,               xK_l     ), spawn "dm-tool lock")
     -- move to application
     , ((modMask, xK_p), runOrRaiseNext "skypeforlinux"    (className =? "skypeforlinux"))
     , ((modMask, xK_y), runOrRaiseNext "rhythmbox"        (className =? "Rhythmbox"))
+    , ((modMask, xK_f), runOrRaiseNext "libreoffice"      (className ~? "libreoffice"))
     , ((modMask, xK_g), runOrRaiseNext "gimp"             (className =? "Gimp"))
     , ((modMask, xK_c), runOrRaiseNext "chromium-browser" (className =? "Chromium-browser-chromium"))
     , ((modMask, xK_r), runOrRaiseNext "evince"           (className =? "Evince"))
-    , ((modMask, xK_l), runOrRaiseNext "libreoffice"      (className ~? "libreoffice"))
     , ((modMask, xK_d), runOrRaiseNext "slack"            (className =? "Slack"))
     , ((modMask, xK_h), runOrRaiseNext "firefox"          (className =? "Firefox"))
     , ((modMask, xK_t), runOrRaiseNext "lilyterm"         (className =? "Lilyterm"))
