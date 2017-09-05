@@ -3,7 +3,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 import           ClassyPrelude
-import           Data.Time
 import           Graphics.X11.Xlib
 import           System.Directory
 import           System.Exit
@@ -13,14 +12,13 @@ import           XMonad.Actions.WindowGo
 import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.ManageDocks
 import           XMonad.Hooks.ManageHelpers
-import           XMonad.Layout.LayoutModifier
 import           XMonad.StackSet
 import           XMonad.Util.EZConfig
-import           XMonad.Util.SpawnOnce
 
 main :: IO ()
 main = statusBar "xmobar" myPP hideStatusBar myConfig >>= xmonad
 
+myConfig :: XConfig (Choose Full (Choose Tall (Mirror Tall)))
 myConfig = docks $ def
     { borderWidth       = 0
     , layoutHook        = myLayoutHook
@@ -40,6 +38,7 @@ myPP = def { ppCurrent = wrap "[" "]"
 hideStatusBar :: XConfig t -> (KeyMask, KeySym)
 hideStatusBar XConfig{modMask} = (modMask, xK_u)
 
+myLayoutHook :: Choose Full (Choose Tall (Mirror Tall)) a
 myLayoutHook = Full ||| tiled ||| Mirror tiled
   where tiled = Tall 0 (1 / 2) (3 / 100)
 
@@ -51,9 +50,9 @@ myManageHook = composeAll
                ]
 
 myKeys :: XConfig Layout -> Map (KeyMask, KeySym) (X ())
-myKeys conf@(XConfig{modMask}) = mkKeymap conf
+myKeys conf@XConfig{ modMask } = mkKeymap conf
     [ ("M-q", kill)
-    , ("M-S-q", io $ exitWith ExitSuccess)
+    , ("M-S-q", io exitSuccess)
     , ("M-S-r", xmonadRestart)
     , ("M-<Space>", sendMessage NextLayout)
     , ("M-S-<Space>", setLayout $ XMonad.layoutHook conf)
