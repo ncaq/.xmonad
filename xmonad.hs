@@ -22,7 +22,6 @@ main = statusBar "xmobar" myPP hideStatusBar myConfig >>= xmonad
 
 myConfig = docks $ def
     { borderWidth       = 0
-    , XMonad.workspaces = ["main", "mikutter"]
     , layoutHook        = myLayoutHook
     , modMask           = mod4Mask
     , XMonad.keys       = myKeys
@@ -46,8 +45,8 @@ myLayoutHook = Full ||| tiled ||| Mirror tiled
 myManageHook :: ManageHook
 myManageHook = composeAll
                [ isDialog                   --> doFloat
-               , className =? "Mikutter.rb" --> doShift "mikutter"
-               , return True                --> doShift "main"
+               , className =? "Mikutter.rb" --> doShift "2"
+               , return True                --> doShift "1"
                ]
 
 myKeys :: XConfig Layout -> Map (KeyMask, KeySym) (X ())
