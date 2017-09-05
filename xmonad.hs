@@ -15,6 +15,7 @@ import           XMonad.Hooks.ManageDocks
 import           XMonad.Hooks.ManageHelpers
 import           XMonad.Layout.LayoutModifier
 import           XMonad.StackSet
+import           XMonad.Util.EZConfig
 import           XMonad.Util.SpawnOnce
 
 main :: IO ()
@@ -50,57 +51,57 @@ myManageHook = composeAll
                ]
 
 myKeys :: XConfig Layout -> Map (KeyMask, KeySym) (X ())
-myKeys conf@(XConfig{modMask}) = mapFromList $
-    [ ((modMask,               xK_q     ), kill)
-    , ((modMask .|. shiftMask, xK_q     ), io $ exitWith ExitSuccess)
-    , ((modMask .|. shiftMask, xK_r     ), xmonadRestart)
-    , ((modMask,               xK_space ), sendMessage NextLayout)
-    , ((modMask .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
+myKeys conf@(XConfig{modMask}) = mkKeymap conf
+    [ ("M-q", kill)
+    , ("M-S-q", io $ exitWith ExitSuccess)
+    , ("M-S-r", xmonadRestart)
+    , ("M-<Space>", sendMessage NextLayout)
+    , ("M-S-<Space>", setLayout $ XMonad.layoutHook conf)
     -- move focus up or down the window stack
-    , ((modMask,               xK_Tab   ), windows focusDown)
-    , ((modMask .|. shiftMask, xK_Tab   ), windows focusUp  )
+    , ("M-<Tab>", windows focusDown)
+    , ("M-S-<Tab>", windows focusUp)
     -- modifying the window order
-    , ((modMask,               xK_Return), windows swapMaster)
-    , ((modMask,               xK_j     ), windows swapDown  )
-    , ((modMask,               xK_k     ), windows swapUp    )
+    , ("M-<Return>", windows swapMaster)
+    , ("M-j", windows swapDown)
+    , ("M-k", windows swapUp)
     -- resizing the master/slave ratio
-    , ((modMask,               xK_a     ), sendMessage Shrink)
-    , ((modMask,               xK_e     ), sendMessage Expand)
+    , ("M-a", sendMessage Shrink)
+    , ("M-e", sendMessage Expand)
     -- floating layer support
-    , ((modMask,               xK_semicolon), withFocused $ windows . sink)
+    , ("M-;", withFocused $ windows . sink)
     -- increase or decrease number of windows in the master area
-    , ((modMask,               xK_comma ), sendMessage (IncMasterN 1))
-    , ((modMask,               xK_period), sendMessage (IncMasterN (-1)))
+    , ("M-,", sendMessage (IncMasterN 1))
+    , ("M-.", sendMessage (IncMasterN (-1)))
     -- toggle trackpad
-    , ((noModMask,             xK_F1    ), disableTrackPad)
-    , ((noModMask,             xK_F2    ), enableTrackPad)
+    , ("<KP_F1>", disableTrackPad)
+    , ("<KP_F2>", enableTrackPad)
     -- misc
-    , ((noModMask,             xK_Print ), takeScreenShot)
-    , ((modMask,               xK_l     ), spawn "dm-tool lock")
+    , ("<Print>", takeScreenShot)
+    , ("M-l", spawn "dm-tool lock")
     -- move to application
-    , ((modMask, xK_p), runOrRaiseNext "skypeforlinux"    (className =? "skypeforlinux"))
-    , ((modMask, xK_y), runOrRaiseNext "rhythmbox"        (className =? "Rhythmbox"))
-    , ((modMask, xK_f), runOrRaiseNext "libreoffice"      (className ~? "libreoffice"))
-    , ((modMask, xK_g), runOrRaiseNext "gimp"             (className =? "Gimp"))
-    , ((modMask, xK_c), runOrRaiseNext "chromium-browser" (className =? "Chromium-browser-chromium"))
-    , ((modMask, xK_r), runOrRaiseNext "evince"           (className =? "Evince"))
-    , ((modMask, xK_d), runOrRaiseNext "slack"            (className =? "Slack"))
-    , ((modMask, xK_h), runOrRaiseNext "firefox"          (className =? "Firefox"))
-    , ((modMask, xK_t), runOrRaiseNext "lilyterm"         (className =? "Lilyterm"))
-    , ((modMask, xK_n), runOrRaiseNext "emacs"            (className =? "Emacs"))
-    , ((modMask, xK_s), runOrRaiseNext "mikutter"         (className =? "Mikutter.rb"))
-    , ((modMask, xK_b), runOrRaiseNext "keepassx"         (className =? "Keepassx"))
-    , ((modMask, xK_m), runOrRaiseNext "thunderbird"      (className =? "Thunderbird"))
-    , ((modMask, xK_w), runOrRaiseNext "nautilus"         (className =? "Nautilus"))
-    , ((modMask, xK_v), runOrRaiseNext "vlc"              (className =? "Vlc"))
-    , ((modMask, xK_z), runOrRaiseNext "inkscape"         (className =? "Inkscape"))
+    , ("M-p", runOrRaiseNext "skypeforlinux"    (className =? "skypeforlinux"))
+    , ("M-y", runOrRaiseNext "rhythmbox"        (className =? "Rhythmbox"))
+    , ("M-f", runOrRaiseNext "libreoffice"      (className ~? "libreoffice"))
+    , ("M-g", runOrRaiseNext "gimp"             (className =? "Gimp"))
+    , ("M-c", runOrRaiseNext "chromium-browser" (className =? "Chromium-browser-chromium"))
+    , ("M-r", runOrRaiseNext "evince"           (className =? "Evince"))
+    , ("M-d", runOrRaiseNext "slack"            (className =? "Slack"))
+    , ("M-h", runOrRaiseNext "firefox"          (className =? "Firefox"))
+    , ("M-t", runOrRaiseNext "lilyterm"         (className =? "Lilyterm"))
+    , ("M-n", runOrRaiseNext "emacs"            (className =? "Emacs"))
+    , ("M-s", runOrRaiseNext "mikutter"         (className =? "Mikutter.rb"))
+    , ("M-b", runOrRaiseNext "keepassx"         (className =? "Keepassx"))
+    , ("M-m", runOrRaiseNext "thunderbird"      (className =? "Thunderbird"))
+    , ("M-w", runOrRaiseNext "nautilus"         (className =? "Nautilus"))
+    , ("M-v", runOrRaiseNext "vlc"              (className =? "Vlc"))
+    , ("M-z", runOrRaiseNext "inkscape"         (className =? "Inkscape"))
     ]
     <>
     -- mod-[1..9] %! Switch to workspace N
     -- mod-shift-[1..9] %! Move client to workspace N
-    [((m .|. modMask, k), windows $ f i)
-        | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
-        , (f, m) <- [(greedyView, 0), (shift, shiftMask)]]
+    mapFromList [ ((m .|. modMask, k), windows $ f i) |
+                  (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9],
+                  (f, m) <- [(greedyView, 0), (shift, shiftMask)] ]
 
 (~?) :: Query String -> String -> Query Bool
 a ~? b = fmap (=~ b) a
