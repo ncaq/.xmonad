@@ -72,8 +72,8 @@ myKeys conf@XConfig{ modMask } = mkKeymap conf
     , ("M-,", sendMessage (IncMasterN 1))
     , ("M-.", sendMessage (IncMasterN (-1)))
     -- toggle trackpad
-    , ("<KP_F1>", disableTrackPad)
-    , ("<KP_F2>", enableTrackPad)
+    , ("<F1>", disableTrackPad)
+    , ("<F2>", enableTrackPad)
     -- misc
     , ("<Print>", takeScreenShot)
     , ("M-l", spawn "dm-tool lock")
