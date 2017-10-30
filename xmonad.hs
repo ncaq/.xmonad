@@ -86,6 +86,7 @@ myKeys conf@XConfig{ modMask } = mkKeymap conf
     , ("M-h", runOrRaiseNext "firefox"          (className =? "Firefox"))
     , ("M-m", runOrRaiseNext "thunderbird"      (className =? "Thunderbird"))
     , ("M-n", runOrRaiseNext "emacs"            (className =? "Emacs"))
+    , ("M-o", runOrRaiseNext "eog"              (className =? "Eog"))
     , ("M-p", runOrRaiseNext "skypeforlinux"    (className =? "skypeforlinux"))
     , ("M-r", runOrRaiseNext "evince"           (className =? "Evince"))
     , ("M-s", runOrRaiseNext "mikutter"         (className =? "Mikutter.rb"))
