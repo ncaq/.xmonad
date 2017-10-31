@@ -29,11 +29,12 @@ myConfig = docks $ def
     }
 
 myPP :: PP
-myPP = def { ppCurrent = wrap "[" "]"
-           , ppVisible = wrap "(" ")"
-           , ppSep     = ":"
-           , ppWsSep   = ""
-           }
+myPP = def
+    { ppCurrent = wrap "[" "]"
+    , ppVisible = wrap "(" ")"
+    , ppSep     = ":"
+    , ppWsSep   = ""
+    }
 
 hideStatusBar :: XConfig t -> (KeyMask, KeySym)
 hideStatusBar XConfig{modMask} = (modMask, xK_u)
@@ -44,13 +45,13 @@ myLayoutHook = Full ||| tiled ||| Mirror tiled
 
 myManageHook :: ManageHook
 myManageHook = composeAll
-               [ isDialog                   --> doFloat
-               , className =? "Mikutter.rb" --> doShift "2"
-               , return True                --> doShift "1"
-               ]
+    [ isDialog                   --> doFloat
+    , className =? "Mikutter.rb" --> doShift "2"
+    , return True                --> doShift "1"
+    ]
 
 myKeys :: XConfig Layout -> Map (KeyMask, KeySym) (X ())
-myKeys conf@XConfig{ modMask } = mkKeymap conf
+myKeys conf@XConfig{modMask} = mkKeymap conf
     [ ("M-q", kill)
     , ("M-S-q", io exitSuccess)
     , ("M-S-r", xmonadRestart)
