@@ -84,6 +84,7 @@ myKeys conf@XConfig{ modMask } = mkKeymap conf
     , ("M-f", runOrRaiseNext "libreoffice"      (className ~? "libreoffice"))
     , ("M-g", runOrRaiseNext "gimp"             (className =? "Gimp"))
     , ("M-h", runOrRaiseNext "firefox"          (className =? "Firefox"))
+    , ("M-i", runOrRaiseNext "spotify"          (className =? "Spotify"))
     , ("M-m", runOrRaiseNext "thunderbird"      (className =? "Thunderbird"))
     , ("M-n", runOrRaiseNext "emacs"            (className =? "Emacs"))
     , ("M-o", runOrRaiseNext "eog"              (className =? "Eog"))
