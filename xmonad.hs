@@ -3,6 +3,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 import           ClassyPrelude
+import           Data.Time.LocalTime
 import           Graphics.X11.Xlib
 import           System.Directory
 import           System.Exit
@@ -120,6 +121,6 @@ disableTrackPad = spawn "xinput --disable 'SynPS/2 Synaptics TouchPad'"
 takeScreenShot :: X ()
 takeScreenShot = do
     home <- liftIO getHomeDirectory
-    time <- liftIO $ formatTime defaultTimeLocale "%Y-%m-%d-%H-%M-%S" <$> getCurrentTime
+    time <- liftIO $ formatTime defaultTimeLocale "%Y-%m-%d-%H-%M-%S" <$> getZonedTime
     let path = concat [home, "/Pictures/", "screenshot-", time, ".png"]
     spawn $ concat ["import", " " , path, " && eog ", path]
