@@ -1,21 +1,23 @@
-Config { font = "xft:monospace:antialias=true"
-       , bgColor = "#002b36"
-       , fgColor = "#93a1a1"
-       , position = Static
-       { xpos   = 0
-       , ypos   = 0
-       , width  = 1820
-       , height = 16
-       }
-       , lowerOnStart = False
-       , commands = [ Run StdinReader
-                    , Run Cpu [] 100
-                    , Run Memory ["-t", "Mem: <used>M"] 100
-                    , Run Swap [] 100
-                    , Run Date "%F %a %T" "date" 10
-                    , Run Battery ["BAT0"] 500
-                    ]
-       , sepChar = "%"
-       , alignSep = "{}"
-       , template = "%StdinReader% {} %cpu% %memory% %swap% %battery% %date%"
-       }
+Config
+    { font = "xft:monospace:antialias=true"
+    , bgColor = "#002b36"
+    , fgColor = "#93a1a1"
+    , position = Static
+        { xpos   = 0
+        , ypos   = 0
+        , width  = 1820
+        , height = 16
+        }
+    , lowerOnStart = False
+    , commands =
+      [ Run StdinReader
+      , Run Cpu [] 100
+      , Run Memory ["-t", "Mem: <used>M"] 100
+      , Run Swap [] 100
+      , Run Date "%F %a %T" "date" 10
+      , Run Battery ["BAT0"] 500
+      ]
+    , sepChar = "%"
+    , alignSep = "{}"
+    , template = "%StdinReader% {} %cpu% %memory% %swap% %battery% %date%"
+    }
