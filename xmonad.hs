@@ -96,6 +96,7 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
     , ("M-t", runOrRaiseNext "lilyterm"         (className =? "Lilyterm"))
     , ("M-v", runOrRaiseNext "vlc"              (className =? "Vlc"))
     , ("M-w", runOrRaiseNext "eog"              (className =? "Eog"))
+    , ("M-x", runOrRaiseNext "steam"            (className =? "Steam"))
     , ("M-y", runOrRaiseNext "rhythmbox"        (className =? "Rhythmbox"))
     , ("M-z", runOrRaiseNext "spotify"          (className =? "Spotify"))
     ]
