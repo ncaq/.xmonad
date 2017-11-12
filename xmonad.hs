@@ -73,12 +73,16 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
     -- increase or decrease number of windows in the master area
     , ("M-,", sendMessage (IncMasterN 1))
     , ("M-.", sendMessage (IncMasterN (-1)))
-    -- toggle trackpad
-    , ("<F1>", disableTrackPad)
-    , ("<F2>", enableTrackPad)
+    -- audio
+    , ("<XF86AudioMute>", spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")
+    , ("<XF86AudioLowerVolume>", spawn "pactl set-sink-volume @DEFAULT_SINK@ -1%")
+    , ("<XF86AudioRaiseVolume>", spawn "pactl set-sink-volume @DEFAULT_SINK@ +1%")
     -- misc
     , ("<Print>", takeScreenShot)
     , ("M-l", spawn "dm-tool lock")
+    -- toggle trackpad
+    , ("<F1>", disableTrackPad)
+    , ("<F2>", enableTrackPad)
     -- move to application
     , ("M-b", runOrRaiseNext "keepassxc"        (className =? "keepassxc"))
     , ("M-c", runOrRaiseNext "chromium-browser" (className =? "Chromium-browser-chromium"))
