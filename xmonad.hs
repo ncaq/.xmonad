@@ -94,7 +94,7 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
     , ("M-m", runOrRaiseNext "thunderbird"      (className =? "Thunderbird"))
     , ("M-n", runOrRaiseNext "emacs"            (className =? "Emacs"))
     , ("M-o", runOrRaiseNext "libreoffice"      (className ~? "libreoffice"))
-    , ("M-p", runOrRaiseNext "skypeforlinux"    (className =? "skypeforlinux"))
+    , ("M-p", runOrRaiseNext "skypeforlinux"    (className =? "Skype"))
     , ("M-r", runOrRaiseNext "evince"           (className =? "Evince"))
     , ("M-s", runOrRaiseNext "mikutter"         (className =? "Mikutter.rb"))
     , ("M-t", runOrRaiseNext "lilyterm"         (className =? "Lilyterm"))
