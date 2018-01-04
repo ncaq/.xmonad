@@ -6,6 +6,7 @@ import           ClassyPrelude
 import           Data.Time.LocalTime
 import           Graphics.X11.Xlib
 import           System.Directory
+import           System.Environment
 import           System.Exit
 import           Text.Regex.Posix
 import           XMonad
@@ -17,15 +18,18 @@ import           XMonad.StackSet
 import           XMonad.Util.EZConfig
 
 main :: IO ()
-main = statusBar "xmobar" myPP hideStatusBar myConfig >>= xmonad
+main = statusBar "xmobar" myPP (\XConfig{modMask} -> (modMask, xK_u)) myConfig >>= xmonad
 
 myConfig :: XConfig (Choose Full (Choose Tall (Mirror Tall)))
-myConfig = docks $ def
-    { borderWidth       = 0
-    , layoutHook        = myLayoutHook
-    , modMask           = mod4Mask
-    , XMonad.keys       = myKeys
-    , manageHook        = myManageHook
+myConfig = let tiled = Tall 0 (1 / 2) (3 / 100)
+    in docks $ def
+    { terminal = "lilyterm"
+    , layoutHook = Full ||| tiled ||| Mirror tiled
+    , manageHook = myManageHook
+    , modMask = mod4Mask
+    , XMonad.keys = myKeys
+    , borderWidth = 0
+    , startupHook = myStartupHook
     , focusFollowsMouse = False
     }
 
@@ -36,13 +40,6 @@ myPP = def
     , ppSep     = ":"
     , ppWsSep   = ""
     }
-
-hideStatusBar :: XConfig t -> (KeyMask, KeySym)
-hideStatusBar XConfig{modMask} = (modMask, xK_u)
-
-myLayoutHook :: Choose Full (Choose Tall (Mirror Tall)) a
-myLayoutHook = Full ||| tiled ||| Mirror tiled
-  where tiled = Tall 0 (1 / 2) (3 / 100)
 
 myManageHook :: ManageHook
 myManageHook = composeAll
@@ -55,7 +52,7 @@ myKeys :: XConfig Layout -> Map (KeyMask, KeySym) (X ())
 myKeys conf@XConfig{modMask} = mkKeymap conf
     [ ("M-q", kill)
     , ("M-S-q", io exitSuccess)
-    , ("M-S-r", xmonadRestart)
+    , ("M-S-r", spawn "stack exec -- xmonad --recompile && stack exec -- xmonad --restart")
     , ("M-<Space>", sendMessage NextLayout)
     , ("M-S-<Space>", setLayout $ XMonad.layoutHook conf)
     -- move focus up or down the window stack
@@ -81,8 +78,8 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
     , ("<Print>", takeScreenShot)
     , ("M-l", spawn "dm-tool lock")
     -- toggle trackpad
-    , ("<F1>", disableTrackPad)
-    , ("<F2>", enableTrackPad)
+    , ("<F1>", spawn "xinput --disable 'SynPS/2 Synaptics TouchPad'")
+    , ("<F2>", spawn "xinput --enable 'SynPS/2 Synaptics TouchPad'")
     -- move to application
     , ("M-b", runOrRaiseNext "keepassxc"        (className =? "keepassxc"))
     , ("M-c", runOrRaiseNext "chromium-browser" (className =? "Chromium-browser-chromium"))
@@ -107,21 +104,14 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
     <>
     -- mod-[1..9] %! Switch to workspace N
     -- mod-shift-[1..9] %! Move client to workspace N
-    mapFromList [ ((m .|. modMask, k), windows $ f i) |
-                  (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9],
-                  (f, m) <- [(greedyView, 0), (shift, shiftMask)] ]
+    mapFromList
+    [ ((m .|. modMask, k), windows $ f i)
+    | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
+    , (f, m) <- [(greedyView, 0), (shift, shiftMask)]
+    ]
 
 (~?) :: Query String -> String -> Query Bool
 a ~? b = fmap (=~ b) a
-
-xmonadRestart :: X ()
-xmonadRestart = spawn "stack exec -- xmonad --recompile && stack exec -- xmonad --restart"
-
-enableTrackPad :: X ()
-enableTrackPad = spawn "xinput --enable 'SynPS/2 Synaptics TouchPad'"
-
-disableTrackPad :: X ()
-disableTrackPad = spawn "xinput --disable 'SynPS/2 Synaptics TouchPad'"
 
 takeScreenShot :: X ()
 takeScreenShot = do
@@ -129,3 +119,14 @@ takeScreenShot = do
     time <- liftIO $ formatTime defaultTimeLocale "%Y-%m-%d-%H-%M-%S" <$> getZonedTime
     let path = concat [home, "/Pictures/", "screenshot-", time, ".png"]
     spawn $ concat ["import", " " , path, " && eog ", path]
+
+myStartupHook :: X ()
+myStartupHook = do
+    liftIO $ setEnv "GTK_IM_MODULE" "ibus"
+    liftIO $ setEnv "QT_IM_MODULE" "ibus"
+    liftIO $ setEnv "XMODIFIERS" "@im=ibus"
+    spawn $
+        "trayer-srg --edge top --align right " <>
+        "--widthtype percent --width 10 --heighttype pixel --height 22"
+    spawn "nm-applet"
+    spawn "ibus-daemon --xim --replace"
