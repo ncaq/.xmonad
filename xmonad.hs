@@ -20,11 +20,10 @@ import           XMonad.Util.EZConfig
 main :: IO ()
 main = statusBar "xmobar" myPP (\XConfig{modMask} -> (modMask, xK_u)) myConfig >>= xmonad
 
-myConfig :: XConfig (Choose Full (Choose Tall (Mirror Tall)))
-myConfig = let tiled = Tall 0 (1 / 2) (3 / 100)
-    in docks $ def
+myConfig :: XConfig (Choose Full (Mirror Tall))
+myConfig = docks $ def
     { terminal = "lilyterm"
-    , layoutHook = Full ||| tiled ||| Mirror tiled
+    , layoutHook = Full ||| Mirror (Tall 0 (3 / 100) (1 / 2))
     , manageHook = myManageHook
     , modMask = mod4Mask
     , XMonad.keys = myKeys
@@ -65,11 +64,11 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
     -- resizing the master/slave ratio
     , ("M-a", sendMessage Shrink)
     , ("M-e", sendMessage Expand)
-    -- floating layer support
-    , ("M-;", withFocused $ windows . sink)
     -- increase or decrease number of windows in the master area
     , ("M-,", sendMessage (IncMasterN 1))
     , ("M-.", sendMessage (IncMasterN (-1)))
+    -- floating layer support
+    , ("M-;", withFocused $ windows . sink)
     -- audio
     , ("<XF86AudioMute>", spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")
     , ("<XF86AudioLowerVolume>", spawn "pactl set-sink-volume @DEFAULT_SINK@ -1%")
