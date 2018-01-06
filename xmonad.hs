@@ -16,6 +16,7 @@ import           XMonad.Hooks.ManageDocks
 import           XMonad.Hooks.ManageHelpers
 import           XMonad.StackSet
 import           XMonad.Util.EZConfig
+import           XMonad.Util.SpawnOnce
 
 main :: IO ()
 main = statusBar "xmobar" myPP (\XConfig{modMask} -> (modMask, xK_u)) myConfig >>= xmonad
@@ -124,8 +125,8 @@ myStartupHook = do
     liftIO $ setEnv "GTK_IM_MODULE" "ibus"
     liftIO $ setEnv "QT_IM_MODULE" "ibus"
     liftIO $ setEnv "XMODIFIERS" "@im=ibus"
-    spawn $
+    spawnOnce $
         "trayer-srg --edge top --align right " <>
         "--widthtype percent --width 10 --heighttype pixel --height 22"
-    spawn "nm-applet"
-    spawn "ibus-daemon --xim --replace"
+    spawnOnce "nm-applet"
+    spawnOnce "ibus-daemon --xim --replace"
