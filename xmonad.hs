@@ -5,6 +5,7 @@
 import           ClassyPrelude
 import           Data.Time.LocalTime
 import           Graphics.X11.Xlib
+import           Network.BSD
 import           System.Directory
 import           System.Environment
 import           System.Exit
@@ -14,6 +15,7 @@ import           XMonad.Actions.WindowGo
 import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.ManageDocks
 import           XMonad.Hooks.ManageHelpers
+import           XMonad.Layout.IndependentScreens
 import           XMonad.StackSet
 import           XMonad.Util.EZConfig
 import           XMonad.Util.SpawnOnce
@@ -125,6 +127,10 @@ myStartupHook = do
     liftIO $ setEnv "GTK_IM_MODULE" "ibus"
     liftIO $ setEnv "QT_IM_MODULE" "ibus"
     liftIO $ setEnv "XMODIFIERS" "@im=ibus"
+    hostName <- liftIO getHostName
+    screensAmount <- countScreens
+    when (hostName == "karen" && screensAmount == (2 :: Int)) $
+        spawn "xrandr --output DP-1 --auto --primary --output eDP-1 --auto --below DP-1"
     spawnOnce $
         "trayer-srg --edge top --align right " <>
         "--widthtype percent --width 10 --heighttype pixel --height 22"
