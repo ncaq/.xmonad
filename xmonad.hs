@@ -76,7 +76,7 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
     , ("<XF86AudioLowerVolume>", spawn "pactl set-sink-volume @DEFAULT_SINK@ -1%")
     , ("<XF86AudioRaiseVolume>", spawn "pactl set-sink-volume @DEFAULT_SINK@ +1%")
     -- misc
-    , ("<Print>", takeScreenShot)
+    , ("<Print>", takeScreenshot)
     , ("M-l", spawn "dm-tool lock")
     -- toggle trackpad
     , ("<F1>", spawn "xinput --disable 'SynPS/2 Synaptics TouchPad'")
@@ -114,12 +114,12 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
 (~?) :: Query String -> String -> Query Bool
 a ~? b = fmap (=~ b) a
 
-takeScreenShot :: X ()
-takeScreenShot = do
+takeScreenshot :: X ()
+takeScreenshot = do
     home <- liftIO getHomeDirectory
     time <- liftIO $ formatTime defaultTimeLocale "%Y-%m-%d-%H-%M-%S" <$> getZonedTime
     let path = concat [home, "/Pictures/", "screenshot-", time, ".png"]
-    spawn $ concat ["import", " " , path, " && eog ", path]
+    spawn $ concat ["import ", path, " && .xmonad/recent-add-item.py ", path]
 
 myStartupHook :: X ()
 myStartupHook = do
