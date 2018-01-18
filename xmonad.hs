@@ -18,6 +18,7 @@ import           XMonad.Hooks.ManageHelpers
 import           XMonad.Layout.IndependentScreens
 import           XMonad.StackSet
 import           XMonad.Util.EZConfig
+import           XMonad.Util.SpawnOnce
 
 main :: IO ()
 main = statusBar "xmobar" myPP (\XConfig{modMask} -> (modMask, xK_u)) myConfig >>= xmonad
@@ -130,7 +131,7 @@ myStartupHook = do
     screensAmount <- countScreens
     when (hostName == "karen" && screensAmount == (2 :: Int)) $
         spawn "xrandr --output DP-1 --auto --primary --output eDP-1 --auto --below DP-1"
-    spawn $
+    spawnOnce $
         "trayer-srg --edge top --align right " <>
         "--widthtype percent --width 10 --heighttype pixel --height 22"
     spawn "nm-applet"
