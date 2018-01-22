@@ -18,7 +18,6 @@ import           XMonad.Hooks.ManageHelpers
 import           XMonad.Layout.IndependentScreens
 import           XMonad.StackSet
 import           XMonad.Util.EZConfig
-import           XMonad.Util.SpawnOnce
 
 main :: IO ()
 main = statusBar "xmobar" myPP (\XConfig{modMask} -> (modMask, xK_u)) myConfig >>= xmonad
@@ -54,7 +53,6 @@ myKeys :: XConfig Layout -> Map (KeyMask, KeySym) (X ())
 myKeys conf@XConfig{modMask} = mkKeymap conf
     [ ("M-q", kill)
     , ("M-S-q", io exitSuccess)
-    , ("M-S-r", spawn "stack exec -- xmonad --recompile && stack exec -- xmonad --restart")
     , ("M-<Space>", sendMessage NextLayout)
     , ("M-S-<Space>", setLayout $ XMonad.layoutHook conf)
     -- move focus up or down the window stack
@@ -131,7 +129,7 @@ myStartupHook = do
     screensAmount <- countScreens
     when (hostName == "karen" && screensAmount == (2 :: Int)) $
         spawn "xrandr --output DP-1 --auto --primary --output eDP-1 --auto --below DP-1"
-    spawnOnce $
+    spawn $
         "trayer-srg --edge top --align right " <>
         "--widthtype percent --width 10 --heighttype pixel --height 22"
     spawn "nm-applet"
