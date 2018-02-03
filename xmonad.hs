@@ -22,10 +22,11 @@ import           XMonad.Util.EZConfig
 main :: IO ()
 main = statusBar "xmobar" myPP (\XConfig{modMask} -> (modMask, xK_u)) myConfig >>= xmonad
 
-myConfig :: XConfig (Choose Full (Mirror Tall))
+myConfig :: XConfig (Choose Full (Choose Tall (Mirror Tall)))
 myConfig = docks $ def
     { terminal = "lilyterm"
-    , layoutHook = Full ||| Mirror (Tall 0 (3 / 100) (1 / 2))
+    , layoutHook = let tall = Tall 0 (3 / 100) (1 / 2)
+                   in Full ||| tall ||| Mirror tall
     , manageHook = myManageHook
     , modMask = mod4Mask
     , XMonad.keys = myKeys
