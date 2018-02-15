@@ -125,6 +125,7 @@ myStartupHook = do
     liftIO $ setEnv "GTK_IM_MODULE" "ibus"
     liftIO $ setEnv "QT_IM_MODULE" "ibus"
     liftIO $ setEnv "XMODIFIERS" "@im=ibus"
+    liftIO $ setEnv "_JAVA_AWT_WM_NONREPARENTING" "1"
     hostName <- liftIO getHostName
     screensAmount <- countScreens
     when (hostName == "karen" && screensAmount == (2 :: Int)) $
