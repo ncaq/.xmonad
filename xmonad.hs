@@ -100,6 +100,7 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
     , ("M-w", runOrRaiseNext "eog"              (className =? "Eog"))
     , ("M-x", runOrRaiseNext "steam"            (className =? "Steam"))
     , ("M-y", runOrRaiseNext "rhythmbox"        (className =? "Rhythmbox"))
+    , ("M-z", runOrRaiseNext "idea.sh"          (className =? "jetbrains-idea"))
     ]
     <>
     -- mod-[1..9] %! Switch to workspace N
