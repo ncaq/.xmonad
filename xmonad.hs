@@ -103,12 +103,10 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
     , ("M-z", runOrRaiseNext "idea.sh"          (className =? "jetbrains-idea"))
     ]
     <>
-    -- mod-[1..9] %! Switch to workspace N
-    -- mod-shift-[1..9] %! Move client to workspace N
     mapFromList
     [ ((m .|. modMask, k), windows $ f i)
     | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
-    , (f, m) <- [(greedyView, 0), (shift, shiftMask)]
+    , (f, m) <- [(greedyView, shiftMask), (shift, 0)]
     ]
 
 (~?) :: Query String -> String -> Query Bool
