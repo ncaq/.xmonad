@@ -5,7 +5,9 @@ import sys
 
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, GObject
+
+from gi.repository import GObject
+from gi.repository import Gtk
 
 Gtk.RecentManager.get_default().add_item(
     'file://' + os.path.abspath(sys.argv[1]))
