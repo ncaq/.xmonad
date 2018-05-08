@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+
+set -eux
+
+world="
+classy-prelude
+regex-posix
+xmobar
+xmonad
+xmonad-contrib
+"
+
+echo $world|xargs stack install --flag xmobar:with_xft
