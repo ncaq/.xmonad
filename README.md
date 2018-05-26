@@ -10,10 +10,4 @@ It is my xmonad and xmobar setting
 
 # how to build
 
-append `.stack/global-project/stack.yaml`
-
-~~~yaml
-flags:
-  xmobar:
-    with_xft: true
-~~~
+install script to global install
