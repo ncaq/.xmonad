@@ -100,7 +100,7 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
     , ("M-w", runOrRaiseNext "eog"              (className =? "Eog"))
     , ("M-x", runOrRaiseNext "steam"            (className =? "Steam"))
     , ("M-y", runOrRaiseNext "rhythmbox"        (className =? "Rhythmbox"))
-    , ("M-z", runOrRaiseNext "idea.sh"          (className =? "jetbrains-idea"))
+    , ("M-z", runOrRaiseNext "copyq show"       (className =? "copyq"))
     ]
     <>
     mapFromList
