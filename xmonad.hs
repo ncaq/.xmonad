@@ -134,3 +134,4 @@ myStartupHook = do
         "--widthtype percent --width 10 --heighttype pixel --height 22"
     spawn "nm-applet"
     spawn "ibus-daemon --xim --replace"
+    spawn "copyq"
