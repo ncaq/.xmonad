@@ -82,9 +82,10 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
     , ("<F1>", spawn "xinput --disable 'SynPS/2 Synaptics TouchPad'")
     , ("<F2>", spawn "xinput --enable 'SynPS/2 Synaptics TouchPad'")
     -- move to application
+    , ("M--", runOrRaiseNext "slack"              (className =? "Slack"))
     , ("M-b", runOrRaiseNext "keepassxc"          (className =? "keepassxc"))
     , ("M-c", runOrRaiseNext "chromium-browser"   (className =? "Chromium-browser-chromium"))
-    , ("M-d", runOrRaiseNext "slack"              (className =? "Slack"))
+    , ("M-d", runOrRaiseNext "discord"            (className =? "discord"))
     , ("M-f", runOrRaiseNext "nautilus"           (className =? "Nautilus"))
     , ("M-g", runOrRaiseNext "gimp"               (className =? "Gimp"))
     , ("M-h", runOrRaiseNext "firefox"            (className =? "Firefox"))
