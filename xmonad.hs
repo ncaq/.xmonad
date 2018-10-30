@@ -125,6 +125,7 @@ myStartupHook = do
   liftIO $ setEnv "QT_IM_MODULE" "ibus"
   liftIO $ setEnv "XMODIFIERS" "@im=ibus"
   liftIO $ setEnv "_JAVA_AWT_WM_NONREPARENTING" "1"
+  liftIO $ setEnv "PULSE_LATENCY_MSEC" "90" -- Discordのノイズ対策
   hostName <- liftIO getHostName
   screensAmount <- countScreens
   when (hostName == "karen" && screensAmount == (2 :: Int)) $
