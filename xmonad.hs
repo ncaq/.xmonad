@@ -137,4 +137,4 @@ myStartupHook = do
   spawn "nm-applet"
   spawn "ibus-daemon --xim --replace"
   spawn "copyq"
-  spawn "sudo xkeysnail ~/.xkeysnail-ncaq/config.py"
+  spawn "xkeysnail-ncaq-daemon"

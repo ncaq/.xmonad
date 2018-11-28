@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+
+while
+do
+    sudo xkeysnail ~/.xkeysnail-ncaq/config.py
+done
