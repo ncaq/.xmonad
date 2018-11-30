@@ -137,4 +137,4 @@ myStartupHook = do
   spawn "nm-applet"
   spawn "ibus-daemon --xim --replace"
   spawn "copyq"
-  spawn "xkeysnail-ncaq-daemon"
+  spawn ".xmonad/xkeysnail-ncaq-daemon"
