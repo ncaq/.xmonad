@@ -13,6 +13,7 @@ import           Text.Regex.Posix
 import           XMonad
 import           XMonad.Actions.WindowGo
 import           XMonad.Hooks.DynamicLog
+import           XMonad.Hooks.EwmhDesktops
 import           XMonad.Hooks.ManageDocks
 import           XMonad.Hooks.ManageHelpers
 import           XMonad.Layout.IndependentScreens
@@ -23,10 +24,11 @@ main :: IO ()
 main = statusBar "xmobar" myPP (\XConfig{modMask} -> (modMask, xK_u)) myConfig >>= xmonad
 
 myConfig :: XConfig (Choose Full (Choose Tall (Mirror Tall)))
-myConfig = docks $ def
+myConfig = ewmh $ docks $ def
   { terminal = "lilyterm"
   , layoutHook = let tall = Tall 0 (3 / 100) (1 / 2) in Full ||| tall ||| Mirror tall
   , manageHook = myManageHook
+  , handleEventHook = handleEventHook def <+> fullscreenEventHook
   , modMask = mod4Mask
   , XMonad.keys = myKeys
   , borderWidth = 0
