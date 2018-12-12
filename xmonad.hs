@@ -135,7 +135,7 @@ myStartupHook = do
     spawn "xrandr --output DP-1 --auto --primary --output eDP-1 --auto --below DP-1"
   spawn $
     "trayer-srg --edge top --align right " <>
-    "--widthtype percent --width 10 --heighttype pixel --height 22"
+    "--widthtype percent --width 10 --heighttype pixel --height 22 --monitor primary"
   spawn "nm-applet"
   spawn "ibus-daemon --xim --replace"
   spawn "copyq"
