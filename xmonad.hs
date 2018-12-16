@@ -131,8 +131,12 @@ myStartupHook = do
     setEnv "PULSE_LATENCY_MSEC" "90" -- Discordのノイズ対策
   hostName <- liftIO getHostName
   screensAmount <- countScreens
-  when (hostName == "strawberry") $
+  when (hostName == "strawberry") $ do
     spawn "xrdb ~/.Xresources"
+    spawn $ "xrandr " <>
+      "--output HDMI-1 --primary --pos 3840x0 " <>
+      "--output DVI-D-0 --pos 7680x1080 " <>
+      "--output HDMI-0 --pos 0x0 --scale 2x2"
   when (hostName == "karen" && screensAmount == (2 :: Int)) $
     spawn "xrandr --output DP-1 --auto --primary --output eDP-1 --auto --below DP-1"
   let trayerHeight = case hostName of
