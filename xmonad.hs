@@ -42,6 +42,7 @@ myPP = def
   , ppVisible = wrap "(" ")"
   , ppSep = ":"
   , ppWsSep = ""
+  , ppTitle = id
   }
 
 myManageHook :: ManageHook
