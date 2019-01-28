@@ -4,6 +4,6 @@ set -ux
 
 while
 do
-    sudo xkeysnail ~/.xkeysnail-ncaq/config.py
+    sudo xkeysnail --quiet ~/.xkeysnail-ncaq/config.py
     >&2 echo "error: xkeysnail rebooted!"
 done
