@@ -154,4 +154,4 @@ myStartupHook = do
   spawn "ibus-daemon --xim --replace"
   spawn "copyq"
   spawn "kdeconnect-indicator"
-  spawn ".xmonad/xkeysnail-ncaq-daemon"
+  spawn "systemctl --user start xkeysnail"

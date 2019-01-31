@@ -1,9 +1,0 @@
-#!/usr/bin/env zsh
-
-set -ux
-
-while
-do
-    sudo xkeysnail --quiet ~/.xkeysnail-ncaq/config.py
-    >&2 echo "error: xkeysnail rebooted!"
-done
