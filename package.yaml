@@ -1,0 +1,28 @@
+name: xmonad-ncaq
+version: 0.1.0
+synopsis: It is my xmonad and xmobar setting
+github: ncaq/.xmonad
+author: ncaq
+maintainer: ncaq@ncaq.net
+copyright: © ncaq
+license: MIT
+dependencies:
+  - X11
+  - base
+  - classy-prelude
+  - directory
+  - network
+  - regex-posix
+  - time
+  - xmonad
+  - xmonad-contrib
+executables:
+  xmonad-ncaq:
+    main: xmonad.hs
+    ghc-options:
+      - -Wall
+      - -fwarn-tabs
+      - -threaded
+      - -O2
+      - -rtsopts
+      - -with-rtsopts=-N
