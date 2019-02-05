@@ -24,5 +24,4 @@ executables:
       - -fwarn-tabs
       - -threaded
       - -O2
-      - -rtsopts
-      - -with-rtsopts=-N
+      - -with-rtsopts=-N4
