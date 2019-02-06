@@ -21,7 +21,7 @@ import           XMonad.StackSet
 import           XMonad.Util.EZConfig
 
 main :: IO ()
-main = statusBar "xmobar" myPP (\XConfig{modMask} -> (modMask, xK_u)) myConfig >>= xmonad
+main = statusBar "xmobar" myPP (\XConfig{modMask} -> (modMask, xK_u)) myConfig >>= launch
 
 myConfig :: XConfig (Choose Full (Choose Tall (Mirror Tall)))
 myConfig = ewmh $ docks $ def
