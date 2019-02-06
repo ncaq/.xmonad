@@ -22,6 +22,4 @@ executables:
     ghc-options:
       - -Wall
       - -fwarn-tabs
-      - -threaded
       - -O2
-      - -with-rtsopts=-N4
