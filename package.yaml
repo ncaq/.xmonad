@@ -16,10 +16,25 @@ dependencies:
   - time
   - xmonad
   - xmonad-contrib
+
 executables:
   xmonad-ncaq:
     main: xmonad.hs
     ghc-options:
       - -Wall
-      - -fwarn-tabs
+      # - -Wall-missed-specialisations
+      - -Widentities
+      # - -Wimplicit-prelude
+      - -Wincomplete-record-updates
+      - -Wincomplete-uni-patterns
+      # - -Wmissed-specialisations
+      # - -Wmissing-export-lists
+      - -Wmissing-exported-signatures
+      - -Wmissing-home-modules
+      # - -Wmissing-import-lists
+      # - -Wmissing-local-signatures
+      # - -Wmonomorphism-restriction
+      # - -Wpartial-fields
+      - -Wredundant-constraints
+      - -Wcompat
       - -O2
