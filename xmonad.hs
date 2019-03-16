@@ -5,7 +5,7 @@
 import           ClassyPrelude
 import           Data.Time.LocalTime
 import           Graphics.X11.Xlib
-import           Network.BSD
+import           Network.HostName
 import           System.Directory
 import           System.Environment
 import           System.Exit

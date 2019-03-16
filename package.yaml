@@ -11,7 +11,7 @@ dependencies:
   - base
   - classy-prelude
   - directory
-  - network
+  - hostname
   - regex-posix
   - time
   - xmonad
