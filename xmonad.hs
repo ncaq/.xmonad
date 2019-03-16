@@ -133,13 +133,18 @@ myStartupHook = do
   hostName <- liftIO getHostName
   screensAmount <- countScreens
   when (hostName == "strawberry" || hostName == "indigo") $ do
+    -- DPI設定
     spawn "xrdb ~/.Xresources"
+  -- 各マルチディスプレイ設定
+  when (hostName == "strawberry"  && screensAmount == (3 :: Int)) $
     spawn $ "xrandr " <>
       "--output HDMI-1 --primary --pos 3840x0 " <>
       "--output DVI-D-0 --pos 7680x1080 " <>
       "--output HDMI-0 --pos 0x0 --scale 2x2"
-  when ((hostName == "karen" || hostName == "indigo") && screensAmount == (2 :: Int)) $
-    spawn "xrandr --output DP-1 --auto --primary --output eDP-1 --auto --below DP-1"
+  when (hostName == "indigo" && screensAmount == (2 :: Int)) $
+    spawn "xrandr --output DP-1-1 --primary --output eDP-1-1 --below DP-1-1"
+  when (hostName == "karen" && screensAmount == (2 :: Int)) $
+    spawn "xrandr --output DP-1 --primary --output eDP-1 --below DP-1"
   let trayerHeight = case hostName of
         "strawberry" -> "31"
         "indigo"     -> "31"
