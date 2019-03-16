@@ -8,11 +8,14 @@ Config
   [ Run StdinReader
   , Run Cpu [] 100
   , Run Memory ["-t", "Mem: <used>M"] 100
-  , Run Swap [] 100
-  , Run Date "%F %a %T" "date" 10
-  , Run Battery ["BAT0"] 500
+  , Run Swap ["-t", "Swap: <used>M"] 100
+  , Run DiskIO [("/", "IO: <read> <write>")] [] 100
+  , Run DynNetwork ["-t", "Net: <rx>KB|<tx>KB"] 100
+  , Run ThermalZone 0 ["-t", "Thermal: <temp>°C"] 100
+  , Run BatteryP ["BAT0"] ["-t", "Bat: <watts> <left>%"] 600
+  , Run DateZone "%F%a%T" "ja_JP.utf8" "Japan" "date" 10
   ]
 , sepChar = "%"
 , alignSep = "{}"
-, template = "%StdinReader% {} %cpu% %memory% %swap% %battery% %date%"
+, template = "%StdinReader% {} %cpu%, %memory%, %swap%, %diskio%, %dynnetwork%, %thermal0%, %battery%, %date%"
 }

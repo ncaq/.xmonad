@@ -2,4 +2,4 @@
 
 set -eux
 
-stack install . xmobar --flag xmobar:with_xft
+stack install . xmobar --flag xmobar:with_xft --flag xmobar:with_datezone
