@@ -132,8 +132,8 @@ myStartupHook = do
     setEnv "PULSE_LATENCY_MSEC" "90" -- Discordのノイズ対策
   hostName <- liftIO getHostName
   screensAmount <- countScreens
-  when (hostName == "strawberry" || hostName == "indigo") $ do
-    -- DPI設定
+  -- DPI設定
+  when (hostName == "strawberry" || hostName == "indigo") $
     spawn "xrdb ~/.Xresources"
   -- 各マルチディスプレイ設定
   when (hostName == "strawberry"  && screensAmount == (3 :: Int)) $
