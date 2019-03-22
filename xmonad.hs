@@ -142,9 +142,9 @@ myStartupHook = do
       "--output DVI-D-0 --pos 7680x1080 " <>
       "--output HDMI-0 --pos 0x0 --scale 2x2"
   when (hostName == "indigo" && screensAmount == (2 :: Int)) $
-    spawn "xrandr --output DP-1-1 --output eDP-1-1 --primary --below DP-1-1"
+    spawn "xrandr --output eDP-1-1 --primary --output DP-1-1 --left-of eDP-1-1"
   when (hostName == "karen" && screensAmount == (2 :: Int)) $
-    spawn "xrandr --output DP-1 --output eDP-1 --primary --below DP-1"
+    spawn "xrandr --output eDP-1 --primary --output DP-1 --above eDP-1"
   let trayerHeight = case hostName of
         "strawberry" -> "31"
         "indigo"     -> "31"
