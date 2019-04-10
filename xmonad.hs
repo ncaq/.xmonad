@@ -17,6 +17,7 @@ import           XMonad.Hooks.EwmhDesktops
 import           XMonad.Hooks.ManageDocks
 import           XMonad.Hooks.ManageHelpers
 import           XMonad.Layout.IndependentScreens
+import           XMonad.ManageHook                as X
 import           XMonad.StackSet
 import           XMonad.Util.EZConfig
 
@@ -100,7 +101,7 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
   , ("M-r",   runOrRaiseNext "evince"             (className =? "Evince"))
   , ("M-s",   runOrRaiseNext "mikutter"           (className =? "Mikutter.rb"))
   , ("M-t",   runOrRaiseNext "lilyterm"           (className =? "LilyTerm"))
-  , ("M-v",   runOrRaiseNext "virtualbox"         (className =? "VirtualBox Machine"))
+  , ("M-v",   runOrRaiseNext "virtualbox"         (className =? "VirtualBox Machine" X.<||> className =? "VirtualBox Manager"))
   , ("M-w",   runOrRaiseNext "eog"                (className =? "Eog"))
   , ("M-x",   runOrRaiseNext "steam"              (className =? "Steam"))
   , ("M-y",   runOrRaiseNext "rhythmbox"          (className =? "Rhythmbox"))
