@@ -7,9 +7,8 @@ maintainer: ncaq@ncaq.net
 copyright: © ncaq
 license: MIT
 dependencies:
-  - X11
   - base
-  - classy-prelude
+  - containers
   - directory
   - hostname
   - regex-posix

@@ -1,16 +1,16 @@
 {-# LANGUAGE NamedFieldPuns    #-}
-{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-import           ClassyPrelude
-import           Data.Ratio
+import           Control.Monad
+import qualified Data.Map.Strict                  as M
+import           Data.Ratio                       ((%))
+import           Data.Time.Format
 import           Data.Time.LocalTime
-import           Graphics.X11.Xlib
-import           Network.HostName
-import           System.Directory
-import           System.Environment
+import           Network.HostName                 (getHostName)
+import           System.Directory                 (getHomeDirectory)
+import           System.Environment               (setEnv)
 import           System.Exit
-import           Text.Regex.Posix
+import           Text.Regex.Posix                 ((=~))
 import           XMonad
 import           XMonad.Actions.WindowGo
 import           XMonad.Hooks.DynamicLog
@@ -19,7 +19,6 @@ import           XMonad.Hooks.ManageDocks
 import           XMonad.Hooks.ManageHelpers
 import           XMonad.Layout.IndependentScreens
 import           XMonad.Layout.Spiral
-import           XMonad.ManageHook                as X
 import           XMonad.StackSet
 import           XMonad.Util.EZConfig
 
@@ -55,7 +54,7 @@ myManageHook = composeAll
   , return True                --> doShift "1"
   ]
 
-myKeys :: XConfig Layout -> Map (KeyMask, KeySym) (X ())
+myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
 myKeys conf@XConfig{modMask} = mkKeymap conf
   [ ("M-q", kill)
   , ("M-S-q", io exitSuccess)
@@ -103,14 +102,14 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
   , ("M-r",   runOrRaiseNext "evince"             (className =? "Evince"))
   , ("M-s",   runOrRaiseNext "mikutter"           (className =? "Mikutter.rb"))
   , ("M-t",   runOrRaiseNext "lilyterm"           (className =? "LilyTerm"))
-  , ("M-v",   runOrRaiseNext "virtualbox"         (className =? "VirtualBox Machine" X.<||> className =? "VirtualBox Manager"))
+  , ("M-v",   runOrRaiseNext "virtualbox"         (className =? "VirtualBox Machine" <||> className =? "VirtualBox Manager"))
   , ("M-w",   runOrRaiseNext "eog"                (className =? "Eog"))
   , ("M-x",   runOrRaiseNext "steam"              (className =? "Steam"))
   , ("M-y",   runOrRaiseNext "rhythmbox"          (className =? "Rhythmbox"))
   , ("M-z",   runOrRaiseNext ".xmonad/copyq-show" (className =? "copyq"))
   ]
   <>
-  mapFromList
+  M.fromList
   [ ((m .|. modMask, k), windows $ f i)
   | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
   , (f, m) <- [(greedyView, shiftMask), (shift, 0)]
