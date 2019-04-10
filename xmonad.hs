@@ -3,6 +3,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 import           ClassyPrelude
+import           Data.Ratio
 import           Data.Time.LocalTime
 import           Graphics.X11.Xlib
 import           Network.HostName
@@ -17,6 +18,7 @@ import           XMonad.Hooks.EwmhDesktops
 import           XMonad.Hooks.ManageDocks
 import           XMonad.Hooks.ManageHelpers
 import           XMonad.Layout.IndependentScreens
+import           XMonad.Layout.Spiral
 import           XMonad.ManageHook                as X
 import           XMonad.StackSet
 import           XMonad.Util.EZConfig
@@ -24,10 +26,10 @@ import           XMonad.Util.EZConfig
 main :: IO ()
 main = statusBar "xmobar" myPP (\XConfig{modMask} -> (modMask, xK_u)) myConfig >>= launch
 
-myConfig :: XConfig (Choose Full (Choose Tall (Mirror Tall)))
+myConfig :: XConfig (Choose Full (Choose Tall (Choose (Mirror Tall) SpiralWithDir)))
 myConfig = ewmh $ docks $ def
   { terminal = "lilyterm"
-  , layoutHook = let tall = Tall 0 (3 / 100) (1 / 2) in Full ||| tall ||| Mirror tall
+  , layoutHook = let tall = Tall 0 (3 / 100) (1 / 2) in Full ||| tall ||| Mirror tall ||| spiral (4 % 3)
   , manageHook = myManageHook
   , handleEventHook = handleEventHook def <+> fullscreenEventHook
   , modMask = mod4Mask
