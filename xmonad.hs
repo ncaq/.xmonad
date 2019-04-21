@@ -139,7 +139,7 @@ myStartupHook = do
   when (hostName == "strawberry" || hostName == "indigo") $
     spawn "xrdb ~/.Xresources"
   -- 各マルチディスプレイ設定
-  when (hostName == "strawberry"  && screensAmount == (3 :: Int)) $
+  when (hostName == "strawberry" && screensAmount == (3 :: Int)) $
     spawn $ "xrandr " <>
       "--output HDMI-1 --primary --pos 3840x0 " <>
       "--output DVI-D-0 --pos 7680x1080 " <>
