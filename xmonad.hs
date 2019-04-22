@@ -149,7 +149,8 @@ myStartupHook = do
     -- 対処療法として`sleep`で待機させます
     -- どのタイミングで設定可能になるのかわからないのでEvent見るわけにもいかないのでsleep
     -- 起動直後に有効になっている必要性はないので待ってもそこまで問題ではない
-    spawn "sleep 2 && xkbset bouncekeys 50"
+    -- xkbsetの後にxkeysnailを再起動しないと一部のキーシーケンスがうまく動かない
+    spawn "sleep 10 && systemctl --user restart xkbset-bouncekeys"
     when (screensAmount == (2 :: Int)) $
       spawn "xrandr --output eDP-1-1 --primary --output DP-1-1 --left-of eDP-1-1"
   when (hostName == "karen" && screensAmount == (2 :: Int)) $
@@ -170,5 +171,3 @@ myStartupHook = do
   spawn "copyq"
   spawn "kdeconnect-indicator"
   spawn "systemctl --user restart xkeysnail"
-  -- xkbsetの後に再起動しないと一部のキーシーケンスがうまく動かない
-  spawn "sleep 3 && systemctl --user restart xkeysnail"
