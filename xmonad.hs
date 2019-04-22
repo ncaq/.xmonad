@@ -146,9 +146,9 @@ myStartupHook = do
       "--output HDMI-0 --pos 0x0 --scale 2x2"
   when (hostName == "indigo") $ do
     -- 場当たり対処ですがxkbsetをウィンドウマネージャのセットアップ前に動かすと効かないようなので
-    -- 対処療法として`sleep 1`で待機させます
+    -- 対処療法として`sleep`で待機させます
     -- どのタイミングで設定可能になるのかわからないのでEvent見るわけにもいかないのでsleep
-    -- 起動直後に有効になっている必要性はないので1秒待ってもそこまで問題ではない
+    -- 起動直後に有効になっている必要性はないので待ってもそこまで問題ではない
     spawn "sleep 2 && xkbset bouncekeys 50"
     when (screensAmount == (2 :: Int)) $
       spawn "xrandr --output eDP-1-1 --primary --output DP-1-1 --left-of eDP-1-1"
