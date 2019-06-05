@@ -158,7 +158,6 @@ myStartupHook = do
   let trayerHeight = case hostName of
         "strawberry" -> "31"
         "indigo"     -> "31"
-        "karen"      -> "22"
         _            -> "22"
   spawn $
     "trayer-srg " <>
