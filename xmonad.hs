@@ -151,8 +151,10 @@ myStartupHook = do
     -- 起動直後に有効になっている必要性はないので待ってもそこまで問題ではない
     -- xkbsetの後にxkeysnailを再起動しないと一部のキーシーケンスがうまく動かない
     spawn "sleep 10 && systemctl --user restart xkbset-bouncekeys"
-    when (screensAmount == (2 :: Int)) $
-      spawn "xrandr --output eDP-1-1 --primary --output DP-1-1 --left-of eDP-1-1"
+    case screensAmount of
+      2 -> spawn "xrandr --output eDP-1-1 --primary --output DP-1-1 --left-of eDP-1-1"
+      3 -> spawn "xrandr --output eDP-1-1 --primary --output DP-1-1 --left-of eDP-1-1 --output DP-0 --right-of eDP-1-1"
+      _ -> return ()
   when (hostName == "karen" && screensAmount == (2 :: Int)) $
     spawn "xrandr --output eDP-1 --primary --output DP-1 --above eDP-1"
   let trayerHeight = case hostName of
