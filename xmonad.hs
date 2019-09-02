@@ -49,7 +49,7 @@ myPP = def
 
 myManageHook :: ManageHook
 myManageHook = composeAll
-  [ isDialog                   --> doFloat
+  [ isDialog                   --> doFullFloat
   , className =? "Mikutter.rb" --> doShift "2"
   , return True                --> doShift "1"
   ]
