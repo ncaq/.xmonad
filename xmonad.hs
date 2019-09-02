@@ -162,9 +162,7 @@ myStartupHook = do
         "indigo"     -> "31"
         _            -> "22"
   spawn $
-    "trayer-srg " <>
-    "--edge top --align right --widthtype percent --width 10 " <>
-    "--heighttype pixel --height " <>
+    "trayer-srg --edge top --align right --widthtype percent --width 10 --heighttype pixel --height " <>
     trayerHeight <>
     " --monitor primary"
   spawn "nm-applet"
