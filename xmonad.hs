@@ -86,26 +86,31 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
   , ("<F1>", spawn "xinput --disable 'SynPS/2 Synaptics TouchPad'")
   , ("<F2>", spawn "xinput --enable 'SynPS/2 Synaptics TouchPad'")
   -- move to application
-  , ("M--",   runOrRaiseNext "slack"              (className =? "Slack"))
-  , ("M-S-v", runOrRaiseNext "vlc"                (className =? "vlc"))
-  , ("M-b",   runOrRaiseNext "keepassxc"          (className =? "keepassxc"))
-  , ("M-c",   runOrRaiseNext "chromium-browser"   (className =? "Chromium-browser-chromium"))
+  , ("M-o",   runOrRaiseNext "libreoffice"        (className ~? "libreoffice"))
+  , ("M-i",   runOrRaiseNext "inkscape"           (className =? "Inkscape"))
+
+  , ("M-p",   runOrRaiseNext "skypeforlinux"      (className =? "Skype"))
+  , ("M-y",   runOrRaiseNext "rhythmbox"          (className =? "Rhythmbox"))
+
+  , ("M-x",   runOrRaiseNext "steam"              (className =? "Steam"))
+
   , ("M-d",   runOrRaiseNext "discord"            (className =? "discord"))
+  , ("M-h",   runOrRaiseNext "firefox"            (className =? "Firefox"))
+  , ("M-t",   runOrRaiseNext "lilyterm"           (className =? "LilyTerm"))
+  , ("M-n",   runOrRaiseNext "emacs"              (className =? "Emacs"))
+  , ("M-s",   runOrRaiseNext "mikutter"           (className =? "Mikutter.rb"))
+  , ("M--",   runOrRaiseNext "slack"              (className =? "Slack"))
+
   , ("M-f",   runOrRaiseNext "nautilus"           (className =? "Nautilus"))
   , ("M-g",   runOrRaiseNext "gimp"               (className =? "Gimp"))
-  , ("M-h",   runOrRaiseNext "firefox"            (className =? "Firefox"))
-  , ("M-i",   runOrRaiseNext "inkscape"           (className =? "Inkscape"))
-  , ("M-m",   runOrRaiseNext "thunderbird"        (className =? "Thunderbird"))
-  , ("M-n",   runOrRaiseNext "emacs"              (className =? "Emacs"))
-  , ("M-o",   runOrRaiseNext "libreoffice"        (className ~? "libreoffice"))
-  , ("M-p",   runOrRaiseNext "skypeforlinux"      (className =? "Skype"))
+  , ("M-c",   runOrRaiseNext "chromium"           (className =? "Chromium-browser-chromium"))
   , ("M-r",   runOrRaiseNext "evince"             (className =? "Evince"))
-  , ("M-s",   runOrRaiseNext "mikutter"           (className =? "Mikutter.rb"))
-  , ("M-t",   runOrRaiseNext "lilyterm"           (className =? "LilyTerm"))
+
+  , ("M-b",   runOrRaiseNext "keepassxc"          (className =? "keepassxc"))
+  , ("M-m",   runOrRaiseNext "thunderbird"        (className =? "Thunderbird"))
   , ("M-v",   runOrRaiseNext "virtualbox"         (className =? "VirtualBox Machine" <||> className =? "VirtualBox Manager"))
+  , ("M-S-V", runOrRaiseNext "vlc"                (className =? "vlc"))
   , ("M-w",   runOrRaiseNext "eog"                (className =? "Eog"))
-  , ("M-x",   runOrRaiseNext "steam"              (className =? "Steam"))
-  , ("M-y",   runOrRaiseNext "rhythmbox"          (className =? "Rhythmbox"))
   , ("M-z",   runOrRaiseNext ".xmonad/copyq-show" (className =? "copyq"))
   ]
   <>
