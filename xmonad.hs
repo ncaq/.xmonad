@@ -2,6 +2,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 import           Control.Monad
+import           Data.List
 import qualified Data.Map.Strict                  as M
 import           Data.Ratio                       ((%))
 import           Data.Time.Format
@@ -21,6 +22,7 @@ import           XMonad.Layout.IndependentScreens
 import           XMonad.Layout.Spiral
 import           XMonad.StackSet
 import           XMonad.Util.EZConfig
+import           XMonad.Util.Run
 
 main :: IO ()
 main = statusBar "xmobar" myPP (\XConfig{modMask} -> (modMask, xK_u)) myConfig >>= launch
@@ -81,10 +83,8 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
   , ("<XF86AudioRaiseVolume>", spawn "pactl set-sink-volume @DEFAULT_SINK@ +1%")
   -- misc
   , ("<Print>", takeScreenshot)
-  , ("M-l", spawn "dm-tool lock")
-  -- toggle trackpad
-  , ("<F1>", spawn "xinput --disable 'SynPS/2 Synaptics TouchPad'")
-  , ("<F2>", spawn "xinput --enable 'SynPS/2 Synaptics TouchPad'")
+  , ("<Pause>", toggleTouchPad) -- 本当はT-Padキーに割り当てたかったのですがxmodmapを使っても認識できなかった
+  , ("M-l", spawn "dm-tool lock") -- M-lにロックを割り当てて置かないとファンクションキーも動かなくなる
   -- move to application
   , ("M-o",   runOrRaiseNext "libreoffice"        (className ~? "libreoffice"))
   , ("M-i",   runOrRaiseNext "inkscape"           (className =? "Inkscape"))
@@ -120,15 +120,43 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
   , (f, m) <- [(greedyView, shiftMask), (shift, 0)]
   ]
 
+-- | 正規表現でクラスネームをマッチさせる
+-- LibreOfficeはパターンが多いので
 (~?) :: Query String -> String -> Query Bool
 a ~? b = fmap (=~ b) a
 
+-- | スクリーンショットを取得
 takeScreenshot :: X ()
 takeScreenshot = do
   home <- liftIO getHomeDirectory
   time <- liftIO $ formatTime defaultTimeLocale "%Y-%m-%d-%H-%M-%S" <$> getZonedTime
   let path = concat [home, "/Pictures/", "screenshot-", time, ".png"]
   spawn $ concat ["import ", path, " && .xmonad/recent-add-item.py ", path]
+
+-- | 使用しているタッチパッドの名前
+-- 現在使っているラップトップがAlienware m17しかないので決め打ちになってます
+touchPadName :: String
+touchPadName = "SynPS/2 Synaptics TouchPad"
+
+-- | タッチパッドが有効なのか無効なのか判定する
+-- 存在しない場合も意味的には無効扱いする
+getTouchPadEnable :: X Bool
+getTouchPadEnable = do
+  mDeviceEnabledLine <-
+    find ("\tDevice Enabled" `isPrefixOf`) . lines <$>
+    runProcessWithInput "xinput" ["list-props", touchPadName] ""
+  return $ case mDeviceEnabledLine of
+    Nothing                -> False
+    Just deviceEnabledLine -> last deviceEnabledLine == '1'
+
+-- | タッチパッドの有効無効をトグルする
+toggleTouchPad :: X ()
+toggleTouchPad = do
+  touchPadEnable <- getTouchPadEnable
+  let command = if touchPadEnable
+        then "disable"
+        else "enable"
+  safeSpawn "xinput" [command, touchPadName]
 
 myStartupHook :: X ()
 myStartupHook = do
