@@ -106,7 +106,7 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
   , ("M-c",   runOrRaiseNext "chromium"           (className =? "Chromium-browser-chromium"))
   , ("M-r",   runOrRaiseNext "evince"             (className =? "Evince"))
 
-  , ("M-b",   runOrRaiseNext "keepassxc"          (className =? "keepassxc"))
+  , ("M-b",   runOrRaiseNext "keepassxc"          (className =? "KeePassXC"))
   , ("M-m",   runOrRaiseNext "thunderbird"        (className =? "Thunderbird"))
   , ("M-v",   runOrRaiseNext "virtualbox"         (className =? "VirtualBox Machine" <||> className =? "VirtualBox Manager"))
   , ("M-S-v", runOrRaiseNext "vlc"                (className =? "vlc"))
