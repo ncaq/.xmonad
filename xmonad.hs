@@ -101,7 +101,7 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
   , ("M-s",   runOrRaiseNext "mikutter"           (className =? "Mikutter.rb"))
   , ("M--",   runOrRaiseNext "slack"              (className =? "Slack"))
 
-  , ("M-f",   runOrRaiseNext "nautilus"           (className =? "Nautilus"))
+  , ("M-f",   runOrRaiseNext "nautilus"           (className =? "Org.gnome.Nautilus"))
   , ("M-g",   runOrRaiseNext "gimp"               (className =? "Gimp"))
   , ("M-c",   runOrRaiseNext "chromium"           (className =? "Chromium-browser-chromium"))
   , ("M-r",   runOrRaiseNext "evince"             (className =? "Evince"))
