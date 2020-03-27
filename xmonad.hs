@@ -83,13 +83,14 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
   , ("<XF86AudioRaiseVolume>", spawn "pactl set-sink-volume @DEFAULT_SINK@ +1%")
   -- misc
   , ("<Print>", takeScreenshot)
-  , ("<Pause>", toggleTouchPad) -- 本当はT-Padキーに割り当てたかったのですがxmodmapを使っても認識できなかった
+  , ("<Pause>", toggleTouchPad)   -- 本当はT-Padキーに割り当てたかったのですがxmodmapを使っても認識できなかった
   , ("M-l", spawn "dm-tool lock") -- M-lにロックを割り当てて置かないとファンクションキーも動かなくなる
   -- move to application
   , ("M-o",   runOrRaiseNext "libreoffice"        (className ~? "libreoffice"))
-  , ("M-i",   runOrRaiseNext "inkscape"           (className =? "Inkscape"))
+  , ("M-i",   runOrRaiseNext "idea-community"     (className ~? "jetbrains-idea"))
 
-  , ("M-p",   runOrRaiseNext "skypeforlinux"      (className =? "Skype"))
+  , ("M-p",   runOrRaiseNext "inkscape"           (className =? "Inkscape"))
+  , ("M-S-p", runOrRaiseNext "skypeforlinux"      (className =? "Skype"))
   , ("M-y",   runOrRaiseNext "rhythmbox"          (className =? "Rhythmbox"))
 
   , ("M-x",   runOrRaiseNext "steam"              (className =? "Steam"))
