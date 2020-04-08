@@ -95,6 +95,7 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
   , ("M-x",   runOrRaiseNext "steam"              (className =? "Steam"))
 
   , ("M-d",   runOrRaiseNext "discord"            (className =? "discord"))
+  , ("M-S-d", runOrRaiseNext "jd.sh"              (className =? "Jdim"))
   , ("M-h",   runOrRaiseNext "firefox"            (className =? "Firefox"))
   , ("M-t",   runOrRaiseNext "lilyterm"           (className =? "LilyTerm"))
   , ("M-n",   runOrRaiseNext "emacs"              (className =? "Emacs"))
