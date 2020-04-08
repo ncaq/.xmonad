@@ -109,6 +109,7 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
 
   , ("M-b",   runOrRaiseNext "keepassxc"          (className =? "KeePassXC"))
   , ("M-m",   runOrRaiseNext "thunderbird"        (className =? "Thunderbird"))
+  , ("M-S-m", runOrRaiseNext "smplayer"           (className =? "smplayer"))
   , ("M-v",   runOrRaiseNext "virtualbox"         (className =? "VirtualBox Machine" <||> className =? "VirtualBox Manager"))
   , ("M-S-v", runOrRaiseNext "vlc"                (className =? "vlc"))
   , ("M-w",   runOrRaiseNext "eog"                (className =? "Eog"))
