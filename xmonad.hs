@@ -4,7 +4,6 @@
 import           Control.Monad
 import           Data.List
 import qualified Data.Map.Strict                  as M
-import           Data.Ratio                       ((%))
 import           Data.Time.Format
 import           Data.Time.LocalTime
 import           Network.HostName                 (getHostName)
@@ -27,10 +26,10 @@ import           XMonad.Util.Run
 main :: IO ()
 main = statusBar "xmobar" myPP (\XConfig{modMask} -> (modMask, xK_u)) myConfig >>= launch
 
-myConfig :: XConfig (Choose Full (Choose Tall (Choose (Mirror Tall) SpiralWithDir)))
+myConfig :: XConfig (Choose Full (Choose (Mirror Tall) SpiralWithDir))
 myConfig = ewmh $ docks $ def
   { terminal = "lilyterm"
-  , layoutHook = let tall = Tall 0 (3 / 100) (1 / 2) in Full ||| tall ||| Mirror tall ||| spiral (4 % 3)
+  , layoutHook = Full ||| Mirror (Tall 0 (3 / 100) 1) ||| spiral (4 / 3)
   , manageHook = myManageHook
   , handleEventHook = handleEventHook def <+> fullscreenEventHook
   , modMask = mod4Mask
