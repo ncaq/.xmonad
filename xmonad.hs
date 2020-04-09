@@ -85,35 +85,36 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
   , ("<Pause>", toggleTouchPad)   -- 本当はT-Padキーに割り当てたかったのですがxmodmapを使っても認識できなかった
   , ("M-l", spawn "dm-tool lock") -- M-lにロックを割り当てて置かないとファンクションキーも動かなくなる
   -- move to application
-  , ("M-o",   runOrRaiseNext "libreoffice"        (className ~? "libreoffice"))
-  , ("M-i",   runOrRaiseNext "idea-community"     (className ~? "jetbrains-idea"))
+  , ("M-o",   runOrRaiseNext "libreoffice"             (className ~? "libreoffice"))
+  , ("M-i",   runOrRaiseNext "idea-community"          (className ~? "jetbrains-idea"))
 
-  , ("M-p",   runOrRaiseNext "inkscape"           (className =? "Inkscape"))
-  , ("M-S-p", runOrRaiseNext "skypeforlinux"      (className =? "Skype"))
-  , ("M-y",   runOrRaiseNext "rhythmbox"          (className =? "Rhythmbox"))
+  , ("M-p",   runOrRaiseNext "inkscape"                (className =? "Inkscape"))
+  , ("M-S-p", runOrRaiseNext "skypeforlinux"           (className =? "Skype"))
+  , ("M-y",   runOrRaiseNext "rhythmbox"               (className =? "Rhythmbox"))
 
-  , ("M-x",   runOrRaiseNext "steam"              (className =? "Steam"))
+  , ("M-x",   runOrRaiseNext "steam"                   (className =? "Steam"))
 
-  , ("M-d",   runOrRaiseNext "discord"            (className =? "discord"))
-  , ("M-S-d", runOrRaiseNext "jd.sh"              (className =? "Jdim"))
-  , ("M-h",   runOrRaiseNext "firefox"            (className =? "Firefox"))
-  , ("M-t",   runOrRaiseNext "lilyterm"           (className =? "LilyTerm"))
-  , ("M-n",   runOrRaiseNext "emacs"              (className =? "Emacs"))
-  , ("M-s",   runOrRaiseNext "mikutter"           (className =? "Mikutter.rb"))
-  , ("M--",   runOrRaiseNext "slack"              (className =? "Slack"))
+  , ("M-d",   runOrRaiseNext "discord"                 (className =? "discord"))
+  , ("M-S-d", runOrRaiseNext "jd.sh"                   (className =? "Jdim"))
+  , ("M-h",   runOrRaiseNext "firefox"                 (className =? "Firefox"))
+  , ("M-t",   runOrRaiseNext "lilyterm"                (className =? "LilyTerm"))
+  , ("M-n",   runOrRaiseNext "emacs"                   (className =? "Emacs"))
+  , ("M-s",   runOrRaiseNext "mikutter"                (className =? "Mikutter.rb"))
+  , ("M--",   runOrRaiseNext "slack"                   (className =? "Slack"))
 
-  , ("M-f",   runOrRaiseNext "nautilus"           (className =? "Org.gnome.Nautilus"))
-  , ("M-g",   runOrRaiseNext "gimp"               (className =? "Gimp"))
-  , ("M-c",   runOrRaiseNext "chromium"           (className =? "Chromium-browser-chromium"))
-  , ("M-r",   runOrRaiseNext "evince"             (className =? "Evince"))
+  , ("M-f",   runOrRaiseNext "nautilus"                (className =? "Org.gnome.Nautilus"))
+  , ("M-g",   runOrRaiseNext "gimp"                    (className =? "Gimp"))
+  , ("M-c",   runOrRaiseNext "chromium"                (className =? "Chromium-browser-chromium"))
+  , ("M-r",   runOrRaiseNext "evince"                  (className =? "Evince"))
 
-  , ("M-b",   runOrRaiseNext "keepassxc"          (className =? "KeePassXC"))
-  , ("M-m",   runOrRaiseNext "thunderbird"        (className =? "Thunderbird"))
-  , ("M-S-m", runOrRaiseNext "smplayer"           (className =? "smplayer"))
-  , ("M-v",   runOrRaiseNext "virtualbox"         (className =? "VirtualBox Machine" <||> className =? "VirtualBox Manager"))
-  , ("M-S-v", runOrRaiseNext "vlc"                (className =? "vlc"))
-  , ("M-w",   runOrRaiseNext "eog"                (className =? "Eog"))
-  , ("M-z",   runOrRaiseNext ".xmonad/copyq-show" (className =? "copyq"))
+  , ("M-b",   runOrRaiseNext "keepassxc"               (className =? "KeePassXC"))
+  , ("M-m",   runOrRaiseNext "thunderbird"             (className =? "Thunderbird"))
+  , ("M-S-m", runOrRaiseNext "smplayer"                (className =? "smplayer"))
+  , ("M-v",   runOrRaiseNext "virtualbox"              (className =? "VirtualBox Machine" <||> className =? "VirtualBox Manager"))
+  , ("M-S-v", runOrRaiseNext "vlc"                     (className =? "vlc"))
+  , ("M-w",   runOrRaiseNext "eog"                     (className =? "Eog"))
+  , ("M-z",   runOrRaiseNext ".xmonad/copyq-show"      (className =? "copyq"))
+  , ("M-S-z", runOrRaiseNext ".xmonad/zoom-workaround" (className =? "zoom"))
   ]
   <>
   M.fromList
