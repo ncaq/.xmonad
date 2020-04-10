@@ -1,2 +1,3 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
+set -eux
 exec xmonad-ncaq
