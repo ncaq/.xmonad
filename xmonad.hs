@@ -134,7 +134,11 @@ takeScreenshot = do
   home <- liftIO getHomeDirectory
   time <- liftIO $ formatTime defaultTimeLocale "%Y-%m-%d-%H-%M-%S" <$> getZonedTime
   let path = concat [home, "/Pictures/", "screenshot-", time, ".png"]
-  spawn $ concat ["import ", path, " && .xmonad/recent-add-item.py ", path]
+  spawn $ concat
+    ["import ", path, " && "
+    , ".xmonad/recent-add-item.py ", path, " && "
+    , "oxipng --strip safe ", path
+    ]
 
 -- | 使用しているタッチパッドの名前
 -- 現在使っているラップトップがAlienware m17しかないので決め打ちになってます
