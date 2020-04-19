@@ -40,13 +40,7 @@ myConfig = ewmh $ docks $ def
   }
 
 myPP :: PP
-myPP = def
-  { ppCurrent = wrap "[" "]"
-  , ppVisible = wrap "(" ")"
-  , ppSep = ":"
-  , ppWsSep = ""
-  , ppTitle = id
-  }
+myPP = xmobarPP{ppTitle = id}
 
 myManageHook :: ManageHook
 myManageHook = composeAll
