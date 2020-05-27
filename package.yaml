@@ -11,7 +11,7 @@ dependencies:
   - containers
   - directory
   - hostname
-  - regex-posix
+  - regex-tdfa
   - time
   - xmonad
   - xmonad-contrib

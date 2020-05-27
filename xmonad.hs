@@ -10,7 +10,7 @@ import           Network.HostName                 (getHostName)
 import           System.Directory                 (getHomeDirectory)
 import           System.Environment               (setEnv)
 import           System.Exit
-import           Text.Regex.Posix                 ((=~))
+import           Text.Regex.TDFA                  ((=~))
 import           XMonad
 import           XMonad.Actions.WindowGo
 import           XMonad.Hooks.DynamicLog
