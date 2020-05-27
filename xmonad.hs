@@ -174,7 +174,7 @@ myStartupHook = do
     spawn "xrdb ~/.Xresources"
   -- 各マルチディスプレイ設定
   when (hostName == "strawberry" && screensAmount == (3 :: Int)) $
-    spawn "xrandr --output HDMI-1 --primary --output HDMI-0 --left-of HDMI-1 --output DVI-D-0 --right-of HDMI-1"
+    spawn "xrandr --output DP-0 --primary --output DP-2 --left-of DP-0 --output HDMI-0 --right-of DP-0"
   when (hostName == "indigo") $ do
     -- 場当たり対処ですがxkbsetをウィンドウマネージャのセットアップ前に動かすと効かないようなので
     -- 対処療法として`sleep`で待機させます
