@@ -46,6 +46,7 @@ myManageHook :: ManageHook
 myManageHook = composeAll
   [ isDialog                   --> doFullFloat
   , className =? "Mikutter.rb" --> doShift "2"
+  , className =? "LilyTerm"    --> doShift "3"
   , return True                --> doShift "1"
   ]
 
