@@ -80,11 +80,11 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
   , ("<Pause>", toggleTouchPad)   -- 本当はT-Padキーに割り当てたかったのですがxmodmapを使っても認識できなかった
   , ("M-l", spawn "dm-tool lock") -- M-lにロックを割り当てて置かないとファンクションキーも動かなくなる
   -- move to application
-  , ("M-S-a", runOrRaiseNext "pavucontrol"             (className ~? "Pavucontrol"))
   , ("M-o",   runOrRaiseNext "libreoffice"             (className ~? "libreoffice"))
-  , ("M-i",   runOrRaiseNext "idea-community"          (className ~? "jetbrains-idea"))
+  , ("M-i",   runOrRaiseNext "inkscape"                (className =? "Inkscape"))
+  , ("M-S-i", runOrRaiseNext "idea-community"          (className ~? "jetbrains-idea"))
 
-  , ("M-p",   runOrRaiseNext "inkscape"                (className =? "Inkscape"))
+  , ("M-p",   runOrRaiseNext "pavucontrol"             (className ~? "Pavucontrol"))
   , ("M-S-p", runOrRaiseNext "skypeforlinux"           (className =? "Skype"))
   , ("M-y",   runOrRaiseNext "rhythmbox"               (className =? "Rhythmbox"))
 
