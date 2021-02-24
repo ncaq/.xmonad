@@ -1,8 +1,10 @@
 {-# LANGUAGE NamedFieldPuns    #-}
 {-# LANGUAGE OverloadedStrings #-}
 
+module Main (main) where
+
 import           Control.Monad
-import           Data.List
+import           Data.List                        (find, isPrefixOf)
 import qualified Data.Map.Strict                  as M
 import           Data.Time.Format
 import           Data.Time.LocalTime
