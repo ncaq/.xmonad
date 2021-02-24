@@ -145,8 +145,8 @@ takeScreenshot = do
 
 -- | GTKの最近使ったファイルリストにファイルを追加します
 recentAddItem :: FilePath -> IO ThreadId
-recentAddItem filePath = forkIO $ do
-  _ <- Gtk.init Nothing
+recentAddItem filePath = forkIO $ do -- `forkIO`しないとxmonad自体が終了してしまいます。
+  _ <- Gtk.init Nothing              -- Gtk.initしないとアプリケーション名が存在しないと言う警告が出ます
   recentManager <- G.recentManagerGetDefault
   _ <- G.recentManagerAddItem recentManager $ toTextStrict $ "file://" <> filePath
   _ <- G.idleAdd G.PRIORITY_DEFAULT_IDLE $ do
