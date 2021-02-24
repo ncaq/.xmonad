@@ -3,11 +3,17 @@
 
 module Main (main) where
 
+import           Control.Concurrent
 import           Control.Monad
 import           Data.List                        (find, isPrefixOf)
 import qualified Data.Map.Strict                  as M
+import           Data.String.Transform
 import           Data.Time.Format
 import           Data.Time.LocalTime
+import qualified GI.GLib.Constants                as G
+import qualified GI.GLib.Functions                as G
+import qualified GI.Gtk                           as Gtk
+import qualified GI.Gtk.Objects.RecentManager     as G
 import           Network.HostName                 (getHostName)
 import           System.Directory                 (getHomeDirectory)
 import           System.Environment               (setEnv)
@@ -132,11 +138,21 @@ takeScreenshot = do
   home <- liftIO getHomeDirectory
   time <- liftIO $ formatTime defaultTimeLocale "%Y-%m-%d-%H-%M-%S" <$> getZonedTime
   let path = concat [home, "/Pictures/", "screenshot-", time, ".png"]
-  spawn $ concat
-    ["import ", path, " && "
-    , ".xmonad/recent-add-item.py ", path, " && "
-    , "oxipng --strip safe ", path
-    ]
+  _ <- runProcessWithInput "import" [path] ""
+  _ <- liftIO $ recentAddItem path
+  _ <- runProcessWithInput "oxipng" ["--strip", "safe", path] ""
+  return ()
+
+-- | GTKの最近使ったファイルリストにファイルを追加します
+recentAddItem :: FilePath -> IO ThreadId
+recentAddItem filePath = forkIO $ do
+  _ <- Gtk.init Nothing
+  recentManager <- G.recentManagerGetDefault
+  _ <- G.recentManagerAddItem recentManager $ toTextStrict $ "file://" <> filePath
+  _ <- G.idleAdd G.PRIORITY_DEFAULT_IDLE $ do
+    Gtk.mainQuit
+    return True
+  Gtk.main
 
 -- | 使用しているタッチパッドの名前
 -- 現在使っているラップトップがAlienware m17しかないので決め打ちになってます
