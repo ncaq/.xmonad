@@ -6,6 +6,26 @@ author: ncaq
 maintainer: ncaq@ncaq.net
 copyright: © ncaq
 license: MIT
+
+ghc-options:
+  - -Wall
+  # - -Wall-missed-specialisations
+  - -Widentities
+  # - -Wimplicit-prelude
+  - -Wincomplete-record-updates
+  - -Wincomplete-uni-patterns
+  # - -Wmissed-specialisations
+  # - -Wmissing-export-lists
+  - -Wmissing-exported-signatures
+  - -Wmissing-home-modules
+  # - -Wmissing-import-lists
+  # - -Wmissing-local-signatures
+  # - -Wmonomorphism-restriction
+  # - -Wpartial-fields
+  - -Wredundant-constraints
+  - -Wcompat
+  - -O2
+
 dependencies:
   - base
   - containers
@@ -18,22 +38,5 @@ dependencies:
 
 executables:
   xmonad-ncaq:
-    main: xmonad.hs
-    ghc-options:
-      - -Wall
-      # - -Wall-missed-specialisations
-      - -Widentities
-      # - -Wimplicit-prelude
-      - -Wincomplete-record-updates
-      - -Wincomplete-uni-patterns
-      # - -Wmissed-specialisations
-      # - -Wmissing-export-lists
-      - -Wmissing-exported-signatures
-      - -Wmissing-home-modules
-      # - -Wmissing-import-lists
-      # - -Wmissing-local-signatures
-      # - -Wmonomorphism-restriction
-      # - -Wpartial-fields
-      - -Wredundant-constraints
-      - -Wcompat
-      - -O2
+    main: Main.hs
+    source-dirs: src
