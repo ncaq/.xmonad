@@ -1,6 +1,4 @@
-{-# LANGUAGE NamedFieldPuns    #-}
-{-# LANGUAGE OverloadedStrings #-}
-
+{-# LANGUAGE NamedFieldPuns #-}
 module Main (main) where
 
 import           Control.Concurrent
@@ -127,12 +125,12 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
   , (f, m) <- [(greedyView, shiftMask), (shift, 0)]
   ]
 
--- | 正規表現でクラスネームをマッチさせる
--- LibreOfficeはパターンが多いので
+-- | 正規表現でクラスネームをマッチさせます
+-- 主にパターンが多いLibreOffice用に必要になります
 (~?) :: Query String -> String -> Query Bool
 a ~? b = fmap (=~ b) a
 
--- | スクリーンショットを取得
+-- | スクリーンショットを取得します
 takeScreenshot :: X ()
 takeScreenshot = do
   home <- liftIO getHomeDirectory
@@ -159,8 +157,8 @@ recentAddItem filePath = forkIO $ do -- `forkIO`しないとxmonad自体が終�
 touchPadName :: String
 touchPadName = "SynPS/2 Synaptics TouchPad"
 
--- | タッチパッドが有効なのか無効なのか判定する
--- 存在しない場合も意味的には無効扱いする
+-- | タッチパッドが有効なのか無効なのか判定します
+-- 存在しない場合も意味的には無効扱いします
 getTouchPadEnable :: X Bool
 getTouchPadEnable = do
   mDeviceEnabledLine <-
@@ -170,7 +168,7 @@ getTouchPadEnable = do
     Nothing                -> False
     Just deviceEnabledLine -> last deviceEnabledLine == '1'
 
--- | タッチパッドの有効無効をトグルする
+-- | タッチパッドの有効無効をトグルします
 toggleTouchPad :: X ()
 toggleTouchPad = do
   touchPadEnable <- getTouchPadEnable
