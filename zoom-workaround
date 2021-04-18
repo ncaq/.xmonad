@@ -1,2 +1,0 @@
-#!/usr/bin/env zsh
-LD_PRELOAD=/usr/lib64/libv4l/v4l2convert.so exec zoom

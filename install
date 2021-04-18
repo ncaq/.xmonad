@@ -1,3 +1,4 @@
-#!/usr/bin/env zsh
+#!/bin/zsh
 set -eux
 stack install . xmobar --flag xmobar:with_xft --flag xmobar:with_datezone
+cp script/* ~/.local/bin/

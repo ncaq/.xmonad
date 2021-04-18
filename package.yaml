@@ -41,7 +41,6 @@ executables:
       - xmonad-launch
 
     ghc-options:
-      - -O2
       - -threaded
       - -rtsopts
       - -with-rtsopts=-4

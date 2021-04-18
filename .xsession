@@ -1,2 +1,2 @@
-#!/usr/bin/env zsh
+#!/bin/bash
 exec xmonad-launch

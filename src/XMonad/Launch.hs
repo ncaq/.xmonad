@@ -96,7 +96,7 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
 
   , ("M-x",   runOrRaiseNext "steam"                   (className =? "Steam"))
 
-  , ("M-d",   runOrRaiseNext "discord"                 (className =? "discord"))
+  , ("M-d",   runOrRaiseNext "discord-fix-pulse"       (className =? "discord"))
   , ("M-S-d", runOrRaiseNext "jd.sh"                   (className =? "Jdim"))
   , ("M-h",   runOrRaiseNext "firefox"                 (className =? "Firefox"))
   , ("M-t",   runOrRaiseNext "lilyterm"                (className =? "LilyTerm"))
@@ -115,8 +115,8 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
   , ("M-v",   runOrRaiseNext "virtualbox"              (className =? "VirtualBox Machine" <||> className =? "VirtualBox Manager"))
   , ("M-S-v", runOrRaiseNext "vlc"                     (className =? "vlc"))
   , ("M-w",   runOrRaiseNext "eog"                     (className =? "Eog"))
-  , ("M-z",   runOrRaiseNext ".xmonad/copyq-show"      (className =? "copyq"))
-  , ("M-S-z", runOrRaiseNext ".xmonad/zoom-workaround" (className =? "zoom"))
+  , ("M-z",   runOrRaiseNext "copyq-show"              (className =? "copyq"))
+  , ("M-S-z", runOrRaiseNext "zoom-fix-v4l"            (className =? "zoom"))
   ]
   <>
   M.fromList
@@ -184,7 +184,6 @@ myStartupHook = do
     setEnv "QT_IM_MODULE" "ibus"
     setEnv "XMODIFIERS" "@im=ibus"
     setEnv "_JAVA_AWT_WM_NONREPARENTING" "1"
-    setEnv "PULSE_LATENCY_MSEC" "90" -- Discordのノイズ対策
   -- DPI設定
   spawn "xrdb ~/.Xresources"
   -- 各デバイス専用設定
