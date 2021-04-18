@@ -1,4 +1,4 @@
 #!/bin/bash
 # 設定しないと主に話し始めにものすごいノイズが乗ります
-PULSE_LATENCY_MSEC=90
+export PULSE_LATENCY_MSEC=90
 exec discord
