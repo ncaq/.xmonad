@@ -206,8 +206,6 @@ myStartupHook = do
       2 -> spawn "xrandr --output eDP-1-1 --primary --output DP-1-1 --left-of eDP-1-1"
       3 -> spawn "xrandr --output eDP-1-1 --primary --output DP-1-1 --left-of eDP-1-1 --output DP-0 --right-of eDP-1-1"
       _ -> return ()
-  when (hostName == "karen" && screensAmount == (2 :: Int)) $
-    spawn "xrandr --output eDP-1 --primary --output DP-1 --above eDP-1"
   let trayerHeight = case hostName of
         "strawberry" -> "31"
         "indigo"     -> "31"
