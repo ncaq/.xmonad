@@ -110,13 +110,13 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
   , ("M-r",   runOrRaiseNext "evince"                  (className =? "Evince"))
 
   , ("M-b",   runOrRaiseNext "keepassxc"               (className =? "KeePassXC"))
+  , ("M-S-b", runOrRaiseNext "virtualbox"              (className =? "VirtualBox Machine" <||> className =? "VirtualBox Manager"))
   , ("M-m",   runOrRaiseNext "thunderbird"             (className =? "Thunderbird"))
   , ("M-S-m", runOrRaiseNext "smplayer"                (className =? "smplayer"))
-  , ("M-v",   runOrRaiseNext "virtualbox"              (className =? "VirtualBox Machine" <||> className =? "VirtualBox Manager"))
-  , ("M-S-v", runOrRaiseNext "vlc"                     (className =? "vlc"))
   , ("M-w",   runOrRaiseNext "eog"                     (className =? "Eog"))
-  , ("M-z",   runOrRaiseNext "copyq-show"              (className =? "copyq"))
-  , ("M-S-z", runOrRaiseNext "zoom-fix-v4l"            (className =? "zoom"))
+  , ("M-v",   runOrRaiseNext "copyq-show"              (className =? "copyq"))
+  , ("M-S-v", runOrRaiseNext "vlc"                     (className =? "vlc"))
+  , ("M-z",   runOrRaiseNext "zoom-fix-v4l"            (className =? "zoom"))
   ]
   <>
   M.fromList
