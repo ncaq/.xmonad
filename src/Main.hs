@@ -187,29 +187,15 @@ myStartupHook = do
     setEnv "XMODIFIERS" "@im=ibus"
     setEnv "_JAVA_AWT_WM_NONREPARENTING" "1"
     setEnv "PULSE_LATENCY_MSEC" "90" -- Discordのノイズ対策
-  hostName <- liftIO getHostName
-  screensAmount <- countScreens
   -- DPI設定
-  when (hostName == "strawberry" || hostName == "indigo") $
-    spawn "xrdb ~/.Xresources"
-  -- 各マルチディスプレイ設定
-  when (hostName == "strawberry" && screensAmount == (3 :: Int)) $
-    spawn "xrandr --output DP-0 --primary --output DP-2 --left-of DP-0 --output HDMI-0 --right-of DP-0"
-  when (hostName == "indigo") $ do
-    -- 場当たり対処ですがxkbsetをウィンドウマネージャのセットアップ前に動かすと効かないようなので
-    -- 対処療法として`sleep`で待機させます
-    -- どのタイミングで設定可能になるのかわからないのでEvent見るわけにもいかないのでsleep
-    -- 起動直後に有効になっている必要性はないので待ってもそこまで問題ではない
-    -- xkbsetの後にxkeysnailを再起動しないと一部のキーシーケンスがうまく動かない
-    spawn "sleep 10 && systemctl --user restart xkbset-bouncekeys"
-    case screensAmount of
-      2 -> spawn "xrandr --output eDP-1-1 --primary --output DP-1-1 --left-of eDP-1-1"
-      3 -> spawn "xrandr --output eDP-1-1 --primary --output DP-1-1 --left-of eDP-1-1 --output DP-0 --right-of eDP-1-1"
-      _ -> return ()
-  let trayerHeight = case hostName of
-        "strawberry" -> "31"
-        "indigo"     -> "31"
-        _            -> "22"
+  spawn "xrdb ~/.Xresources"
+  -- 各デバイス専用設定
+  hostName <- liftIO getHostName
+  case hostName of
+    "strawberry" -> myStartupHookStrawberry
+    "indigo"     -> myStartupHookIndigo
+    _            -> return ()
+  let trayerHeight = "32"
   spawn $
     "trayer-srg --edge top --align right --widthtype percent --width 10 --heighttype pixel --height " <>
     trayerHeight <>
@@ -219,3 +205,23 @@ myStartupHook = do
   spawn "copyq"
   spawn "kdeconnect-indicator"
   spawn "systemctl --user restart xkeysnail"
+
+myStartupHookStrawberry :: X ()
+myStartupHookStrawberry = do
+  screensAmount <- countScreens :: MonadIO m => m Int
+  when (screensAmount == 3) $
+    spawn "xrandr --output DP-0 --primary --output DP-2 --left-of DP-0 --output HDMI-0 --right-of DP-0"
+
+myStartupHookIndigo :: X ()
+myStartupHookIndigo = do
+  -- xkbsetをウィンドウマネージャのセットアップ前に動かすと効かないようなので
+  -- 対処療法として`sleep`で待機させます
+  -- どのタイミングで設定可能になるのかわからないのでEvent見るわけにもいかないのでsleep
+  -- 起動直後に有効になっている必要性はないので待ってもそこまで問題ではない
+  -- xkbsetの後にxkeysnailを再起動しないと一部のキーシーケンスがうまく動かない
+  spawn "sleep 10 && systemctl --user restart xkbset-bouncekeys"
+  screensAmount <- countScreens :: MonadIO m => m Int
+  case screensAmount of
+    2 -> spawn "xrandr --output eDP-1-1 --primary --output DP-1-1 --left-of eDP-1-1"
+    3 -> spawn "xrandr --output eDP-1-1 --primary --output DP-1-1 --left-of eDP-1-1 --output DP-0 --right-of eDP-1-1"
+    _ -> return ()
