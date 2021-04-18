@@ -1,2 +1,2 @@
 #!/usr/bin/env zsh
-exec xmonad-ncaq
+exec xmonad-launch

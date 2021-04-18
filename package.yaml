@@ -1,4 +1,4 @@
-name: xmonad-ncaq
+name: xmonad-launch
 version: 0.1.0
 synopsis: It is my xmonad and xmobar setting
 github: ncaq/.xmonad
@@ -40,6 +40,6 @@ dependencies:
   - xmonad-contrib
 
 executables:
-  xmonad-ncaq:
+  xmonad-launch:
     main: Main.hs
     source-dirs: src
