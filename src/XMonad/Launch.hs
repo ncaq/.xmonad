@@ -1,5 +1,5 @@
 {-# LANGUAGE NamedFieldPuns #-}
-module Main (main) where
+module XMonad.Launch (appMain) where
 
 import           Control.Concurrent
 import           Control.Monad
@@ -29,8 +29,8 @@ import           XMonad.StackSet
 import           XMonad.Util.EZConfig
 import           XMonad.Util.Run
 
-main :: IO ()
-main = statusBar "xmobar" myPP (\XConfig{modMask} -> (modMask, xK_u)) myConfig >>= launch
+appMain :: IO ()
+appMain = statusBar "xmobar" myPP (\XConfig{modMask} -> (modMask, xK_u)) myConfig >>= launch
 
 myConfig :: XConfig (Choose Full (Choose (Mirror Tall) SpiralWithDir))
 myConfig = ewmh $ docks $ def

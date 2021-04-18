@@ -30,7 +30,18 @@ dependencies:
   - xmonad
   - xmonad-contrib
 
+library:
+  source-dirs: src
+
 executables:
   xmonad-launch:
     main: Main.hs
-    source-dirs: src
+    source-dirs: app
+    dependencies:
+      - xmonad-launch
+
+    ghc-options:
+      - -O2
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-4
