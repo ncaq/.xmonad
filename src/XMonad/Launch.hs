@@ -2,7 +2,6 @@
 module XMonad.Launch (appMain) where
 
 import           Control.Concurrent
-import           Control.Monad
 import           Data.List                        (find, isPrefixOf)
 import qualified Data.Map.Strict                  as M
 import           Data.String.Transform
