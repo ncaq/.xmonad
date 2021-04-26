@@ -18,6 +18,7 @@ import           System.Environment               (setEnv)
 import           System.Exit
 import           Text.Regex.TDFA                  ((=~))
 import           XMonad
+import           XMonad.Actions.SwapWorkspaces
 import           XMonad.Actions.WindowGo
 import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.EwmhDesktops
@@ -205,9 +206,9 @@ myStartupHook = do
 
 myStartupHookStrawberry :: X ()
 myStartupHookStrawberry = do
-  screensAmount <- countScreens :: MonadIO m => m Int
-  when (screensAmount == 3) $
-    spawn "xrandr --output DP-0 --primary --output DP-2 --left-of DP-0 --output HDMI-0 --right-of DP-0"
+  spawn "xrandr --output DP-0 --primary --output DP-2 --right-of DP-0 --output DP-4 --left-of DP-0 --output HDMI-0 --above DP-0"
+  windows $ swapWorkspaces "2" "3"
+  windows $ swapWorkspaces "3" "4"
 
 myStartupHookIndigo :: X ()
 myStartupHookIndigo = do
