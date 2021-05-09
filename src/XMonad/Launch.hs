@@ -172,10 +172,15 @@ getTouchPadEnable = do
 toggleTouchPad :: X ()
 toggleTouchPad = do
   touchPadEnable <- getTouchPadEnable
-  let command = if touchPadEnable
-        then "disable"
-        else "enable"
-  safeSpawn "xinput" [command, touchPadName]
+  if touchPadEnable
+    then disableTouchPad
+    else enableTouchPad
+
+disableTouchPad :: X ()
+disableTouchPad = safeSpawn "xinput" ["disable", touchPadName]
+
+enableTouchPad :: X ()
+enableTouchPad = safeSpawn "xinput" ["enable", touchPadName]
 
 myStartupHook :: X ()
 myStartupHook = do
@@ -211,6 +216,7 @@ myStartupHookStrawberry = do
 
 myStartupHookIndigo :: X ()
 myStartupHookIndigo = do
+  disableTouchPad
   -- xkbsetをウィンドウマネージャのセットアップ前に動かすと効かないようなので
   -- 対処療法として`sleep`で待機させます
   -- どのタイミングで設定可能になるのかわからないのでEvent見るわけにもいかないのでsleep
