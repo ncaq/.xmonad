@@ -30,26 +30,49 @@ import           XMonad.Util.EZConfig
 import           XMonad.Util.Run
 
 appMain :: IO ()
-appMain = statusBar "xmobar" myPP (\XConfig{modMask} -> (modMask, xK_u)) myConfig >>= launch
+appMain = do
+  myConfig <- mkMyConfig
+  bar <- statusBar "xmobar" myPP (\XConfig{modMask} -> (modMask, xK_u)) myConfig
+  launch bar
 
-myConfig :: XConfig (Choose Full (Choose (Mirror Tall) SpiralWithDir))
-myConfig = ewmh $ docks $ def
-  { terminal = "lilyterm"
-  , layoutHook = Full ||| Mirror (Tall 0 (3 / 100) 1) ||| spiral (4 / 3)
-  , manageHook = myManageHook
-  , handleEventHook = ewmhDesktopsEventHook <+> fullscreenEventHook
-  , modMask = mod4Mask
-  , XMonad.keys = myKeys
-  , borderWidth = 0
-  , startupHook = myStartupHook
-  , focusFollowsMouse = False
-  }
+mkMyConfig :: MonadIO m => m (XConfig (Choose Full (Choose (Mirror Tall) SpiralWithDir)))
+mkMyConfig = do
+  myManageHook <- mkMyManageHook
+  return $ ewmh $ docks $ def
+    { terminal = "lilyterm"
+    , layoutHook = Full ||| Mirror (Tall 0 (3 / 100) 1) ||| spiral (4 / 3)
+    , manageHook = myManageHook
+    , handleEventHook = ewmhDesktopsEventHook <+> fullscreenEventHook
+    , modMask = mod4Mask
+    , XMonad.keys = myKeys
+    , borderWidth = 0
+    , startupHook = myStartupHook
+    , focusFollowsMouse = False
+    }
 
 myPP :: PP
 myPP = xmobarPP{ppTitle = id}
 
-myManageHook :: ManageHook
-myManageHook = composeAll
+mkMyManageHook :: MonadIO m => m ManageHook
+mkMyManageHook = do
+  screensAmount <- countScreens :: MonadIO m => m Int
+  return $ if screensAmount <= 2
+    then mySingleMonitorManageHook
+    else myMultiMonitorManageHook
+
+-- | モニタ数が2つ以下の場合に使われる `ManageHook` です。
+-- マルチモニタでない部分に複数ワークスペース生成が行われた場合、
+-- ワークスペース3にいるときにもワークスペース1にダイアログが表示されたりして不便なため、
+-- なるべく一つしかワークスペースを使わないようにします。
+mySingleMonitorManageHook :: ManageHook
+mySingleMonitorManageHook = composeAll
+  [ isDialog    --> doFullFloat
+  , return True --> doShift "1"
+  ]
+
+-- | モニタ数が3つ以上の場合に使われる `ManageHook` です。
+myMultiMonitorManageHook :: ManageHook
+myMultiMonitorManageHook = composeAll
   [ isDialog                   --> doFullFloat
   , className =? "Mikutter.rb" --> doShift "2"
   , className =? "LilyTerm"    --> doShift "3"
