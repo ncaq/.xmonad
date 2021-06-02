@@ -110,6 +110,7 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
   , ("M-l", spawn "dm-tool lock") -- M-lにロックを割り当てて置かないとファンクションキーも動かなくなる
   -- move to application
   , ("M-o",   runOrRaiseNext "libreoffice"             (className ~? "libreoffice"))
+  , ("M-S-o", runOrRaiseNext "obs"                     (className ~? "obs"))
   , ("M-i",   runOrRaiseNext "inkscape"                (className =? "Inkscape"))
   , ("M-S-i", runOrRaiseNext "idea-community"          (className ~? "jetbrains-idea"))
 
