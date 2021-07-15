@@ -56,7 +56,7 @@ myPP = xmobarPP{ppTitle = id}
 mkMyManageHook :: MonadIO m => m ManageHook
 mkMyManageHook = do
   screensAmount <- countScreens :: MonadIO m => m Int
-  return $ if screensAmount <= 2
+  return $ if screensAmount == 4
     then mySingleMonitorManageHook
     else myMultiMonitorManageHook
 
@@ -75,7 +75,7 @@ myMultiMonitorManageHook :: ManageHook
 myMultiMonitorManageHook = composeAll
   [ isDialog                   --> doFullFloat
   , className =? "Mikutter.rb" --> doShift "2"
-  , className =? "LilyTerm"    --> doShift "3"
+  , className =? "LilyTerm"    --> doShift "4"
   , return True                --> doShift "1"
   ]
 
