@@ -56,9 +56,9 @@ myPP = xmobarPP{ppTitle = id}
 mkMyManageHook :: MonadIO m => m ManageHook
 mkMyManageHook = do
   screensAmount <- countScreens :: MonadIO m => m Int
-  return $ if screensAmount == 4
-    then mySingleMonitorManageHook
-    else myMultiMonitorManageHook
+  return $ if 4 <= screensAmount
+    then myMultiMonitorManageHook
+    else mySingleMonitorManageHook
 
 -- | モニタ数が2つ以下の場合に使われる `ManageHook` です。
 -- マルチモニタでない部分に複数ワークスペース生成が行われた場合、
