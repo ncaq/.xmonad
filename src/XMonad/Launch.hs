@@ -226,10 +226,11 @@ myStartupHook = do
     "trayer-srg --edge top --align right --widthtype percent --width 10 --heighttype pixel --height " <>
     trayerHeight <>
     " --monitor primary"
-  spawn "nm-applet"
-  spawn "ibus-daemon --xim --replace"
   spawn "copyq"
+  spawn "ibus-daemon --xim --replace"
   spawn "kdeconnect-indicator"
+  spawn "nm-applet"
+  spawn "birdtray"
   spawn "systemctl --user restart xkeysnail"
 
 myStartupHookStrawberry :: X ()
