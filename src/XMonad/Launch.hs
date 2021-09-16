@@ -17,7 +17,6 @@ import           System.Environment               (setEnv)
 import           System.Exit
 import           Text.Regex.TDFA                  ((=~))
 import           XMonad
-import           XMonad.Actions.SwapWorkspaces
 import           XMonad.Actions.WindowGo
 import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.EwmhDesktops
@@ -74,8 +73,8 @@ mySingleMonitorManageHook = composeAll
 myMultiMonitorManageHook :: ManageHook
 myMultiMonitorManageHook = composeAll
   [ isDialog                   --> doFullFloat
-  , className =? "Mikutter.rb" --> doShift "2"
-  , className =? "LilyTerm"    --> doShift "4"
+  , className =? "Mikutter.rb" --> doShift "3"
+  , className =? "LilyTerm"    --> doShift "2"
   , return True                --> doShift "1"
   ]
 
@@ -234,10 +233,8 @@ myStartupHook = do
   spawn "systemctl --user restart xkeysnail"
 
 myStartupHookStrawberry :: X ()
-myStartupHookStrawberry = do
+myStartupHookStrawberry =
   spawn "xrandr --output DP-0 --primary --output DP-2 --right-of DP-0 --output DP-4 --left-of DP-0 --output HDMI-0 --above DP-0"
-  windows $ swapWorkspaces "2" "3"
-  windows $ swapWorkspaces "3" "4"
 
 myStartupHookIndigo :: X ()
 myStartupHookIndigo = do
