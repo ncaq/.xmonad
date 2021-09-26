@@ -20,12 +20,12 @@ ghc-options:
 dependencies:
   - base
   - containers
+  - convertible
   - directory
   - gi-glib
   - gi-gtk
   - hostname
   - regex-tdfa
-  - string-transform
   - time
   - xmonad
   - xmonad-contrib
