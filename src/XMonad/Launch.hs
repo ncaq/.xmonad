@@ -1,10 +1,12 @@
 {-# LANGUAGE NamedFieldPuns #-}
+{-# LANGUAGE StrictData     #-}
 module XMonad.Launch (appMain) where
 
 import           Control.Concurrent
 import           Data.Convertible
 import           Data.List                        (find, isPrefixOf)
 import qualified Data.Map.Strict                  as M
+import           Data.Text                        (Text)
 import           Data.Time.Format
 import           Data.Time.LocalTime
 import qualified GI.GLib.Constants                as G
@@ -28,6 +30,22 @@ import           XMonad.StackSet
 import           XMonad.Util.EZConfig
 import           XMonad.Util.Run
 
+-- | 使ってるコンピュータの種類。
+data HostChassis
+  = HostChassisDesktop
+  | HostChassisLaptop
+  | HostChassisOther Text
+  deriving (Eq, Ord, Show, Read)
+
+-- | systemdを利用してコンピュータの種類を取得します。
+getHostChassis :: MonadIO m => m HostChassis
+getHostChassis = do
+  r <- runProcessWithInput "hostnamectl" ["chassis"] ""
+  return $ case trim r of
+    "desktop" -> HostChassisDesktop
+    "laptop"  -> HostChassisLaptop
+    other     -> HostChassisOther $ convert other
+
 appMain :: IO ()
 appMain = do
   myConfig <- mkMyConfig
@@ -37,13 +55,14 @@ appMain = do
 mkMyConfig :: MonadIO m => m (XConfig (Choose Full (Choose (Mirror Tall) SpiralWithDir)))
 mkMyConfig = do
   myManageHook <- mkMyManageHook
+  hostChassis <- getHostChassis
   return $ ewmh $ docks $ def
     { terminal = "lilyterm"
     , layoutHook = Full ||| Mirror (Tall 0 (3 / 100) 1) ||| spiral (4 / 3)
     , manageHook = myManageHook
     , handleEventHook = ewmhDesktopsEventHook <+> fullscreenEventHook
     , modMask = mod4Mask
-    , XMonad.keys = myKeys
+    , XMonad.keys = myKeys hostChassis
     , borderWidth = 0
     , startupHook = myStartupHook
     , focusFollowsMouse = False
@@ -78,8 +97,8 @@ myMultiMonitorManageHook = composeAll
   , return True                --> doShift "1"
   ]
 
-myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
-myKeys conf@XConfig{modMask} = mkKeymap conf
+myKeys :: HostChassis -> XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
+myKeys hostChassis conf@XConfig{modMask} = mkKeymap conf
   [ ("M-q", kill)
   , ("M-S-q", io exitSuccess)
   , ("M-<Space>", sendMessage NextLayout)
@@ -105,8 +124,6 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
   , ("<XF86AudioRaiseVolume>", spawn "pactl set-sink-volume @DEFAULT_SINK@ +1%")
   -- misc
   , ("<Print>", takeScreenshot)
-  , ("<Pause>", toggleTouchPad)   -- 本当はT-Padキーに割り当てたかったのですがxmodmapを使っても認識できなかった
-  , ("M-l", spawn "dm-tool lock") -- M-lにロックを割り当てて置かないとファンクションキーも動かなくなる
   -- move to application
   , ("M-o",   runOrRaiseNext "libreoffice"             (className ~? "libreoffice"))
   , ("M-S-o", runOrRaiseNext "obs"                     (className ~? "obs"))
@@ -147,6 +164,14 @@ myKeys conf@XConfig{modMask} = mkKeymap conf
   | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
   , (f, m) <- [(greedyView, shiftMask), (shift, 0)]
   ]
+  <>
+  laptopKeys
+  where laptopKeys = mkKeymap conf $
+          if hostChassis == HostChassisLaptop
+          then [ ("<Pause>", toggleTouchPad)   -- 本当はT-Padキーに割り当てたかったのですがxmodmapを使っても認識できなかった。
+               , ("M-l", spawn "dm-tool lock") -- M-lにロックを割り当てておかないとロックファンクションキーも動かなくなる。
+               ]
+          else []
 
 -- | 正規表現でクラスネームをマッチさせます
 -- 主にパターンが多いLibreOffice用に必要になります

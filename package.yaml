@@ -26,6 +26,7 @@ dependencies:
   - gi-gtk
   - hostname
   - regex-tdfa
+  - text
   - time
   - xmonad
   - xmonad-contrib
