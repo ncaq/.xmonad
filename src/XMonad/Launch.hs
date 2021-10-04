@@ -245,6 +245,7 @@ myStartupHook = do
     "strawberry" -> myStartupHookStrawberry
     "indigo"     -> myStartupHookIndigo
     _            -> return ()
+  setDpms
   let trayerHeight = "32"
   spawn $
     "trayer-srg --edge top --align right --widthtype percent --width 10 --heighttype pixel --height " <>
@@ -275,3 +276,15 @@ myStartupHookIndigo = do
     2 -> spawn "xrandr --output eDP-1-1 --primary --output DP-1-1 --left-of eDP-1-1"
     3 -> spawn "xrandr --output eDP-1-1 --primary --output DP-1-1 --left-of eDP-1-1 --output DP-0 --right-of eDP-1-1"
     _ -> return ()
+
+-- | [Display Power Management Signaling - ArchWiki](https://wiki.archlinux.jp/index.php/Display_Power_Management_Signaling)
+-- をコンピュータのクラスに基づいて設定します。
+setDpms :: MonadIO m => m ()
+setDpms = do
+  c <- getHostChassis
+  case c of
+    -- デスクトップは画面消灯無効。
+    HostChassisDesktop -> spawn "xset s off -dpms"
+    -- ラップトップは一応30分で消灯するようにしておきます。
+    HostChassisLaptop  -> spawn "xset dpms 1800 1800 1800"
+    _                  -> return ()
