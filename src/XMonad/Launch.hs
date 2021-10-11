@@ -258,10 +258,21 @@ myStartupHook = do
   spawn "birdtray"
   spawn "systemctl --user restart xkeysnail"
 
+-- | ホスト名Strawberryのデスクトップ環境での初期設定。
 myStartupHookStrawberry :: X ()
-myStartupHookStrawberry =
-  spawn "xrandr --output DP-0 --primary --output DP-2 --right-of DP-0 --output DP-4 --left-of DP-0 --output HDMI-0 --above DP-0"
+myStartupHookStrawberry = do
+  screensAmount <- countScreens :: MonadIO m => m Int
+  case screensAmount of
+    -- Switchなどが中央画面奪った時のモニタ環境。
+    3 ->
+      spawn "xrandr --output DP-4 --primary --output DP-2 --right-of DP-4 --output HDMI-0 --above DP-4"
+    -- 通常のフルで使えるモニタ環境。
+    4 ->
+      spawn "xrandr --output DP-0 --primary --output DP-2 --right-of DP-0 --output DP-4 --left-of DP-0 --output HDMI-0 --above DP-0"
+    -- フォールバック。(何もしない)
+    _ -> return ()
 
+-- | ホスト名Indigoのラップトップ環境での初期設定。
 myStartupHookIndigo :: X ()
 myStartupHookIndigo = do
   disableTouchPad
