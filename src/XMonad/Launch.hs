@@ -74,7 +74,7 @@ myPP = xmobarPP{ppTitle = id}
 mkMyManageHook :: MonadIO m => m ManageHook
 mkMyManageHook = do
   screensAmount <- countScreens :: MonadIO m => m Int
-  return $ if screensAmount < 4
+  return $ if screensAmount < 3
     then mySingleMonitorManageHook
     else myMultiMonitorManageHook
 
@@ -85,7 +85,6 @@ mkMyManageHook = do
 mySingleMonitorManageHook :: ManageHook
 mySingleMonitorManageHook = composeAll
   [ isDialog    --> doFullFloat
-  , return True --> doShift "1"
   ]
 
 -- | モニタ数が3つ以上の場合に使われる `ManageHook` です。
