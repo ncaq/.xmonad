@@ -264,7 +264,7 @@ myStartupHookStrawberry = do
   case screensAmount of
     -- Switchなどが中央画面奪った時のモニタ環境。
     3 ->
-      spawn "xrandr --output DP-4 --primary --output HDMI-0 --reft-of DP-4 --output DP-2 --right-of HDMI-0"
+      spawn "xrandr --output DP-4 --primary --output HDMI-0 --left-of DP-4 --output DP-2 --right-of HDMI-0"
     -- 通常のフルで使えるモニタ環境。
     4 ->
       spawn "xrandr --output DP-0 --primary --output DP-2 --right-of DP-0 --output DP-4 --left-of DP-0 --output HDMI-0 --above DP-0"
