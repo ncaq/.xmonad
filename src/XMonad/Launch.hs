@@ -236,14 +236,18 @@ myStartupHook = do
     setEnv "QT_IM_MODULE" "ibus"
     setEnv "XMODIFIERS" "@im=ibus"
     setEnv "_JAVA_AWT_WM_NONREPARENTING" "1"
-  -- DPI設定
+  -- DPI設定。
   spawn "xrdb ~/.Xresources"
-  -- 各デバイス専用設定
+  -- 各デバイス向け設定。
+  hostChassis <- getHostChassis
+  case hostChassis of
+    HostChassisDesktop -> myStartupHookDesktop
+    HostChassisLaptop  -> myStartupHookLaptop
+    _                  -> return ()
   hostName <- liftIO getHostName
   case hostName of
-    "strawberry" -> myStartupHookStrawberry
-    "indigo"     -> myStartupHookIndigo
-    _            -> return ()
+    "indigo" -> myStartupHookIndigo
+    _        -> return ()
   setDpms
   let trayerHeight = "32"
   spawn $
@@ -257,9 +261,9 @@ myStartupHook = do
   spawn "birdtray"
   spawn "systemctl --user restart xkeysnail"
 
--- | ホスト名Strawberryのデスクトップ環境での初期設定。
-myStartupHookStrawberry :: X ()
-myStartupHookStrawberry = do
+-- | デスクトップ環境での初期設定。
+myStartupHookDesktop :: X ()
+myStartupHookDesktop = do
   screensAmount <- countScreens :: MonadIO m => m Int
   case screensAmount of
     -- Switchなどが中央画面奪った時のモニタ環境。
@@ -271,28 +275,32 @@ myStartupHookStrawberry = do
     -- フォールバック。(何もしない)
     _ -> return ()
 
--- | ホスト名Indigoのラップトップ環境での初期設定。
-myStartupHookIndigo :: X ()
-myStartupHookIndigo = do
+-- | ラップトップ環境での初期設定。
+myStartupHookLaptop :: X ()
+myStartupHookLaptop = do
   disableTouchPad
-  -- xkbsetをウィンドウマネージャのセットアップ前に動かすと効かないようなので
-  -- 対処療法として`sleep`で待機させます
-  -- どのタイミングで設定可能になるのかわからないのでEvent見るわけにもいかないのでsleep
-  -- 起動直後に有効になっている必要性はないので待ってもそこまで問題ではない
-  -- xkbsetの後にxkeysnailを再起動しないと一部のキーシーケンスがうまく動かない
-  spawn "sleep 10 && systemctl --user restart xkbset-bouncekeys"
   screensAmount <- countScreens :: MonadIO m => m Int
   case screensAmount of
     2 -> spawn "xrandr --output eDP-1-1 --primary --output DP-1-1 --left-of eDP-1-1"
     3 -> spawn "xrandr --output eDP-1-1 --primary --output DP-1-1 --left-of eDP-1-1 --output DP-0 --right-of eDP-1-1"
     _ -> return ()
 
+-- | indigo特有の設定。
+myStartupHookIndigo :: X ()
+myStartupHookIndigo = do
+  -- xkbsetをウィンドウマネージャのセットアップ前に動かすと効かないようなので
+  -- 対処療法として`sleep`で待機させます
+  -- どのタイミングで設定可能になるのかわからないのでEvent見るわけにもいかないのでsleep
+  -- 起動直後に有効になっている必要性はないので待ってもそこまで問題ではない
+  -- xkbsetの後にxkeysnailを再起動しないと一部のキーシーケンスがうまく動かない
+  spawn "sleep 10 && systemctl --user restart xkbset-bouncekeys"
+
 -- | [Display Power Management Signaling - ArchWiki](https://wiki.archlinux.jp/index.php/Display_Power_Management_Signaling)
 -- をコンピュータのクラスに基づいて設定します。
 setDpms :: MonadIO m => m ()
 setDpms = do
-  c <- getHostChassis
-  case c of
+  hostChassis <- getHostChassis
+  case hostChassis of
     -- デスクトップは画面消灯無効。
     HostChassisDesktop -> spawn "xset s off -dpms"
     -- ラップトップは一応30分で消灯するようにしておきます。
