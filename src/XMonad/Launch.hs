@@ -99,7 +99,7 @@ myMultiMonitorManageHook = composeAll
 myKeys :: HostChassis -> XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
 myKeys hostChassis conf@XConfig{modMask} = mkKeymap conf
   [ ("M-q", kill)
-  , ("M-S-q", io exitSuccess)
+  , ("M-C-S-q", io exitSuccess)
   , ("M-<Space>", sendMessage NextLayout)
   , ("M-S-<Space>", setLayout $ XMonad.layoutHook conf)
   -- move focus up or down the window stack
