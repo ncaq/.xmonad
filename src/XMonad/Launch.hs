@@ -16,7 +16,6 @@ import qualified GI.Gtk.Objects.RecentManager     as G
 import           Network.HostName                 (getHostName)
 import           System.Directory                 (getHomeDirectory)
 import           System.Environment               (setEnv)
-import           System.Exit
 import           Text.Regex.TDFA                  ((=~))
 import           XMonad
 import           XMonad.Actions.WindowGo
@@ -99,7 +98,6 @@ myMultiMonitorManageHook = composeAll
 myKeys :: HostChassis -> XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
 myKeys hostChassis conf@XConfig{modMask} = mkKeymap conf
   [ ("M-q", kill)
-  , ("M-C-S-q", io exitSuccess)
   , ("M-<Space>", sendMessage NextLayout)
   , ("M-S-<Space>", setLayout $ XMonad.layoutHook conf)
   -- move focus up or down the window stack
