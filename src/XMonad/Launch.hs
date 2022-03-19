@@ -84,7 +84,7 @@ mkMyManageHook = do
 -- なるべく一つしかワークスペースを使わないようにします。
 mySingleMonitorManageHook :: ManageHook
 mySingleMonitorManageHook = composeAll
-  [ isDialog    --> doFullFloat
+  [ isDialog --> doFullFloat
   ]
 
 -- | モニタ数が3つ以上の場合に使われる `ManageHook` です。
