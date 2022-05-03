@@ -254,7 +254,6 @@ myStartupHook = do
     " --monitor primary"
   spawn "copyq"
   spawn "ibus-daemon --xim --replace"
-  spawn "kdeconnect-indicator"
   spawn "nm-applet"
   spawn "birdtray"
   spawn "systemctl --user restart xkeysnail"
