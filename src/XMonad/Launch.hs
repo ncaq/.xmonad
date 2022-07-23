@@ -298,8 +298,7 @@ setDpms :: MonadIO m => m ()
 setDpms = do
   hostChassis <- getHostChassis
   case hostChassis of
-    -- デスクトップは画面消灯無効。
+    -- デスクトップは画面消灯を無効にする。
     HostChassisDesktop -> spawn "xset s off -dpms"
-    -- ラップトップは一応30分で消灯するようにしておきます。
-    HostChassisLaptop  -> spawn "xset dpms 1800 1800 1800"
-    _                  -> return ()
+    -- デスクトップ以外では30分で消灯するようにしておく。
+    _                  -> spawn "xset dpms 1800 1800 1800"
