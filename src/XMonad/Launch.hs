@@ -61,11 +61,10 @@ mkMyConfig :: MonadIO m => m (XConfig (Choose Full (Choose (Mirror Tall) SpiralW
 mkMyConfig = do
   myManageHook <- mkMyManageHook
   hostChassis <- getHostChassis
-  return $ ewmh $ docks $ def
+  return $ ewmhFullscreen $ docks $ def
     { terminal = "lilyterm"
     , layoutHook = Full ||| Mirror (Tall 0 (3 / 100) 1) ||| spiral (4 / 3)
     , manageHook = myManageHook
-    , handleEventHook = ewmhDesktopsEventHook <+> fullscreenEventHook
     , modMask = mod4Mask
     , XMonad.keys = myKeys hostChassis
     , borderWidth = 0
