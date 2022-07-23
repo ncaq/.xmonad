@@ -25,7 +25,7 @@ import           XMonad.Actions.WindowGo
 import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.EwmhDesktops
 import           XMonad.Hooks.ManageDocks
-import           XMonad.Hooks.ManageHelpers
+import           XMonad.Hooks.ManageHelpers       hiding ((~?))
 import           XMonad.Layout.IndependentScreens
 import           XMonad.Layout.Spiral
 import           XMonad.StackSet
@@ -54,7 +54,8 @@ appMain :: IO ()
 appMain = do
   myConfig <- mkMyConfig
   bar <- statusBar "xmobar" myPP (\XConfig{modMask} -> (modMask, xK_u)) myConfig
-  launch bar
+  directories <- getDirectories
+  launch bar directories
 
 mkMyConfig :: MonadIO m => m (XConfig (Choose Full (Choose (Mirror Tall) SpiralWithDir)))
 mkMyConfig = do
