@@ -1,5 +1,6 @@
-{-# LANGUAGE NamedFieldPuns #-}
-{-# LANGUAGE StrictData     #-}
+{-# LANGUAGE NamedFieldPuns    #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE StrictData        #-}
 module XMonad.Launch (appMain) where
 
 import           Control.Concurrent
@@ -7,6 +8,7 @@ import           Data.Convertible
 import           Data.List                        (find, isPrefixOf)
 import qualified Data.Map.Strict                  as M
 import           Data.Text                        (Text)
+import qualified Data.Text.IO                     as T
 import           Data.Time.Format
 import           Data.Time.LocalTime
 import qualified GI.GLib.Constants                as G
@@ -16,6 +18,7 @@ import qualified GI.Gtk.Objects.RecentManager     as G
 import           Network.HostName                 (getHostName)
 import           System.Directory                 (getHomeDirectory)
 import           System.Environment               (setEnv)
+import           System.IO
 import           Text.Regex.TDFA                  ((=~))
 import           XMonad
 import           XMonad.Actions.WindowGo
@@ -40,10 +43,12 @@ data HostChassis
 getHostChassis :: MonadIO m => m HostChassis
 getHostChassis = do
   r <- runProcessWithInput "hostnamectl" ["chassis"] ""
-  return $ case trim r of
-    "desktop" -> HostChassisDesktop
-    "laptop"  -> HostChassisLaptop
-    other     -> HostChassisOther $ convert other
+  case trim r of
+    "desktop" -> return HostChassisDesktop
+    "laptop"  -> return HostChassisLaptop
+    other     -> do
+      liftIO $ T.hPutStrLn stderr $ "`getHostChassis` could not be determined: other: " <> convert other
+      return $ HostChassisOther $ convert other
 
 appMain :: IO ()
 appMain = do
