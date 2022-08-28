@@ -153,7 +153,7 @@ myKeys hostChassis conf@XConfig{modMask} = mkKeymap conf
 
   , ("M-b",   runOrRaiseNext "keepassxc"               (className =? "KeePassXC"))
   , ("M-S-b", runOrRaiseNext "virtualbox"              (className =? "VirtualBox Machine" <||> className =? "VirtualBox Manager"))
-  , ("M-m",   runOrRaiseNext "thunderbird"             (className =? "Thunderbird"))
+  , ("M-m",   runOrRaiseNext "thunderbird"             (className =? "thunderbird"))
   , ("M-S-m", runOrRaiseNext "smplayer"                (className =? "smplayer"))
   , ("M-w",   runOrRaiseNext "eog"                     (className =? "Eog"))
   , ("M-v",   runOrRaiseNext "copyq-show"              (className =? "copyq"))
