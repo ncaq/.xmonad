@@ -62,7 +62,7 @@ mkMyConfig = do
   myManageHook <- mkMyManageHook
   hostChassis <- getHostChassis
   return $ ewmhFullscreen $ docks $ def
-    { terminal = "lilyterm"
+    { terminal = "kitty"
     , layoutHook = Full ||| Mirror (Tall 0 (3 / 100) 1) ||| spiral (4 / 3)
     , manageHook = myManageHook
     , modMask = mod4Mask
@@ -96,7 +96,7 @@ myMultiMonitorManageHook :: ManageHook
 myMultiMonitorManageHook = composeAll
   [ isDialog                   --> doFullFloat
   , className =? "Mikutter.rb" --> doShift "3"
-  , className =? "LilyTerm"    --> doShift "2"
+  , className =? "kitty"       --> doShift "2"
   , return True                --> doShift "1"
   ]
 
@@ -141,7 +141,7 @@ myKeys hostChassis conf@XConfig{modMask} = mkKeymap conf
   , ("M-d",   runOrRaiseNext "discord-fix-pulse"       (className =? "discord"))
   , ("M-S-d", runOrRaiseNext "jd.sh"                   (className =? "Jdim"))
   , ("M-h",   runOrRaiseNext "firefox"                 (className =? "firefox"))
-  , ("M-t",   runOrRaiseNext "lilyterm"                (className =? "LilyTerm"))
+  , ("M-t",   runOrRaiseNext "kitty"                   (className =? "kitty"))
   , ("M-n",   runOrRaiseNext "emacs"                   (className =? "Emacs"))
   , ("M-s",   runOrRaiseNext "mikutter"                (className =? "Mikutter.rb"))
   , ("M--",   runOrRaiseNext "slack"                   (className =? "Slack"))
@@ -235,6 +235,7 @@ enableTouchPad = safeSpawn "xinput" ["enable", touchPadName]
 myStartupHook :: X ()
 myStartupHook = do
   liftIO $ do
+    setEnv "GLFW_IM_MODULE" "ibus"
     setEnv "GTK_IM_MODULE" "ibus"
     setEnv "QT_IM_MODULE" "ibus"
     setEnv "XMODIFIERS" "@im=ibus"
