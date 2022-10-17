@@ -9,7 +9,8 @@ cp script/* ~/.local/bin/
 
 cd ../
 
-ln -sfv .xmonad/.xmobarrc .xmonad/.xsession .
+ln -sfv .xmonad/.xsession .
+ln -sfv .xmonad/.xmobarrc-$hostname .xmobarrc
 
 cd ~/.config/systemd/user/
 for f in $(ls $systemd_dir)
