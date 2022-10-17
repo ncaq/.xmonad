@@ -7,6 +7,7 @@ Config
 , commands =
   [ Run StdinReader
   , Run Cpu [] 100
+  , Run CpuFreq ["-t", "Freq: <max>GHz", "--ddigits", "2"] 100
   , Run Memory ["-t", "Mem: <used>M"] 100
   , Run Swap ["-t", "Swap: <used>M"] 100
   , Run DiskIO [("/", "IO: <read> <write>")] [] 100
@@ -17,5 +18,5 @@ Config
   ]
 , sepChar = "%"
 , alignSep = "{}"
-, template = "%StdinReader% {} %cpu%, %memory%, %swap%, %diskio%, %dynnetwork%, %multicoretemp%, %battery%, %date%"
+, template = "%StdinReader% {} %cpu%, %cpufreq%, %memory%, %swap%, %diskio%, %dynnetwork%, %multicoretemp%, %battery%, %date%"
 }
