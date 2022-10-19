@@ -1,2 +1,1 @@
 resolver: lts-19.16
-system-ghc: true # HLSが正常に動かない問題への対処
