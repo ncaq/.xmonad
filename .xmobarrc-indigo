@@ -13,7 +13,7 @@ Config
   , Run DiskIO [("/", "IO: <read>|<write>")] ["--minwidth", "4"] 100
   , Run DynNetwork ["-t", "Net: <rx>KB|<tx>KB", "--minwidth", "6"] 100
   , Run MultiCoreTemp ["-t", "Temp: <max>°C", "--minwidth", "3"] 100
-  , Run BatteryP ["BAT0"] ["-t", "Bat: <watts> <left>%", "--ppad", "3"] 600
+  , Run Battery ["-t", "Bat: <acstatus> <watts> <left>%", "--ppad", "3"] 600
   , Run DateZone "%F%a%T" "ja_JP.utf8" "Japan" "date" 10
   ]
 , sepChar = "%"
