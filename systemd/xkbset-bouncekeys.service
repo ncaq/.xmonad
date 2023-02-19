@@ -2,7 +2,7 @@
 Description=xkbset bouncekeys
 
 [Service]
-ExecStart=/home/ncaq/.local/bin/xkbset-bouncekeys
+ExecStart=%h/.local/bin/xkbset-bouncekeys
 Type=oneshot
 
 [Install]
