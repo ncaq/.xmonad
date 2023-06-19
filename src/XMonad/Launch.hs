@@ -158,7 +158,8 @@ myKeys hostChassis conf@XConfig{modMask} = mkKeymap conf
   , ("M-w",   runOrRaiseNext "eog"                     (className =? "Eog"))
   , ("M-v",   runOrRaiseNext "copyq-show"              (className =? "copyq"))
   , ("M-S-v", runOrRaiseNext "vlc"                     (className =? "vlc"))
-  , ("M-z",   runOrRaiseNext "zoom-fix-v4l"            (className =? "zoom"))
+  , ("M-z",   runOrRaiseNext "youtube-music"           (className =? "YouTube Music"))
+  , ("M-S-z", runOrRaiseNext "zoom-fix-v4l"            (className =? "zoom"))
   ]
   <>
   M.fromList
