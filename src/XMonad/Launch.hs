@@ -95,6 +95,7 @@ mySingleMonitorManageHook = composeAll
 myMultiMonitorManageHook :: ManageHook
 myMultiMonitorManageHook = composeAll
   [ isDialog                   --> doFullFloat
+  , className =? "firefox"     --> doShift "4"
   , className =? "kitty"       --> doShift "2"
   , return True                --> doShift "1"
   ]
