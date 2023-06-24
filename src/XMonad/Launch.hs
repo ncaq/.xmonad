@@ -95,7 +95,6 @@ mySingleMonitorManageHook = composeAll
 myMultiMonitorManageHook :: ManageHook
 myMultiMonitorManageHook = composeAll
   [ isDialog                   --> doFullFloat
-  , className =? "Mikutter.rb" --> doShift "3"
   , className =? "kitty"       --> doShift "2"
   , return True                --> doShift "1"
   ]
@@ -143,7 +142,6 @@ myKeys hostChassis conf@XConfig{modMask} = mkKeymap conf
   , ("M-h",   runOrRaiseNext "firefox"                 (className =? "firefox"))
   , ("M-t",   runOrRaiseNext "kitty"                   (className =? "kitty"))
   , ("M-n",   runOrRaiseNext "emacs"                   (className =? "Emacs"))
-  , ("M-s",   runOrRaiseNext "mikutter"                (className =? "Mikutter.rb"))
   , ("M--",   runOrRaiseNext "slack"                   (className =? "Slack"))
 
   , ("M-f",   runOrRaiseNext "nautilus"                (className =? "org.gnome.Nautilus"))
