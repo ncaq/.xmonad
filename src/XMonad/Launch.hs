@@ -259,7 +259,6 @@ myStartupHook = do
   spawn "copyq"
   spawn "ibus-daemon --xim --replace"
   spawn "nm-applet"
-  spawn "birdtray"
   spawn "systemctl --user restart xkeysnail"
 
 -- | デスクトップ環境での初期設定。
@@ -275,6 +274,13 @@ myStartupHookDesktop = do
       spawn "xrandr --output DP-0 --primary --output DP-2 --right-of DP-0 --output DP-4 --left-of DP-0 --output HDMI-0 --above DP-0"
     -- フォールバック。(何もしない)
     _ -> return ()
+  -- Thunderbirdの未読メール通知アイコンを表示するプログラムなのですが、
+  -- やたらとCPUとメモリを食います。
+  -- CPUコアなんて基本的に余っているので、
+  -- デスクトップPCでは別に無害なのですが、
+  -- ラップトップPCではバッテリーを気にする必要があるので、
+  -- デスクトップPCでのみ有効にすることにします。
+  spawn "birdtray"
 
 -- | ラップトップ環境での初期設定。
 myStartupHookLaptop :: X ()
