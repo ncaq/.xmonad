@@ -80,7 +80,7 @@ mkMyManageHook = do
     then mySingleMonitorManageHook
     else myMultiMonitorManageHook
 
--- | モニタ数が2つ以下の場合に使われる `ManageHook` です。
+-- | モニタ数が2つ以下の場合に使われる`ManageHook`です。
 -- マルチモニタでない部分に複数ワークスペース生成が行われた場合、
 -- ワークスペース3にいるときにもワークスペース1にダイアログが表示されたりして不便なため、
 -- なるべく一つしかワークスペースを使わないようにします。
@@ -89,7 +89,7 @@ mySingleMonitorManageHook = composeAll
   [ isDialog --> doFullFloat
   ]
 
--- | モニタ数が3つ以上の場合に使われる `ManageHook` です。
+-- | モニタ数が3つ以上の場合に使われる`ManageHook`です。
 myMultiMonitorManageHook :: ManageHook
 myMultiMonitorManageHook = composeAll
   [ isDialog                   --> doFullFloat
@@ -173,12 +173,12 @@ myKeys hostChassis conf@XConfig{modMask} = mkKeymap conf
                ]
           else []
 
--- | 正規表現でクラスネームをマッチさせます
--- 主にパターンが多いLibreOffice用に必要になります
+-- | 正規表現でクラスネームをマッチさせます。
+-- 主にパターンが多いLibreOffice用に必要になります。
 (~?) :: Query String -> String -> Query Bool
 a ~? b = fmap (=~ b) a
 
--- | スクリーンショットを取得します
+-- | スクリーンショットを取得します。
 takeScreenshot :: X ()
 takeScreenshot = do
   home <- liftIO getHomeDirectory
@@ -189,7 +189,7 @@ takeScreenshot = do
   _ <- runProcessWithInput "oxipng" ["--strip", "safe", path] ""
   return ()
 
--- | GTKの最近使ったファイルリストにファイルを追加します
+-- | GTKの最近使ったファイルリストにファイルを追加します。
 recentAddItem :: FilePath -> IO ThreadId
 recentAddItem filePath = forkIO $ do -- `forkIO`しないとxmonad自体が終了してしまいます。
   _ <- Gtk.init Nothing              -- Gtk.initしないとアプリケーション名が存在しないと言う警告が出ます
@@ -200,13 +200,13 @@ recentAddItem filePath = forkIO $ do -- `forkIO`しないとxmonad自体が終�
     return True
   Gtk.main
 
--- | 使用しているタッチパッドの名前
--- 現在使っているラップトップがAlienware m17しかないので決め打ちになってます
+-- | 使用しているタッチパッドの名前。
+-- 現在使っているラップトップがAlienware m17しかないので決め打ちになっています。
 touchPadName :: String
 touchPadName = "SynPS/2 Synaptics TouchPad"
 
--- | タッチパッドが有効なのか無効なのか判定します
--- 存在しない場合も意味的には無効扱いします
+-- | タッチパッドが有効なのか無効なのか判定します。
+-- 存在しない場合も意味的には無効扱いします。
 getTouchPadEnable :: X Bool
 getTouchPadEnable = do
   mDeviceEnabledLine <-
@@ -216,7 +216,7 @@ getTouchPadEnable = do
     Nothing                -> False
     Just deviceEnabledLine -> last deviceEnabledLine == '1'
 
--- | タッチパッドの有効無効をトグルします
+-- | タッチパッドの有効無効をトグルします。
 toggleTouchPad :: X ()
 toggleTouchPad = do
   touchPadEnable <- getTouchPadEnable
