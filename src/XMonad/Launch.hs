@@ -277,11 +277,9 @@ myStartupHookDesktop = do
   screensAmount <- countScreens :: MonadIO m => m Int
   case screensAmount of
     -- Switchなどが中央画面奪った時のモニタ環境。
-    3 ->
-      spawn "xrandr --output DP-4 --primary --output HDMI-0 --right-of DP-4 --output DP-2 --right-of HDMI-0"
+    3 -> spawn "xrandr-desktop-3"
     -- 通常のフルで使えるモニタ環境。
-    4 ->
-      spawn "xrandr --output DP-0 --primary --output DP-2 --right-of DP-0 --output DP-4 --left-of DP-0 --output HDMI-0 --above DP-0"
+    4 -> spawn "xrandr-desktop-4"
     -- フォールバック。(何もしない)
     _ -> return ()
   -- Thunderbirdの未読メール通知アイコンを表示するプログラムなのですが、
@@ -298,8 +296,8 @@ myStartupHookLaptop = do
   disableTouchPad
   screensAmount <- countScreens :: MonadIO m => m Int
   case screensAmount of
-    2 -> spawn "xrandr --output eDP-1-1 --primary --output DP-1-1 --left-of eDP-1-1"
-    3 -> spawn "xrandr --output eDP-1-1 --primary --output DP-1-1 --left-of eDP-1-1 --output DP-0 --right-of eDP-1-1"
+    2 -> spawn "xrandr-laptop-2"
+    3 -> spawn "xrandr-laptop-3"
     _ -> return ()
 
 -- | indigo特有の設定。
