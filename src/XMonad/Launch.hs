@@ -85,9 +85,9 @@ mkMyManageHook = do
 myManageHookFor3 :: ManageHook
 myManageHookFor3 = composeAll
   [ isDialog                   --> doFullFloat
-  , className =? "firefox"     --> doShift "3"
+  , className =? "firefox"     --> doShift "1"
   , className =? "kitty"       --> doShift "2"
-  , return True                --> doShift "1"
+  , return True                --> doShift "3"
   ]
 
 -- | モニタ数が4つの場合に使われる`ManageHook`です。
