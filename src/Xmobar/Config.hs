@@ -17,13 +17,11 @@ mkConfig = do
     , lowerOnStart = False
     , commands = runnable
     , sepChar = "%"
-    , alignSep = "{}"
     , template = template
     }
 
 mkConfigByDevice :: IO ([Runnable], String)
 mkConfigByDevice = do
-  let prefix = "%StdinReader% {} %cpu%, %cpufreq%, %memory%, %swap%, %diskio%, %dynnetwork%"
   temp <- getTemp
   hostChassis <- getHostChassis
   let (batteryRunnable, batteryTemplate) = if hostChassis == HostChassisLaptop then ([battery], ", %battery%") else ([], "")
@@ -40,7 +38,7 @@ mkConfigByDevice = do
         <> batteryRunnable <>
         [ Run $ DateZone "%F%a%T" "ja_JP.utf8" "Japan" "date" 10
         ]
-  return (runnable, prefix <> batteryTemplate <> ", %date%")
+  return (runnable, "}%StdinReader%{%cpu%, %cpufreq%, %memory%, %swap%, %diskio%, %dynnetwork%" <> batteryTemplate <> ", %date%")
 
 getTemp :: IO Runnable
 getTemp = do
