@@ -5,7 +5,6 @@ systemd_dir=${0:a:h}/systemd/
 hostname=$(hostname)
 
 stack install . xmobar-0.44 --flag xmobar:with_xft --flag xmobar:with_datezone
-cp script/* ~/.local/bin/
 
 cd ../
 

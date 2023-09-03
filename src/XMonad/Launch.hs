@@ -15,7 +15,7 @@ import qualified GI.Gtk                           as Gtk
 import qualified GI.Gtk.Objects.RecentManager     as G
 import           Network.HostName                 (getHostName)
 import           System.Directory                 (getHomeDirectory)
-import           System.Environment               (setEnv)
+import           System.Environment
 import           System.IO
 import           Text.Regex.TDFA                  ((=~))
 import           XMonad
@@ -243,6 +243,11 @@ enableTouchPad = safeSpawn "xinput" ["enable", touchPadName]
 myStartupHook :: X ()
 myStartupHook = do
   liftIO $ do
+    -- xmonadを使っている時に使いたいスクリプトたちにPATHを通します。
+    originalPath <- getEnv "PATH"
+    home <- getHomeDirectory
+    let xmonadBin = home <> "/.xmonad/bin"
+    setEnv "PATH" $ xmonadBin <> ":" <> originalPath
     setEnv "GLFW_IM_MODULE" "ibus"
     setEnv "GTK_IM_MODULE" "ibus"
     setEnv "QT_IM_MODULE" "ibus"
