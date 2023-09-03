@@ -84,4 +84,4 @@ executables:
       - -O2
       - -threaded
       - -rtsopts
-      - -with-rtsopts=-N4
+      - -with-rtsopts=-N
