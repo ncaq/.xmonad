@@ -4,12 +4,11 @@ set -eux
 systemd_dir=${0:a:h}/systemd/
 hostname=$(hostname)
 
-LANG=C.utf8 stack install . xmobar --flag xmobar:with_datezone
+LANG=C.utf8 stack install
 
 cd ../
 
 ln -sfv .xmonad/.xsession .
-ln -sfv .xmonad/.xmobarrc-$hostname .xmobarrc
 
 cd ~/.config/systemd/user/
 for f in $(ls $systemd_dir)

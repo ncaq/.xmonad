@@ -55,6 +55,7 @@ ghc-options:
   - -Wincomplete-uni-patterns
   - -Wpartial-fields
   - -Wredundant-constraints
+  - -j
 
 dependencies:
   - base
@@ -67,6 +68,7 @@ dependencies:
   - regex-tdfa
   - text
   - time
+  - xmobar
   - xmonad
   - xmonad-contrib
 
@@ -76,7 +78,7 @@ library:
 executables:
   xmonad-launch:
     main: Main.hs
-    source-dirs: app
+    source-dirs: app/XMonad
     dependencies:
       - xmonad-launch
 
@@ -84,4 +86,16 @@ executables:
       - -O2
       - -threaded
       - -rtsopts
-      - -with-rtsopts=-N4
+      - -with-rtsopts=-N
+
+  xmobar-launch:
+    main: Main.hs
+    source-dirs: app/Xmobar
+    dependencies:
+      - xmonad-launch
+
+    ghc-options:
+      - -O2
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
