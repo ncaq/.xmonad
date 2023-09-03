@@ -1,8 +1,9 @@
 Config
-{ font = "xft:monospace:antialias=true"
+{ font = "monospace"
+, dpi = 144
 , bgColor = "#002b36"
 , fgColor = "#93a1a1"
-, position = TopW L 90
+, position = TopSize L 90 32
 , lowerOnStart = False
 , commands =
   [ Run StdinReader
