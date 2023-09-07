@@ -1,5 +1,6 @@
 module Xmobar.Config (mkConfig) where
 
+import           Network.HostName
 import           System.Directory
 import           Xmobar
 import           XMonad.HostChassis
@@ -7,10 +8,11 @@ import           XMonad.HostChassis
 mkConfig :: IO Config
 mkConfig = do
   (runnable, template) <- mkConfigByDevice
+  dpi <- getDpi
   return
     defaultConfig
     { font = "monospace"
-    , dpi = 144
+    , dpi
     , bgColor = "#002b36"
     , fgColor = "#93a1a1"
     , position = TopSize L 90 32
@@ -55,3 +57,11 @@ genericTemp = Run $ MultiCoreTemp ["-t", "Temp: <max>°C", "--minwidth", "3"] 10
 
 battery :: Runnable
 battery = Run $ Battery ["-t", "Bat: <acstatus><left>%", "--minwidth", "3"] 100
+
+getDpi :: IO Double
+getDpi = do
+  hostName <- getHostName
+  return $
+    if hostName == "creep"
+    then 96
+    else 144
