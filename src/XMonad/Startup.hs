@@ -6,6 +6,7 @@ import           System.Environment
 import           XMonad
 import           XMonad.HostChassis
 import           XMonad.Layout.IndependentScreens
+import           XMonad.Prelude
 import           XMonad.TouchPad
 
 myStartupHook :: X ()
@@ -21,8 +22,7 @@ myStartupHook = do
     setEnv "QT_IM_MODULE" "ibus"
     setEnv "XMODIFIERS" "@im=ibus"
     setEnv "_JAVA_AWT_WM_NONREPARENTING" "1"
-  -- DPI設定。
-  spawn "xrdb ~/.Xresources"
+  loadXresources
   -- 各デバイス向け設定。
   hostChassis <- getHostChassis
   case hostChassis of
@@ -43,6 +43,18 @@ myStartupHook = do
   spawn "ibus-daemon --xim --replace"
   spawn "nm-applet"
   spawn "systemctl --user restart xkeysnail"
+
+-- | 必要なコマンドとファイルが揃っている場合、
+-- `xrdb ~/.Xresources`を実行します。
+-- 主にDPIの設定に使われます。
+loadXresources :: X ()
+loadXresources = do
+  xrdbExecutable <- liftIO findXrdbExecutable
+  xresourcesExist <- liftIO doesXresourcesExist
+  when (xrdbExecutable && xresourcesExist) $
+    spawn "xrdb ~/.Xresources"
+  where findXrdbExecutable = isJust <$> findExecutable "xrdb"
+        doesXresourcesExist = getHomeDirectory >>= \home -> doesFileExist $ home <> "/.Xresources"
 
 -- | デスクトップ環境での初期設定。
 myStartupHookDesktop :: X ()
