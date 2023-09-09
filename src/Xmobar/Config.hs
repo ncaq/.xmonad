@@ -23,9 +23,8 @@ mkConfig = do
 mkConfigByDevice :: IO ([Runnable], String)
 mkConfigByDevice = do
   temp <- getTemp
-  hostChassis <- getHostChassis
-  let (batteryRunnable, batteryTemplate) = if hostChassis == HostChassisLaptop then ([battery], ", %battery%") else ([], "")
-      runnable =
+  battery <- getBattery
+  let runnable =
         [ Run StdinReader
         , Run $ Cpu ["--ppad", "3"] 100
         , Run $ CpuFreq ["-t", "Freq: <max>GHz", "--ddigits", "2"] 100
@@ -33,25 +32,37 @@ mkConfigByDevice = do
         , Run $ Swap ["-t", "Swap: <used>M"] 100
         , Run $ DiskIO [("/", "IO: <read>|<write>")] ["--minwidth", "5"] 100
         , Run $ DynNetwork ["-t", "Net: <rx>KB|<tx>KB", "--minwidth", "6"] 100
-        , temp
-        ]
-        <> batteryRunnable <>
+        ] <>
+        (pure . fst) temp <>
+        maybe [] (pure . fst) battery <>
         [ Run $ DateZone "%F%a%T" "ja_JP.utf8" "Japan" "date" 10
         ]
-  return (runnable, "}%StdinReader%{%cpu%, %cpufreq%, %memory%, %swap%, %diskio%, %dynnetwork%" <> batteryTemplate <> ", %date%")
+      tempTemplate = ", " <> snd temp
+      batteryTemplate = maybe "" ((", " <>) . snd) battery
+  return
+    ( runnable
+    , "}%StdinReader%{%cpu%, %cpufreq%, %memory%, %swap%, %diskio%, %dynnetwork%" <>
+      tempTemplate <>
+      batteryTemplate <>
+      ", %date%"
+    )
 
-getTemp :: IO Runnable
+getTemp :: IO (Runnable, String)
 getTemp = do
   k10TempExists <- doesDirectoryExist "/sys/bus/pci/drivers/k10temp"
   return $ if k10TempExists
     then amdTemp
     else genericTemp
 
-amdTemp :: Runnable
-amdTemp = Run $ K10Temp "0000:00:18.3" ["--minwidth", "3"] 100
+amdTemp :: (Runnable, String)
+amdTemp = (Run $ K10Temp "0000:00:18.3" ["--minwidth", "3"] 100, "%k10temp%")
 
-genericTemp :: Runnable
-genericTemp = Run $ MultiCoreTemp ["-t", "Temp: <max>°C", "--minwidth", "3"] 100
+genericTemp :: (Runnable, String)
+genericTemp = (Run $ MultiCoreTemp ["-t", "Temp: <max>°C", "--minwidth", "3"] 100, "%multicoretemp%")
 
-battery :: Runnable
-battery = Run $ Battery ["-t", "Bat: <acstatus><left>%", "--minwidth", "3"] 100
+getBattery :: IO (Maybe (Runnable, String))
+getBattery = do
+  hostChassis <- getHostChassis
+  return $ if hostChassis == HostChassisLaptop
+    then Just (Run $ Battery ["-t", "Bat: <acstatus><left>%", "--minwidth", "3"] 100, ", %battery%")
+    else Nothing
