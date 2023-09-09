@@ -2,10 +2,10 @@ module XMonad.Key (myKeys) where
 
 import           Data.Map.Strict         (Map)
 import qualified Data.Map.Strict         as Map
+import           HostChassis
 import           Text.Regex.TDFA         ((=~))
 import           XMonad
 import           XMonad.Actions.WindowGo
-import           XMonad.HostChassis
 import           XMonad.Screenshot
 import           XMonad.StackSet
 import           XMonad.TouchPad
