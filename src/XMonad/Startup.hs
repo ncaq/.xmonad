@@ -1,10 +1,10 @@
 module XMonad.Startup (myStartupHook) where
 
+import           HostChassis
 import           Network.HostName
 import           System.Directory
 import           System.Environment
 import           XMonad
-import           XMonad.HostChassis
 import           XMonad.Layout.IndependentScreens
 import           XMonad.Prelude
 import           XMonad.TouchPad
@@ -24,7 +24,7 @@ myStartupHook = do
     setEnv "_JAVA_AWT_WM_NONREPARENTING" "1"
   loadXresources
   -- 各デバイス向け設定。
-  hostChassis <- getHostChassis
+  hostChassis <- getHostChassisXMonad
   case hostChassis of
     HostChassisDesktop -> myStartupHookDesktop
     HostChassisLaptop  -> myStartupHookLaptop
@@ -99,7 +99,7 @@ myStartupHookIndigo = do
 -- をコンピュータのクラスに基づいて設定します。
 setDpms :: MonadIO m => m ()
 setDpms = do
-  hostChassis <- getHostChassis
+  hostChassis <- getHostChassisXMonad
   case hostChassis of
     -- デスクトップは画面消灯を無効にする。
     HostChassisDesktop -> spawn "xset s off -dpms"

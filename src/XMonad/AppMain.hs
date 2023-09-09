@@ -8,7 +8,7 @@ import           XMonad.Pp
 appMain :: IO ()
 appMain = do
   myConfig <- mkMyConfig
-  let toggleStrutsKey = (\XConfig{modMask} -> (modMask, xK_u))
+  let toggleStrutsKey XConfig{modMask} = (modMask, xK_u)
   bar <- statusBar "xmobar-launch" myPP toggleStrutsKey myConfig
   directories <- getDirectories
   launch bar directories

@@ -65,6 +65,7 @@ dependencies:
   - gi-glib
   - gi-gtk
   - hostname
+  - process
   - regex-tdfa
   - text
   - time
