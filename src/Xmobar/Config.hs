@@ -1,8 +1,8 @@
 module Xmobar.Config (mkConfig) where
 
+import           HostChassis
 import           System.Directory
 import           Xmobar
-import           XMonad.HostChassis
 
 mkConfig :: IO Config
 mkConfig = do
@@ -62,7 +62,7 @@ genericTemp = (Run $ MultiCoreTemp ["-t", "Temp: <max>°C", "--minwidth", "3"] 1
 
 getBattery :: IO (Maybe (Runnable, String))
 getBattery = do
-  hostChassis <- getHostChassis
+  hostChassis <- getHostChassisNormal
   return $ if hostChassis == HostChassisLaptop
     then Just (Run $ Battery ["-t", "Bat: <acstatus><left>%", "--minwidth", "3"] 100, ", %battery%")
     else Nothing
