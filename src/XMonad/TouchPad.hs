@@ -30,6 +30,6 @@ getTouchPadEnable = do
     Just deviceEnabledLine -> L.last deviceEnabledLine == '1'
 
 -- | 使用しているタッチパッドの名前。
--- 現在使っているラップトップがAlienware m17しかないので決め打ちになっています。
+-- 現在使っているラップトップが一つしかないので決め打ちになっています。
 touchPadName :: String
-touchPadName = "SynPS/2 Synaptics TouchPad"
+touchPadName = "ELAN0688:00 04F3:320B Touchpad"
