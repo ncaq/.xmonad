@@ -1,5 +1,6 @@
 module XMonad.Startup (myStartupHook) where
 
+import           ByDpi
 import           HostChassis
 import           Network.HostName
 import           System.Directory
@@ -34,8 +35,17 @@ myStartupHook = do
     "indigo" -> myStartupHookIndigo
     _        -> return ()
   setDpms
-  spawn
-    "trayer-srg --edge top --align right --widthtype percent --width 10 --heighttype pixel --height 26 --monitor primary"
+  barHeight <- liftIO getBarHeight
+  spawn $ unwords
+    [ "trayer-srg"
+    , "--edge top"
+    , "--align right"
+    , "--widthtype percent"
+    , "--width 10"
+    , "--heighttype pixel"
+    , "--height " <> show barHeight
+    , "--monitor primary"
+    ]
   spawn "copyq"
   spawn "ibus-daemon --xim --replace"
   spawn "nm-applet"

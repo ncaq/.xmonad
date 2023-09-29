@@ -1,7 +1,7 @@
 module Xmobar.Config (mkConfig) where
 
+import           ByDpi
 import           HostChassis
-import           Network.HostName
 import           System.Directory
 import           Xmobar
 
@@ -9,13 +9,14 @@ mkConfig :: IO Config
 mkConfig = do
   (runnable, template) <- mkConfigByDevice
   dpi <- getDpi
+  barHeight <- getBarHeight
   return
     defaultConfig
     { font = "monospace"
     , dpi
     , bgColor = "#002b36"
     , fgColor = "#93a1a1"
-    , position = TopSize L 90 26
+    , position = TopSize L 90 barHeight
     , lowerOnStart = False
     , commands = runnable
     , sepChar = "%"
@@ -68,11 +69,3 @@ getBattery = do
   return $ if hostChassis == HostChassisLaptop
     then Just (Run $ Battery ["-t", "Bat: <acstatus> <left>%"] 100, "%battery%")
     else Nothing
-
-getDpi :: IO Double
-getDpi = do
-  hostName <- getHostName
-  return $
-    if hostName == "creep"
-    then 96
-    else 144
