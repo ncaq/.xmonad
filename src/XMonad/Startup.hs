@@ -34,11 +34,8 @@ myStartupHook = do
     "indigo" -> myStartupHookIndigo
     _        -> return ()
   setDpms
-  let trayerHeight = "32"
-  spawn $
-    "trayer-srg --edge top --align right --widthtype percent --width 10 --heighttype pixel --height " <>
-    trayerHeight <>
-    " --monitor primary"
+  spawn
+    "trayer-srg --edge top --align right --widthtype percent --width 10 --heighttype pixel --height 20 --monitor primary"
   spawn "copyq"
   spawn "ibus-daemon --xim --replace"
   spawn "nm-applet"

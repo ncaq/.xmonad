@@ -15,7 +15,7 @@ mkConfig = do
     , dpi
     , bgColor = "#002b36"
     , fgColor = "#93a1a1"
-    , position = TopSize L 90 32
+    , position = TopSize L 90 20
     , lowerOnStart = False
     , commands = runnable
     , sepChar = "%"
