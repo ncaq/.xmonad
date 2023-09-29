@@ -66,7 +66,7 @@ getBattery :: IO (Maybe (Runnable, String))
 getBattery = do
   hostChassis <- getHostChassisNormal
   return $ if hostChassis == HostChassisLaptop
-    then Just (Run $ Battery ["-t", "Bat: <acstatus><left>%", "--minwidth", "3"] 100, ", %battery%")
+    then Just (Run $ Battery ["-t", "Bat:<acstatus> <left>%", "--minwidth", "3"] 100, "%battery%")
     else Nothing
 
 getDpi :: IO Double
