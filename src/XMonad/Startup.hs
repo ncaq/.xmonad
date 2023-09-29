@@ -35,7 +35,7 @@ myStartupHook = do
     _        -> return ()
   setDpms
   spawn
-    "trayer-srg --edge top --align right --widthtype percent --width 10 --heighttype pixel --height 20 --monitor primary"
+    "trayer-srg --edge top --align right --widthtype percent --width 10 --heighttype pixel --height 26 --monitor primary"
   spawn "copyq"
   spawn "ibus-daemon --xim --replace"
   spawn "nm-applet"
