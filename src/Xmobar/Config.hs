@@ -57,7 +57,7 @@ getTemp = do
     else genericTemp
 
 amdTemp :: (Runnable, String)
-amdTemp = (Run $ K10Temp "0000:00:18.3" ["--minwidth", "3"] 100, "%k10temp%")
+amdTemp = (Run $ K10Temp "0000:00:18.3" ["-t", "Temp: <Tctl>°C", "--minwidth", "3"] 100, "%k10temp%")
 
 genericTemp :: (Runnable, String)
 genericTemp = (Run $ MultiCoreTemp ["-t", "Temp: <max>°C", "--minwidth", "3"] 100, "%multicoretemp%")
