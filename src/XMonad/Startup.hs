@@ -1,11 +1,13 @@
 module XMonad.Startup (myStartupHook) where
 
+import           ByDpi
 import           HostChassis
 import           Network.HostName
 import           System.Directory
 import           System.Environment
 import           XMonad
 import           XMonad.Layout.IndependentScreens
+import           XMonad.Prelude
 import           XMonad.TouchPad
 
 myStartupHook :: X ()
@@ -21,8 +23,7 @@ myStartupHook = do
     setEnv "QT_IM_MODULE" "ibus"
     setEnv "XMODIFIERS" "@im=ibus"
     setEnv "_JAVA_AWT_WM_NONREPARENTING" "1"
-  -- DPI設定。
-  spawn "xrdb ~/.Xresources"
+  loadXresources
   -- 各デバイス向け設定。
   hostChassis <- getHostChassisXMonad
   case hostChassis of
@@ -34,15 +35,33 @@ myStartupHook = do
     "indigo" -> myStartupHookIndigo
     _        -> return ()
   setDpms
-  let trayerHeight = "32"
-  spawn $
-    "trayer-srg --edge top --align right --widthtype percent --width 10 --heighttype pixel --height " <>
-    trayerHeight <>
-    " --monitor primary"
+  barHeight <- liftIO getBarHeight
+  spawn $ unwords
+    [ "trayer-srg"
+    , "--edge top"
+    , "--align right"
+    , "--widthtype percent"
+    , "--width 10"
+    , "--heighttype pixel"
+    , "--height " <> show barHeight
+    , "--monitor primary"
+    ]
   spawn "copyq"
   spawn "ibus-daemon --xim --replace"
   spawn "nm-applet"
   spawn "systemctl --user restart xkeysnail"
+
+-- | 必要なコマンドとファイルが揃っている場合、
+-- `xrdb ~/.Xresources`を実行します。
+-- 主にDPIの設定に使われます。
+loadXresources :: X ()
+loadXresources = do
+  xrdbExecutable <- liftIO findXrdbExecutable
+  xresourcesExist <- liftIO doesXresourcesExist
+  when (xrdbExecutable && xresourcesExist) $
+    spawn "xrdb ~/.Xresources"
+  where findXrdbExecutable = isJust <$> findExecutable "xrdb"
+        doesXresourcesExist = getHomeDirectory >>= \home -> doesFileExist $ home <> "/.Xresources"
 
 -- | デスクトップ環境での初期設定。
 myStartupHookDesktop :: X ()
