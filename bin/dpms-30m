@@ -1,0 +1,2 @@
+#!/bin/bash
+xset dpms 1800 1800 1800

@@ -109,6 +109,6 @@ setDpms = do
   hostChassis <- getHostChassisXMonad
   case hostChassis of
     -- デスクトップは画面消灯を無効にする。
-    HostChassisDesktop -> spawn "xset s off -dpms"
-    -- デスクトップ以外では30分で消灯するようにしておく。
-    _                  -> spawn "xset dpms 1800 1800 1800"
+    HostChassisDesktop -> spawn "dpms-off"
+    -- デスクトップ以外では30分で消灯する。
+    _                  -> spawn "dpms-30m"
