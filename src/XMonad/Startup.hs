@@ -2,7 +2,6 @@ module XMonad.Startup (myStartupHook) where
 
 import           ByDpi
 import           HostChassis
-import           Network.HostName
 import           System.Directory
 import           System.Environment
 import           XMonad
@@ -30,10 +29,6 @@ myStartupHook = do
     HostChassisDesktop -> myStartupHookDesktop
     HostChassisLaptop  -> myStartupHookLaptop
     _                  -> return ()
-  hostName <- liftIO getHostName
-  case hostName of
-    "indigo" -> myStartupHookIndigo
-    _        -> return ()
   setDpms
   barHeight <- liftIO getBarHeight
   spawn $ unwords
@@ -49,7 +44,6 @@ myStartupHook = do
   spawn "copyq"
   spawn "ibus-daemon --xim --replace"
   spawn "nm-applet"
-  spawn "systemctl --user restart xkeysnail"
 
 -- | 必要なコマンドとファイルが揃っている場合、
 -- `xrdb ~/.Xresources`を実行します。
@@ -84,23 +78,7 @@ myStartupHookDesktop = do
 
 -- | ラップトップ環境での初期設定。
 myStartupHookLaptop :: X ()
-myStartupHookLaptop = do
-  disableTouchPad
-  screensAmount <- countScreens :: MonadIO m => m Int
-  case screensAmount of
-    2 -> spawn "xrandr-laptop-2"
-    3 -> spawn "xrandr-laptop-3"
-    _ -> return ()
-
--- | indigo特有の設定。
-myStartupHookIndigo :: X ()
-myStartupHookIndigo = do
-  -- xkbsetをウィンドウマネージャのセットアップ前に動かすと効かないようなので
-  -- 対処療法として`sleep`で待機させます
-  -- どのタイミングで設定可能になるのかわからないのでEvent見るわけにもいかないのでsleep
-  -- 起動直後に有効になっている必要性はないので待ってもそこまで問題ではない
-  -- xkbsetの後にxkeysnailを再起動しないと一部のキーシーケンスがうまく動かない
-  spawn "sleep 10 && systemctl --user restart xkbset-bouncekeys"
+myStartupHookLaptop = disableTouchPad
 
 -- | [Display Power Management Signaling - ArchWiki](https://wiki.archlinux.jp/index.php/Display_Power_Management_Signaling)
 -- をコンピュータのクラスに基づいて設定します。

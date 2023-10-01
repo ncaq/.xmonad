@@ -9,16 +9,3 @@ LANG=C.utf8 stack install
 cd ../
 
 ln -sfv .xmonad/.xsession .
-
-cd ~/.config/systemd/user/
-for f in $(ls $systemd_dir)
-do
-  # xkbsetはindigo向けのパッチなのでそこだけに貼ります。
-  if [[ $f == xkbset* ]]; then
-    if [[ $hostname == indigo ]]; then
-      ln -sfv $(realpath --relative-to=. $systemd_dir/$f) .
-    fi
-  else
-    ln -sfv $(realpath --relative-to=. $systemd_dir/$f) .
-  fi
-done
