@@ -1,6 +1,6 @@
-resolver: lts-21.9
+resolver: lts-21.25
 extra-deps:
-  - xmobar-0.47.1
+  - xmobar-0.47.3
 flags:
   xmobar:
     with_datezone: true
