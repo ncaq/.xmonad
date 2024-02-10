@@ -1,9 +1,6 @@
 #!/bin/zsh
 set -eux
 
-systemd_dir=${0:a:h}/systemd/
-hostname=$(hostname)
-
 LANG=C.utf8 stack install
 
 cd ../
