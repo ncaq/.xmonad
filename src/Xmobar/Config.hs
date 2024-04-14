@@ -72,4 +72,4 @@ getBattery = do
 
 -- | 基本的な更新頻度。
 basicRate :: Rate
-basicRate = 100
+basicRate = 300
