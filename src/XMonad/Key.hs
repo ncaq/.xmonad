@@ -81,7 +81,7 @@ myKeys hostChassis conf@XConfig{modMask} = mkKeymap conf
   laptopKeys
   where laptopKeys = mkKeymap conf $
           if hostChassis == HostChassisLaptop
-          then [ ("<Pause>", toggleTouchPad)   -- 本当はT-Padキーに割り当てたかったのですがxmodmapを使っても認識できなかった。
+          then [ ("<XF86Calculator>", toggleTouchPad) -- 意味的に適切ではないが、適切なキーがないため代用。
                , ("M-l", spawn "dm-tool lock") -- M-lにロックを割り当てておかないとロックファンクションキーも動かなくなる。
                ]
           else []
