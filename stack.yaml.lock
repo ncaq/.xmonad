@@ -5,12 +5,12 @@
 
 packages:
 - completed:
-    hackage: xmobar-0.47.3@sha256:871f1f05cb898ef7f380cceef485373b9470e43544ba2e8f59f83d5bb94bdd6f,15129
+    hackage: xmobar-0.48.1@sha256:95baa3aa157182134b1e21d2ffb42ee0e148518ca21afda187faa5ae63917f17,15154
     pantry-tree:
-      sha256: 72a6ba15b9cb5a10799b374381c034860a2b742e177f7ea0f6ba1bf608cb9147
+      sha256: 408cf5e51845cd593bccbc0efd1569c77f1846f99bea1bb0c78568b4513dcdfc
       size: 9769
   original:
-    hackage: xmobar-0.47.3
+    hackage: xmobar-0.48.1
 snapshots:
 - completed:
     sha256: a81fb3877c4f9031e1325eb3935122e608d80715dc16b586eb11ddbff8671ecd

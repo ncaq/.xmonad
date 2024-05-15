@@ -1,6 +1,6 @@
 resolver: lts-21.25
 extra-deps:
-  - xmobar-0.47.3
+  - xmobar-0.48.1
 flags:
   xmobar:
     with_datezone: true
