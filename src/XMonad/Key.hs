@@ -57,7 +57,7 @@ myKeys hostChassis conf@XConfig{modMask} = mkKeymap conf
   , ("M-s",   runOrRaiseNext "slack"                   (className =? "Slack"))
 
   , ("M-f",   runOrRaiseNext "nautilus"                (className =? "org.gnome.Nautilus"))
-  , ("M-g",   runOrRaiseNext "gimp"                    (className =? "Gimp"))
+  , ("M-g",   runOrRaiseNext "gimp"                    (className ~? "Gimp"))
   , ("M-c",   runOrRaiseNext "chromium"                (className =? "Chromium-browser-chromium"))
   , ("M-r",   runOrRaiseNext "evince"                  (className =? "Evince"))
 
