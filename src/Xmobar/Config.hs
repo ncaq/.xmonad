@@ -28,7 +28,7 @@ mkConfigByDevice = do
   temp <- getTemp
   battery <- getBattery
   let runnable =
-        [ Run StdinReader
+        [ Run XMonadLog
         , Run $ Cpu ["--ppad", "3"] basicRate
         , Run $ CpuFreq ["-t", "Freq: <max>GHz", "--ddigits", "2"] basicRate
         , Run $ Memory ["-t", "Mem: <used>M"] basicRate
@@ -44,7 +44,7 @@ mkConfigByDevice = do
       batteryTemplate = maybe "" ((", " <>) . snd) battery
   return
     ( runnable
-    , "}%StdinReader%{%cpu%, %cpufreq%, %memory%, %swap%, %diskio%, %dynnetwork%" <>
+    , "}%XMonadLog%{%cpu%, %cpufreq%, %memory%, %swap%, %diskio%, %dynnetwork%" <>
       tempTemplate <>
       batteryTemplate <>
       ", %date%"
