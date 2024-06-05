@@ -68,7 +68,7 @@ myKeys hostChassis conf@XConfig{modMask} = mkKeymap conf
   , ("M-w",   runOrRaiseNext "eog"                     (className =? "Eog"))
   , ("M-v",   runOrRaiseNext "copyq-show"              (className =? "copyq"))
   , ("M-S-v", runOrRaiseNext "vlc"                     (className =? "vlc"))
-  , ("M-z",   runOrRaiseNext "youtube-music"           (className =? "YouTube Music"))
+  , ("M-z",   runOrRaiseNext youtubeMusicPath          (className =? "YouTube Music"))
   , ("M-S-z", runOrRaiseNext "zoom-fix-v4l"            (className =? "zoom"))
   ]
   <>
@@ -90,3 +90,8 @@ myKeys hostChassis conf@XConfig{modMask} = mkKeymap conf
 -- 主にパターンが多いLibreOffice用に必要になります。
 (~?) :: Query String -> String -> Query Bool
 a ~? b = fmap (=~ b) a
+
+-- | Gentoo gunuバージョンのYouTube Musicのパスは長いので関数に分ける。
+-- もし色々な環境で使うなら`raiseNextMaybe`を使って`gtk-launch`を利用すると柔軟かもしれない。
+youtubeMusicPath :: String
+youtubeMusicPath = "/opt/youtube-music/youtube-music"
