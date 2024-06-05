@@ -1,9 +1,9 @@
 module XMonad.Key (myKeys) where
 
+import qualified Data.List               as L
 import           Data.Map.Strict         (Map)
 import qualified Data.Map.Strict         as Map
 import           HostChassis
-import           Text.Regex.TDFA         ((=~))
 import           XMonad
 import           XMonad.Actions.WindowGo
 import           XMonad.Screenshot
@@ -62,7 +62,7 @@ myKeys hostChassis conf@XConfig{modMask} = mkKeymap conf
   , ("M-r",   runOrRaiseNext "evince"                  (className =? "Evince"))
 
   , ("M-b",   runOrRaiseNext "keepassxc"               (className =? "KeePassXC"))
-  , ("M-S-b", runOrRaiseNext "virtualbox"              (className =? "VirtualBox Machine" <||> className =? "VirtualBox Manager"))
+  , ("M-S-b", runOrRaiseNext "virtualbox"              (className ~? "VirtualBox"))
   , ("M-m",   runOrRaiseNext "thunderbird"             (className =? "thunderbird"))
   , ("M-S-m", runOrRaiseNext "smplayer"                (className =? "smplayer"))
   , ("M-w",   runOrRaiseNext "eog"                     (className =? "Eog"))
@@ -86,10 +86,9 @@ myKeys hostChassis conf@XConfig{modMask} = mkKeymap conf
                ]
           else []
 
--- | 正規表現でクラスネームをマッチさせます。
--- 主にパターンが多いLibreOffice用に必要になります。
+-- | クラスネームを部分一致させる。
 (~?) :: Query String -> String -> Query Bool
-a ~? b = fmap (=~ b) a
+a ~? b = fmap (L.isInfixOf b) a
 
 -- | Gentoo gunuバージョンのYouTube Musicのパスは長いので関数に分ける。
 -- もし色々な環境で使うなら`raiseNextMaybe`を使って`gtk-launch`を利用すると柔軟かもしれない。
