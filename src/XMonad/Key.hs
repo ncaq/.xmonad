@@ -51,7 +51,7 @@ myKeys hostChassis conf@XConfig{modMask} = mkKeymap conf
 
   , ("M-d",   runOrRaiseNext "discord-fix-pulse"       (className =? "discord"))
   , ("M-S-d", runOrRaiseNext "jd.sh"                   (className =? "Jdim"))
-  , ("M-h",   runOrRaiseNext "firefox"                 (className =? "firefox"))
+  , ("M-h",   runOrRaiseNext "firefox"                 (className ~? "firefox"))
   , ("M-t",   runOrRaiseNext "kitty"                   (className =? "kitty"))
   , ("M-n",   runOrRaiseNext "emacs"                   (className =? "Emacs"))
   , ("M-s",   runOrRaiseNext "slack"                   (className =? "Slack"))
@@ -63,7 +63,7 @@ myKeys hostChassis conf@XConfig{modMask} = mkKeymap conf
 
   , ("M-b",   runOrRaiseNext "keepassxc"               (className =? "KeePassXC"))
   , ("M-S-b", runOrRaiseNext "virtualbox"              (className ~? "VirtualBox"))
-  , ("M-m",   runOrRaiseNext "thunderbird"             (className =? "thunderbird"))
+  , ("M-m",   runOrRaiseNext "thunderbird"             (className ~? "thunderbird"))
   , ("M-S-m", runOrRaiseNext "smplayer"                (className =? "smplayer"))
   , ("M-w",   runOrRaiseNext "eog"                     (className =? "Eog"))
   , ("M-v",   runOrRaiseNext "copyq-show"              (className =? "copyq"))
