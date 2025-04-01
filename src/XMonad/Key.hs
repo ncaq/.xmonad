@@ -68,7 +68,7 @@ myKeys hostChassis conf@XConfig{modMask} = mkKeymap conf
   , ("M-w",   runOrRaiseNext "eog"                     (className =? "Eog"))
   , ("M-v",   runOrRaiseNext "copyq-show"              (className =? "copyq"))
   , ("M-S-v", runOrRaiseNext "vlc"                     (className =? "vlc"))
-  , ("M-z",   runOrRaiseNext youtubeMusicPath          (className =? "YouTube Music"))
+  , ("M-z",   runOrRaiseNext youtubeMusicPath          (className =? "com.github.th_ch.youtube_music"))
   , ("M-S-z", runOrRaiseNext "zoom-fix-v4l"            (className =? "zoom"))
   ]
   <>
