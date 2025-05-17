@@ -1,8 +1,0 @@
-#!/bin/zsh
-set -eux
-
-LANG=C.utf8 stack install
-
-cd ../
-
-ln -sfv .xmonad/.xsession .
