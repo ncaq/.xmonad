@@ -1,4 +1,4 @@
-resolver: lts-22.36
+resolver: lts-23.22
 extra-deps:
   - xmobar-0.48.1
   - xmonad-0.18.0@sha256:22300a2626ba5b00dcf0e5071d56ccb42140fb849ee6ea7bf1337ed07de33642,5453

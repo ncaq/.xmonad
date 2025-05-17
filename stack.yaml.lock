@@ -27,7 +27,7 @@ packages:
     hackage: xmonad-contrib-0.18.1@sha256:aae0f10f3f12492c9a3f0824c59b1d23982810a3f9fb096b2c3e2a0e417d0b05,22749
 snapshots:
 - completed:
-    sha256: 6a553c5fa4f211a9b639da5e5359124a93627852dd9967bed202fdd71b25f15e
-    size: 720021
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/22/36.yaml
-  original: lts-22.36
+    sha256: f8c8f95e57e436cee7c053b6f424e2c07a1020304a5583f3568cd9521443c340
+    size: 683838
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/23/22.yaml
+  original: lts-23.22
