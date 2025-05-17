@@ -28,6 +28,13 @@ cabal.project.local~
 
 # End of https://www.toptal.com/developers/gitignore/api/haskell
 
-xmonad-launch.cabal
-xmonad.errors
-xmonad.state
+# Haskell for Application
+
+*.cabal
+
+# Nix
+
+.direnv/
+/result/
+
+/.env*local
