@@ -63,7 +63,7 @@ dependencies:
   - convertible
   - directory
   - gi-glib
-  - gi-gtk
+  - gi-gtk3
   - hostname
   - process
   - text
