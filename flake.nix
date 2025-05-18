@@ -36,7 +36,12 @@
         };
         flake = pkgs.project.flake { };
       in
-      flake
+      flake // {
+        packages = flake.packages // {
+          xmonad-launch = flake.packages."xmonad-launch:exe:xmonad-launch";
+          xmobar-launch = flake.packages."xmonad-launch:exe:xmobar-launch";
+        };
+      }
     );
 
   nixConfig = {
