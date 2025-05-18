@@ -58,9 +58,7 @@
           paths = with pkgs; [
             birdtray
             copyq
-            imagemagick
             networkmanagerapplet
-            oxipng
             trayer
             xkbset
             xmobar-launch
