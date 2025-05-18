@@ -23,7 +23,18 @@
               name = "xmonad-launch";
               compiler-nix-name = "ghc984";
               shell = {
-                buildInputs = [
+                tools = {
+                  fourmolu = "latest";
+                  haskell-language-server = "latest";
+                  hlint = "latest";
+                  stylish-haskell = "latest";
+                };
+                buildInputs = with prev; [
+                  (writeScriptBin "haskell-language-server-wrapper" ''
+                    #!${stdenv.shell}
+                    exec haskell-language-server "$@"
+                  '')
+
                   prev.gtk3
                 ];
               };
@@ -36,7 +47,8 @@
         };
         flake = pkgs.project.flake { };
       in
-      flake // {
+      flake
+      // {
         packages = flake.packages // {
           xmonad-launch = flake.packages."xmonad-launch:exe:xmonad-launch";
           xmobar-launch = flake.packages."xmonad-launch:exe:xmobar-launch";
