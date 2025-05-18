@@ -11,17 +11,7 @@ import           XMonad.TouchPad
 
 myStartupHook :: X ()
 myStartupHook = do
-  liftIO $ do
-    -- xmonadを使っている時に使いたいスクリプトたちにPATHを通します。
-    originalPath <- getEnv "PATH"
-    home <- getHomeDirectory
-    let xmonadBin = home <> "/.xmonad/bin"
-    setEnv "PATH" $ xmonadBin <> ":" <> originalPath
-    setEnv "GLFW_IM_MODULE" "ibus"
-    setEnv "GTK_IM_MODULE" "ibus"
-    setEnv "QT_IM_MODULE" "ibus"
-    setEnv "XMODIFIERS" "@im=ibus"
-    setEnv "_JAVA_AWT_WM_NONREPARENTING" "1"
+  liftIO $ setEnv "_JAVA_AWT_WM_NONREPARENTING" "1"
   loadXresources
   -- 各デバイス向け設定。
   hostChassis <- getHostChassisXMonad
@@ -32,7 +22,7 @@ myStartupHook = do
   setDpms
   barHeight <- liftIO getBarHeight
   spawn $ unwords
-    [ "trayer-srg"
+    [ "trayer"
     , "--edge top"
     , "--align right"
     , "--widthtype percent"
@@ -42,7 +32,6 @@ myStartupHook = do
     , "--monitor primary"
     ]
   spawn "copyq"
-  spawn "ibus-daemon --xim --replace"
   spawn "nm-applet"
 
 -- | 必要なコマンドとファイルが揃っている場合、
