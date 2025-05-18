@@ -46,12 +46,39 @@
           inherit (haskellNix) config;
         };
         flake = pkgs.project.flake { };
+        xmonad-launch = flake.packages."xmonad-launch:exe:xmonad-launch";
+        xmobar-launch = flake.packages."xmonad-launch:exe:xmobar-launch";
+        xmonad-helper-bin = pkgs.runCommandNoCC "xmonad-helper-bin" { } ''
+          mkdir -p $out/bin
+          cp ${./bin}/* $out/bin/
+          chmod +x $out/bin/*
+        '';
+        xmonad-launch-full = pkgs.symlinkJoin {
+          name = "xmonad-launch-full";
+          paths = with pkgs; [
+            birdtray
+            copyq
+            imagemagick
+            networkmanagerapplet
+            oxipng
+            trayer
+            xkbset
+            xmobar-launch
+            xmonad-helper-bin
+            xmonad-launch
+            xorg.xinput
+            xorg.xrandr
+            xorg.xrdb
+            xorg.xset
+          ];
+        };
       in
       flake
       // {
         packages = flake.packages // {
-          xmonad-launch = flake.packages."xmonad-launch:exe:xmonad-launch";
+          default = xmonad-launch-full;
           xmobar-launch = flake.packages."xmonad-launch:exe:xmobar-launch";
+          xmonad-launch = flake.packages."xmonad-launch:exe:xmonad-launch";
         };
       }
     );
@@ -67,6 +94,6 @@
       "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];
-    allow-import-from-derivation = "true";
+    allow-import-from-derivation = true;
   };
 }
