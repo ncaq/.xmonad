@@ -1,2 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
+
 xset s off dpms 1800 1800 1800

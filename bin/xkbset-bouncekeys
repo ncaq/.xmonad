@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
 if xkbset q|rg 'Bounce-Keys = Off'; then
     xkbset bouncekeys 50
