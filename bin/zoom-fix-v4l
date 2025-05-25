@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
+
 # ライブラリで変換をかまさないとカメラが真っ黒な画面になります
 # [zoom 3.5が私のLinux環境でカメラの映像を取得できないことの解決 - ncaq](https://www.ncaq.net/2020/04/02/18/45/39/)
 export LD_PRELOAD=/usr/lib64/libv4l/v4l2convert.so
