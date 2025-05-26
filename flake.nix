@@ -66,7 +66,6 @@
             xmonad-launch
             xorg.xinput
             xorg.xrandr
-            xorg.xrdb
             xorg.xset
           ];
         };
