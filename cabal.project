@@ -4,3 +4,16 @@ package xmobar
   flags:
     +with_datezone
     +with_threaded
+
+source-repository-package
+  type: git
+  location: https://github.com/ncaq/gtk2hs
+  tag: 260805611e54e60383c1d98c5c0a29ad9c2efe7f
+  --sha256: 1d0mgh3k6xgpmsc1kvwr4wa69s0yf67hxqvj2gnsyg6d8afsif6n
+  subdir:
+    cairo
+    gio
+    glib
+    gtk
+    pango
+    tools
