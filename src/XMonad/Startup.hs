@@ -12,7 +12,6 @@ import           XMonad.TouchPad
 myStartupHook :: X ()
 myStartupHook = do
   liftIO $ setEnv "_JAVA_AWT_WM_NONREPARENTING" "1"
-  loadXresources
   -- 各デバイス向け設定。
   hostChassis <- getHostChassisXMonad
   case hostChassis of
@@ -33,18 +32,6 @@ myStartupHook = do
     ]
   spawn "copyq"
   spawn "nm-applet"
-
--- | 必要なコマンドとファイルが揃っている場合、
--- `xrdb ~/.Xresources`を実行します。
--- 主にDPIの設定に使われます。
-loadXresources :: X ()
-loadXresources = do
-  xrdbExecutable <- liftIO findXrdbExecutable
-  xresourcesExist <- liftIO doesXresourcesExist
-  when (xrdbExecutable && xresourcesExist) $
-    spawn "xrdb ~/.Xresources"
-  where findXrdbExecutable = isJust <$> findExecutable "xrdb"
-        doesXresourcesExist = getHomeDirectory >>= \home -> doesFileExist $ home <> "/.Xresources"
 
 -- | デスクトップ環境での初期設定。
 myStartupHookDesktop :: X ()
