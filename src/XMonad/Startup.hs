@@ -2,11 +2,9 @@ module XMonad.Startup (myStartupHook) where
 
 import           ByDpi
 import           HostChassis
-import           System.Directory
 import           System.Environment
 import           XMonad
 import           XMonad.Layout.IndependentScreens
-import           XMonad.Prelude
 import           XMonad.TouchPad
 
 myStartupHook :: X ()
