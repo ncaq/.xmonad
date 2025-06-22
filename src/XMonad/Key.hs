@@ -44,7 +44,6 @@ myKeys hostChassis conf@XConfig{modMask} = mkKeymap conf
   , ("M-S-i", runOrRaiseNext "idea-community"          (className ~? "jetbrains-idea"))
 
   , ("M-p",   runOrRaiseNext "pavucontrol"             (className ~? "Pavucontrol"))
-  , ("M-S-p", runOrRaiseNext "skypeforlinux"           (className =? "Skype"))
   , ("M-y",   runOrRaiseNext "rhythmbox"               (className =? "Rhythmbox"))
 
   , ("M-x",   runOrRaiseNext "steam"                   (className =? "Steam"))
