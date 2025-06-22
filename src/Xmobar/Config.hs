@@ -1,9 +1,12 @@
 module Xmobar.Config (mkConfig) where
 
 import           ByDpi
+import           Control.Exception
 import           HostChassis
 import           System.Directory
 import           Xmobar
+import qualified Data.List as L
+import Control.Applicative
 
 mkConfig :: IO Config
 mkConfig = do
@@ -36,11 +39,11 @@ mkConfigByDevice = do
         , Run $ DiskIO [("/", "IO: <read>|<write>")] ["--minwidth", "4"] basicRate
         , Run $ DynNetwork ["-t", "Net: <rx>KB|<tx>KB", "--minwidth", "2"] basicRate
         ] <>
-        (pure . fst) temp <>
+        maybe [] (pure . fst) temp <>
         maybe [] (pure . fst) battery <>
         [ Run $ DateZone "%F%a%T" "ja_JP.utf8" "Japan" "date" 10
         ]
-      tempTemplate = ", " <> snd temp
+      tempTemplate = maybe "" ((", " <>) . snd) temp
       batteryTemplate = maybe "" ((", " <>) . snd) battery
   return
     ( runnable
@@ -50,18 +53,29 @@ mkConfigByDevice = do
       ", %date%"
     )
 
-getTemp :: IO (Runnable, String)
-getTemp = do
+getTemp :: IO (Maybe (Runnable, String))
+getTemp = getAmdTemp <|> getGenericTemp
+
+getAmdTemp :: IO (Maybe (Runnable, String))
+getAmdTemp = do
   k10TempExists <- doesDirectoryExist "/sys/bus/pci/drivers/k10temp"
   return $ if k10TempExists
-    then amdTemp
-    else genericTemp
+    then Just (Run $ K10Temp "0000:00:18.3" ["-t", "Temp: <Tctl>°C"] basicRate, "%k10temp%")
+    else Nothing
 
-amdTemp :: (Runnable, String)
-amdTemp = (Run $ K10Temp "0000:00:18.3" ["-t", "Temp: <Tctl>°C"] basicRate, "%k10temp%")
-
-genericTemp :: (Runnable, String)
-genericTemp = (Run $ MultiCoreTemp ["-t", "Temp: <max>°C"] basicRate, "%multicoretemp%")
+getGenericTemp :: IO (Maybe (Runnable, String))
+getGenericTemp = do
+  -- Check if any thermal zones exist
+  thermalZonesExist <- doesDirectoryExist "/sys/class/thermal"
+  if not thermalZonesExist
+    then return Nothing
+    else do
+      -- Check if we have at least one thermal zone
+      zones <- listDirectory "/sys/class/thermal" `catch` (\(_ :: IOError) -> return [])
+      let hasZones = L.any ("thermal_zone" `L.isPrefixOf`) zones
+      return $ if hasZones
+        then Just (Run $ MultiCoreTemp ["-t", "Temp: <max>°C"] basicRate, "%multicoretemp%")
+        else Nothing
 
 getBattery :: IO (Maybe (Runnable, String))
 getBattery = do
