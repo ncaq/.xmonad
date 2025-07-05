@@ -34,14 +34,6 @@ myStartupHook = do
 -- | デスクトップ環境での初期設定。
 myStartupHookDesktop :: X ()
 myStartupHookDesktop = do
-  screensAmount <- countScreens :: MonadIO m => m Int
-  case screensAmount of
-    -- Switchなどが中央画面奪った時のモニタ環境。
-    3 -> spawn "xrandr-desktop-3"
-    -- 通常のフルで使えるモニタ環境。
-    4 -> spawn "xrandr-desktop-4"
-    -- フォールバック。(何もしない)
-    _ -> return ()
   -- Thunderbirdの未読メール通知アイコンを表示するプログラムなのですが、
   -- やたらとCPUとメモリを食います。
   -- CPUコアなんて基本的に余っているので、
