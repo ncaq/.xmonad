@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-set -euo pipefail
-
-xrandr --output DP-0 --primary --output DP-2 --right-of DP-0 --output DP-4 --left-of DP-0 --output HDMI-0 --above DP-0
