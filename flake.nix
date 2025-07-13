@@ -68,7 +68,6 @@
             xmonad-helper-bin
             xmonad-launch
             xorg.xinput
-            xorg.xset
           ];
         };
       in
