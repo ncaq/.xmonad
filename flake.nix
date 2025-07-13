@@ -63,7 +63,6 @@
             copyq
             networkmanagerapplet
             trayer
-            xkbset
             xmobar-launch
             xmonad-helper-bin
             xmonad-launch
