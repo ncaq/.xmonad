@@ -16,7 +16,6 @@ myStartupHook = do
     HostChassisDesktop -> myStartupHookDesktop
     HostChassisLaptop  -> myStartupHookLaptop
     _                  -> return ()
-  setDpms
   barHeight <- liftIO getBarHeight
   spawn $ unwords
     [ "trayer"
@@ -45,14 +44,3 @@ myStartupHookDesktop = do
 -- | ラップトップ環境での初期設定。
 myStartupHookLaptop :: X ()
 myStartupHookLaptop = disableTouchPad
-
--- | [Display Power Management Signaling - ArchWiki](https://wiki.archlinux.jp/index.php/Display_Power_Management_Signaling)
--- をコンピュータのクラスに基づいて設定します。
-setDpms :: MonadIO m => m ()
-setDpms = do
-  hostChassis <- getHostChassisXMonad
-  case hostChassis of
-    -- デスクトップは画面消灯を無効にする。
-    HostChassisDesktop -> spawn "dpms-off"
-    -- デスクトップ以外では30分で消灯する。
-    _                  -> spawn "dpms-30m"
