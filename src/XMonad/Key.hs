@@ -48,7 +48,7 @@ myKeys hostChassis conf@XConfig{modMask} = mkKeymap conf
 
   , ("M-x",   runOrRaiseNext "steam"                   (className =? "Steam"))
 
-  , ("M-d",   runOrRaiseNext "discord-fix-pulse"       (className =? "discord"))
+  , ("M-d",   runOrRaiseNext "discord"                 (className =? "discord"))
   , ("M-S-d", runOrRaiseNext "jd.sh"                   (className =? "Jdim"))
   , ("M-h",   runOrRaiseNext "firefox"                 (className ~? "firefox"))
   , ("M-t",   runOrRaiseNext "kitty"                   (className =? "kitty"))

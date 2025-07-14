@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-set -euo pipefail
-
-# 設定しないと主に話し始めにものすごいノイズが乗ります
-export PULSE_LATENCY_MSEC=90
-exec discord
