@@ -8,24 +8,14 @@ mkMyManageHook :: MonadIO m => m ManageHook
 mkMyManageHook = do
   screensAmount <- countScreens :: MonadIO m => m Int
   return $ case screensAmount of
-    3 -> myManageHookFor3
     4 -> myManageHookFor4
     _ -> myManageHookForSimple
-
--- | モニタ数が3つの場合に使われる`ManageHook`です。
-myManageHookFor3 :: ManageHook
-myManageHookFor3 = composeAll
-  [ isDialog               --> doFullFloat
-  , className =? "firefox" --> doShift "1"
-  , className =? "kitty"   --> doShift "2"
-  , return True            --> doShift "3"
-  ]
 
 -- | モニタ数が4つの場合に使われる`ManageHook`です。
 myManageHookFor4 :: ManageHook
 myManageHookFor4 = composeAll
   [ isDialog               --> doFullFloat
-  , className =? "firefox" --> doShift "4"
+  , className =? "firefox" --> doShift "3"
   , className =? "kitty"   --> doShift "2"
   , return True            --> doShift "1"
   ]
