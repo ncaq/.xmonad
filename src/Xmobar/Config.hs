@@ -17,8 +17,8 @@ mkConfig = do
     defaultConfig
     { font = "monospace"
     , dpi
-    , bgColor = "#002b36"
-    , fgColor = "#93a1a1"
+    , bgColor = "#000000"
+    , fgColor = "#E0E0E0"
     , position = TopSize L 90 barHeight
     , lowerOnStart = False
     , commands = runnable
