@@ -26,6 +26,8 @@ myStartupHook = do
     , "--heighttype pixel"
     , "--height " <> show barHeight
     , "--monitor primary"
+    , "--transparent true"
+    , "--alpha 255"
     ]
   spawn "copyq"
   spawn "nm-applet"
