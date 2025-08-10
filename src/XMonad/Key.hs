@@ -43,7 +43,7 @@ myKeys hostChassis conf@XConfig{modMask} = mkKeymap conf
   , ("M-i",   runOrRaiseNext "inkscape"                (className =? "Inkscape"))
   , ("M-S-i", runOrRaiseNext "idea-community"          (className ~? "jetbrains-idea"))
 
-  , ("M-p",   runOrRaiseNext "easyeffects"             (className ~? "easyeffects"))
+  , ("M-p",   runOrRaiseNext "helvum"                  (className ~? "helvum"))
   , ("M-y",   runOrRaiseNext "rhythmbox"               (className =? "Rhythmbox"))
 
   , ("M-x",   runOrRaiseNext "steam"                   (className =? "Steam"))
