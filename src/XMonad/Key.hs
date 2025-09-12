@@ -58,7 +58,7 @@ myKeys hostChassis conf@XConfig{modMask} = mkKeymap conf
   , ("M-f",   runOrRaiseNext "nautilus"                (className =? "org.gnome.Nautilus"))
   , ("M-g",   runOrRaiseNext "gimp"                    (className ~? "Gimp"))
   , ("M-c",   runOrRaiseNext "claude-desktop"          (className =? "Claude"))
-  , ("M-S-c", runOrRaiseNext "chromium"                (className =? "Chromium-browser-chromium"))
+  , ("M-S-c", runOrRaiseNext "chromium"                (className =? "Chromium-browser"))
   , ("M-r",   runOrRaiseNext "evince"                  (className =? "Evince"))
 
   , ("M-b",   runOrRaiseNext "keepassxc"               (className =? "KeePassXC"))
