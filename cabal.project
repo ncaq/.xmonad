@@ -1,5 +1,4 @@
 packages: .
-
 with-compiler: ghc-9.10.2
 index-state: 2025-10-03T20:15:35Z
 
