@@ -1,6 +1,6 @@
 module Main (main) where
 
-import           XMonad.AppMain
+import XMonad.AppMain
 
 main :: IO ()
 main = appMain

@@ -1,6 +1,6 @@
 module Main (main) where
 
-import           Xmobar.AppMain
+import Xmobar.AppMain
 
 main :: IO ()
 main = appMain

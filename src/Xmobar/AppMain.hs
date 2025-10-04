@@ -1,7 +1,7 @@
 module Xmobar.AppMain (appMain) where
 
-import           Xmobar
-import           Xmobar.Config
+import Xmobar
+import Xmobar.Config
 
 appMain :: IO ()
 appMain = do
