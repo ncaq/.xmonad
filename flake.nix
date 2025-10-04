@@ -93,6 +93,7 @@
                   fourmolu
                   nil
                   nixfmt-rfc-style
+                  parallel
                   prev.gtk3
                   yamllint
 
