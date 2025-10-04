@@ -4,7 +4,6 @@ import ByDpi
 import HostChassis
 import System.Environment
 import XMonad
-import XMonad.Layout.IndependentScreens
 import XMonad.TouchPad
 
 myStartupHook :: X ()
