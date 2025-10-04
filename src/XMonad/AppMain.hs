@@ -1,9 +1,9 @@
 module XMonad.AppMain (appMain) where
 
-import           XMonad
-import           XMonad.Config
-import           XMonad.Hooks.StatusBar
-import           XMonad.Pp
+import XMonad
+import XMonad.Config
+import XMonad.Hooks.StatusBar
+import XMonad.Pp
 
 appMain :: IO ()
 appMain = do

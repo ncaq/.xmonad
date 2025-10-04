@@ -1,11 +1,11 @@
 module XMonad.Startup (myStartupHook) where
 
-import           ByDpi
-import           HostChassis
-import           System.Environment
-import           XMonad
-import           XMonad.Layout.IndependentScreens
-import           XMonad.TouchPad
+import ByDpi
+import HostChassis
+import System.Environment
+import XMonad
+import XMonad.Layout.IndependentScreens
+import XMonad.TouchPad
 
 myStartupHook :: X ()
 myStartupHook = do
@@ -14,21 +14,22 @@ myStartupHook = do
   hostChassis <- getHostChassisXMonad
   case hostChassis of
     HostChassisDesktop -> myStartupHookDesktop
-    HostChassisLaptop  -> myStartupHookLaptop
-    _                  -> return ()
+    HostChassisLaptop -> myStartupHookLaptop
+    _ -> return ()
   barHeight <- liftIO getBarHeight
-  spawn $ unwords
-    [ "trayer"
-    , "--edge top"
-    , "--align right"
-    , "--widthtype percent"
-    , "--width 10"
-    , "--heighttype pixel"
-    , "--height " <> show barHeight
-    , "--monitor primary"
-    , "--transparent true"
-    , "--alpha 255"
-    ]
+  spawn $
+    unwords
+      [ "trayer"
+      , "--edge top"
+      , "--align right"
+      , "--widthtype percent"
+      , "--width 10"
+      , "--heighttype pixel"
+      , "--height " <> show barHeight
+      , "--monitor primary"
+      , "--transparent true"
+      , "--alpha 255"
+      ]
   spawn "copyq"
   spawn "nm-applet"
 

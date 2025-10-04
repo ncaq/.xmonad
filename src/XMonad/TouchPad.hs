@@ -1,8 +1,8 @@
 module XMonad.TouchPad (toggleTouchPad, disableTouchPad, enableTouchPad) where
 
-import qualified Data.List       as L
-import           XMonad
-import           XMonad.Util.Run
+import Data.List qualified as L
+import XMonad
+import XMonad.Util.Run
 
 -- | タッチパッドの有効無効をトグルします。
 toggleTouchPad :: X ()
@@ -23,10 +23,10 @@ enableTouchPad = safeSpawn "xinput" ["enable", touchPadName]
 getTouchPadEnable :: X Bool
 getTouchPadEnable = do
   mDeviceEnabledLine <-
-    L.find ("\tDevice Enabled" `L.isPrefixOf`) . L.lines <$>
-    runProcessWithInput "xinput" ["list-props", touchPadName] ""
+    L.find ("\tDevice Enabled" `L.isPrefixOf`) . L.lines
+      <$> runProcessWithInput "xinput" ["list-props", touchPadName] ""
   return $ case mDeviceEnabledLine of
-    Nothing                -> False
+    Nothing -> False
     Just deviceEnabledLine -> L.last deviceEnabledLine == '1'
 
 -- | 使用しているタッチパッドの名前。
