@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     flake-utils.url = "github:numtide/flake-utils";
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
@@ -133,7 +133,7 @@
         });
         xmonad-launch = flake.packages."xmonad-launch:exe:xmonad-launch";
         xmobar-launch = flake.packages."xmonad-launch:exe:xmobar-launch";
-        xmonad-helper-bin = pkgs.runCommandNoCC "xmonad-helper-bin" { } ''
+        xmonad-helper-bin = pkgs.runCommand "xmonad-helper-bin" { } ''
           mkdir -p $out/bin
           cp ${./bin}/* $out/bin/
           chmod +x $out/bin/*
