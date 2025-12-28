@@ -1,0 +1,41 @@
+name: check
+
+on:
+  workflow_dispatch:
+  push:
+    branches: master
+  pull_request:
+
+permissions:
+  actions: write # キャッシュアクションに必要
+  contents: read # リポジトリコンテンツの読み取り
+
+jobs:
+  nix-flake-check:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            accept-flake-config = true
+      - uses: cachix/cachix-action@v16
+        with:
+          name: ncaq-xmonad
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+      - run: nix flake check
+
+  format: # `nix flake check`で実行される`nix fmt`で対応していない範囲のフォーマットチェックを行う。
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            accept-flake-config = true
+      - uses: cachix/cachix-action@v16
+        with:
+          name: ncaq-xmonad
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+      - name: editorconfig-checker
+        run: nix run 'nixpkgs#editorconfig-checker' -- -config .editorconfig-checker.json
