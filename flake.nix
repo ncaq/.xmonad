@@ -24,7 +24,7 @@
     flake-utils.lib.eachSystem [ "x86_64-linux" ] (
       system:
       let
-        ghc-version = "ghc9102";
+        ghc-version = "ghc9103"; # GHC 9.10.3
         overlays = [
           haskellNix.overlay
           (
