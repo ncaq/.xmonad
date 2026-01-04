@@ -144,6 +144,7 @@
             birdtray
             copyq
             networkmanagerapplet
+            snixembed
             trayer
             xmobar-launch
             xmonad-helper-bin
