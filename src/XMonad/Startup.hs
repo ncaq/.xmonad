@@ -16,6 +16,9 @@ myStartupHook = do
     HostChassisLaptop -> myStartupHookLaptop
     _ -> return ()
   barHeight <- liftIO getBarHeight
+  -- SNI(StatusNotifierItem)をXEmbedに変換してtrayerで表示できるようにする。
+  -- trayscaleなどのSNIアプリケーション向け。
+  spawn "snixembed --fork"
   spawn $
     unwords
       [ "trayer"
