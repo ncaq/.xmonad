@@ -24,7 +24,6 @@ common basic
     -Wincomplete-uni-patterns
     -Wpartial-fields
     -Wredundant-constraints
-    -j
 
   default-language: GHC2024
   default-extensions:

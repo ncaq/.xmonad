@@ -2,6 +2,12 @@ packages: .
 with-compiler: ghc-9.10.3
 index-state: 2025-12-27T19:24:07Z
 
+package xmonad-launch
+  ghc-options: -j
+
+package xmobar-launch
+  ghc-options: -j
+
 package xmobar
   flags:
     +with_datezone
