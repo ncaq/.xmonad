@@ -1,7 +1,4 @@
-cabal-version: 1.12
--- This file has been generated from package.yaml by hpack version 0.36.1.
---
--- see: https://github.com/sol/hpack
+cabal-version: 3.4
 name: xmonad-launch
 version: 0.1.0.0
 synopsis: It is my xmonad and xmobar setting
@@ -18,7 +15,43 @@ source-repository head
   type: git
   location: https://github.com/ncaq/.xmonad
 
+common warnings
+  default-language: GHC2024
+  default-extensions: OverloadedStrings
+  ghc-options:
+    -Wall
+    -Wcompat
+    -Widentities
+    -Wincomplete-record-updates
+    -Wincomplete-uni-patterns
+    -Wpartial-fields
+    -Wredundant-constraints
+    -j
+
+common executable-common
+  import: warnings
+  ghc-options:
+    -threaded
+    -rtsopts
+
+  build-depends:
+    base,
+    containers,
+    convertible,
+    directory,
+    gi-glib,
+    gi-gtk3,
+    hostname,
+    process,
+    text,
+    time,
+    xmobar,
+    xmonad,
+    xmonad-contrib,
+    xmonad-launch,
+
 library
+  import: warnings
   exposed-modules:
     ByDpi
     HostChassis
@@ -33,137 +66,7 @@ library
     Xmobar.AppMain
     Xmobar.Config
 
-  other-modules:
-    Paths_xmonad_launch
-
-  hs-source-dirs:
-    src
-
-  default-extensions:
-    BangPatterns
-    BinaryLiterals
-    ConstraintKinds
-    DataKinds
-    DefaultSignatures
-    DeriveDataTypeable
-    DeriveFoldable
-    DeriveFunctor
-    DeriveGeneric
-    DeriveTraversable
-    DoAndIfThenElse
-    EmptyDataDecls
-    ExistentialQuantification
-    FlexibleContexts
-    FlexibleInstances
-    FunctionalDependencies
-    GADTs
-    GeneralizedNewtypeDeriving
-    InstanceSigs
-    KindSignatures
-    LambdaCase
-    MultiParamTypeClasses
-    MultiWayIf
-    NamedFieldPuns
-    OverloadedStrings
-    PartialTypeSignatures
-    PatternGuards
-    PolyKinds
-    RankNTypes
-    RecordWildCards
-    ScopedTypeVariables
-    StandaloneDeriving
-    TupleSections
-    TypeFamilies
-    TypeSynonymInstances
-    ViewPatterns
-
-  ghc-options:
-    -Wall
-    -Wcompat
-    -Widentities
-    -Wincomplete-record-updates
-    -Wincomplete-uni-patterns
-    -Wpartial-fields
-    -Wredundant-constraints
-    -j
-
-  build-depends:
-    base,
-    containers,
-    convertible,
-    directory,
-    gi-glib,
-    gi-gtk3,
-    hostname,
-    process,
-    text,
-    time,
-    xmobar,
-    xmonad,
-    xmonad-contrib
-
-  default-language: GHC2021
-
-executable xmobar-launch
-  main-is: Main.hs
-  other-modules:
-    Paths_xmonad_launch
-
-  hs-source-dirs:
-    app/Xmobar
-
-  default-extensions:
-    BangPatterns
-    BinaryLiterals
-    ConstraintKinds
-    DataKinds
-    DefaultSignatures
-    DeriveDataTypeable
-    DeriveFoldable
-    DeriveFunctor
-    DeriveGeneric
-    DeriveTraversable
-    DoAndIfThenElse
-    EmptyDataDecls
-    ExistentialQuantification
-    FlexibleContexts
-    FlexibleInstances
-    FunctionalDependencies
-    GADTs
-    GeneralizedNewtypeDeriving
-    InstanceSigs
-    KindSignatures
-    LambdaCase
-    MultiParamTypeClasses
-    MultiWayIf
-    NamedFieldPuns
-    OverloadedStrings
-    PartialTypeSignatures
-    PatternGuards
-    PolyKinds
-    RankNTypes
-    RecordWildCards
-    ScopedTypeVariables
-    StandaloneDeriving
-    TupleSections
-    TypeFamilies
-    TypeSynonymInstances
-    ViewPatterns
-
-  ghc-options:
-    -Wall
-    -Wcompat
-    -Widentities
-    -Wincomplete-record-updates
-    -Wincomplete-uni-patterns
-    -Wpartial-fields
-    -Wredundant-constraints
-    -j
-    -O2
-    -threaded
-    -rtsopts
-    -with-rtsopts=-N2
-
+  hs-source-dirs: src
   build-depends:
     base,
     containers,
@@ -178,84 +81,15 @@ executable xmobar-launch
     xmobar,
     xmonad,
     xmonad-contrib,
-    xmonad-launch
-
-  default-language: GHC2021
 
 executable xmonad-launch
+  import: executable-common
   main-is: Main.hs
-  other-modules:
-    Paths_xmonad_launch
+  hs-source-dirs: app/XMonad
+  ghc-options: -with-rtsopts=-N
 
-  hs-source-dirs:
-    app/XMonad
-
-  default-extensions:
-    BangPatterns
-    BinaryLiterals
-    ConstraintKinds
-    DataKinds
-    DefaultSignatures
-    DeriveDataTypeable
-    DeriveFoldable
-    DeriveFunctor
-    DeriveGeneric
-    DeriveTraversable
-    DoAndIfThenElse
-    EmptyDataDecls
-    ExistentialQuantification
-    FlexibleContexts
-    FlexibleInstances
-    FunctionalDependencies
-    GADTs
-    GeneralizedNewtypeDeriving
-    InstanceSigs
-    KindSignatures
-    LambdaCase
-    MultiParamTypeClasses
-    MultiWayIf
-    NamedFieldPuns
-    OverloadedStrings
-    PartialTypeSignatures
-    PatternGuards
-    PolyKinds
-    RankNTypes
-    RecordWildCards
-    ScopedTypeVariables
-    StandaloneDeriving
-    TupleSections
-    TypeFamilies
-    TypeSynonymInstances
-    ViewPatterns
-
-  ghc-options:
-    -Wall
-    -Wcompat
-    -Widentities
-    -Wincomplete-record-updates
-    -Wincomplete-uni-patterns
-    -Wpartial-fields
-    -Wredundant-constraints
-    -j
-    -O2
-    -threaded
-    -rtsopts
-    -with-rtsopts=-N
-
-  build-depends:
-    base,
-    containers,
-    convertible,
-    directory,
-    gi-glib,
-    gi-gtk3,
-    hostname,
-    process,
-    text,
-    time,
-    xmobar,
-    xmonad,
-    xmonad-contrib,
-    xmonad-launch
-
-  default-language: GHC2021
+executable xmobar-launch
+  import: executable-common
+  main-is: Main.hs
+  hs-source-dirs: app/Xmobar
+  ghc-options: -with-rtsopts=-N2
