@@ -15,7 +15,7 @@ source-repository head
   type: git
   location: https://github.com/ncaq/.xmonad
 
-common warnings
+common basic
   default-language: GHC2024
   default-extensions: OverloadedStrings
   ghc-options:
@@ -29,7 +29,7 @@ common warnings
     -j
 
 common executable-common
-  import: warnings
+  import: basic
   ghc-options:
     -threaded
     -rtsopts
@@ -51,7 +51,7 @@ common executable-common
     xmonad-launch,
 
 library
-  import: warnings
+  import: basic
   exposed-modules:
     ByDpi
     HostChassis
