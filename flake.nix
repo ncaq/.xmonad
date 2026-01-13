@@ -172,8 +172,10 @@
               );
               includes = [ "*" ];
               excludes = [
+                ".direnv/*"
                 ".git/*"
                 "dist-newstyle/*"
+                "result*"
               ];
             };
           };
