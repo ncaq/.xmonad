@@ -70,6 +70,7 @@ library
     xmobar,
     xmonad,
     xmonad-contrib,
+
   exposed-modules:
     ByDpi
     HostChassis
