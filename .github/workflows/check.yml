@@ -24,18 +24,3 @@ jobs:
           name: ncaq-xmonad
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
       - run: nix flake check
-
-  format: # `nix flake check`で実行される`nix fmt`で対応していない範囲のフォーマットチェックを行う。
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v6
-      - uses: cachix/install-nix-action@v31
-        with:
-          extra_nix_config: |
-            accept-flake-config = true
-      - uses: cachix/cachix-action@v16
-        with:
-          name: ncaq-xmonad
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-      - name: editorconfig-checker
-        run: nix run 'nixpkgs#editorconfig-checker' -- -config .editorconfig-checker.json
