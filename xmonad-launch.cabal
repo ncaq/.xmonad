@@ -45,6 +45,11 @@ common basic
     xmonad,
     xmonad-contrib,
 
+  pkgconfig-depends:
+    xrandr,
+    xrender,
+    zlib,
+
 library
   import: basic
   hs-source-dirs: src

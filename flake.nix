@@ -102,6 +102,16 @@
                     exec haskell-language-server "$@"
                   '')
                 ];
+                # haskell-language-server(hie-bios)がcabal replを実行する際に、
+                # GHCが-Wmissed-extra-shared-lib警告を出力するとHLSのパーサーが失敗するため、
+                # 必要な共有ライブラリをLD_LIBRARY_PATHに追加する。
+                shellHook = ''
+                  export LD_LIBRARY_PATH="${prev.lib.makeLibraryPath [
+                    prev.xorg.libXrandr
+                    prev.xorg.libXrender
+                    prev.zlib
+                  ]}''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+                '';
               };
             };
           })
