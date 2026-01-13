@@ -112,11 +112,10 @@
         };
         flake = pkgs.project.flake { };
         treefmtEval = treefmt-nix.lib.evalModule pkgs (_: {
-          # actionlintはセルフホストランナーの設定ファイルを正常に読み込まなかった。
-          # yamlfmtはprettierと競合する。
+          # yamlfmtはprettierと競合します。
           projectRootFile = "flake.nix";
           programs = {
-            cabal-gild.enable = true;
+            actionlint.enable = true;
             deadnix.enable = true;
             hlint.enable = true;
             nixfmt.enable = true;
@@ -128,6 +127,54 @@
             fourmolu = {
               enable = true;
               package = pkgs.fourmolu;
+            };
+          };
+          settings.formatter = {
+            # cabal-gildのモジュール自動発見機能に対応するため、
+            # Haskellソースファイルの変更も検知してcabal-gildを実行します。
+            # treefmt-nixの上流では変更されたファイルだけを修正したいと言われてマージされていませんが、
+            # ローカルで使う分には問題ありません。
+            # [fix(cabal): cabal-fmt and cabal-gild discover module by ncaq · Pull Request #384 · numtide/treefmt-nix](https://github.com/numtide/treefmt-nix/pull/384)
+            cabal-gild = {
+              command = pkgs.lib.getExe (
+                pkgs.writeShellApplication {
+                  name = "cabal-gild-wrapper";
+                  runtimeInputs = [
+                    (pkgs.haskell-nix.tool ghc-version "cabal-gild" "1.6.0.2")
+                    pkgs.git
+                    pkgs.parallel
+                  ];
+                  text = ''
+                    git ls-files -z "*.cabal" | parallel --null "cabal-gild --io {}"
+                  '';
+                }
+              );
+              includes = [
+                "*.cabal"
+                # Haskellソースファイルの変更を検知するために含める
+                "*.hs"
+                "*.lhs"
+                "*.hsc"
+                "*.chs"
+                "*.hsig"
+                "*.lhsig"
+              ];
+            };
+            editorconfig-checker = {
+              command = pkgs.lib.getExe (
+                pkgs.writeShellApplication {
+                  name = "editorconfig-checker-wrapper";
+                  runtimeInputs = [ pkgs.editorconfig-checker ];
+                  text = ''
+                    editorconfig-checker -config .editorconfig-checker.json "$@"
+                  '';
+                }
+              );
+              includes = [ "*" ];
+              excludes = [
+                ".git/*"
+                "dist-newstyle/*"
+              ];
             };
           };
         });

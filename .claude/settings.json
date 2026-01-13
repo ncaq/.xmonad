@@ -7,10 +7,6 @@
           {
             "type": "command",
             "command": "cd $CLAUDE_PROJECT_DIR && nix fmt"
-          },
-          {
-            "type": "command",
-            "command": "cd $CLAUDE_PROJECT_DIR && git ls-files -z *.cabal|parallel --verbose --null cabal-gild --io {}"
           }
         ]
       }
