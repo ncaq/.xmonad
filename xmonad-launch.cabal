@@ -6,7 +6,7 @@ homepage: https://github.com/ncaq/.xmonad#readme
 bug-reports: https://github.com/ncaq/.xmonad/issues
 author: ncaq
 maintainer: ncaq@ncaq.net
-copyright: © ncaq
+copyright: ncaq
 license: MIT
 license-file: LICENSE
 build-type: Simple
