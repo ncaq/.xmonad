@@ -30,7 +30,7 @@ common basic
     -Wredundant-constraints
     -j
 
-common executable-common
+common basic-executable
   import: basic
   ghc-options:
     -threaded
@@ -85,13 +85,13 @@ library
     xmonad-contrib,
 
 executable xmonad-launch
-  import: executable-common
+  import: basic-executable
   main-is: Main.hs
   hs-source-dirs: app/XMonad
   ghc-options: -with-rtsopts=-N
 
 executable xmobar-launch
-  import: executable-common
+  import: basic-executable
   main-is: Main.hs
   hs-source-dirs: app/Xmobar
   ghc-options: -with-rtsopts=-N2
