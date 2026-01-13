@@ -29,8 +29,6 @@ cabal.project.local~
 # End of https://www.toptal.com/developers/gitignore/api/haskell
 
 # Nix
-
 .direnv/
-/result
-
-.env*local
+.env.local
+result*

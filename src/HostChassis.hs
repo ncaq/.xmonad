@@ -1,5 +1,3 @@
-{-# LANGUAGE StrictData #-}
-
 module HostChassis where
 
 import Control.Monad.IO.Class
