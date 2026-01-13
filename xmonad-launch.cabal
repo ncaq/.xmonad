@@ -30,13 +30,6 @@ common basic
     OverloadedStrings
     StrictData
 
-common basic-executable
-  import: basic
-  ghc-options:
-    -threaded
-    -rtsopts
-    -with-rtsopts=-N4
-
   build-depends:
     base,
     containers,
@@ -51,26 +44,10 @@ common basic-executable
     xmobar,
     xmonad,
     xmonad-contrib,
-    xmonad-launch,
 
 library
   import: basic
   hs-source-dirs: src
-  build-depends:
-    base,
-    containers,
-    convertible,
-    directory,
-    gi-glib,
-    gi-gtk3,
-    hostname,
-    process,
-    text,
-    time,
-    xmobar,
-    xmonad,
-    xmonad-contrib,
-
   -- cabal-gild: discover ./src
   exposed-modules:
     ByDpi
@@ -85,6 +62,16 @@ library
     XMonad.TouchPad
     Xmobar.AppMain
     Xmobar.Config
+
+common basic-executable
+  import: basic
+  ghc-options:
+    -threaded
+    -rtsopts
+    -with-rtsopts=-N4
+
+  build-depends:
+    xmonad-launch
 
 executable xmonad-launch
   import: basic-executable
