@@ -17,7 +17,9 @@ source-repository head
 
 common basic
   default-language: GHC2024
-  default-extensions: OverloadedStrings
+  default-extensions:
+    OverloadedStrings
+    StrictData
   ghc-options:
     -Wall
     -Wcompat
