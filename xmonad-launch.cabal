@@ -71,6 +71,7 @@ library
     xmonad,
     xmonad-contrib,
 
+  -- cabal-gild: discover ./src
   exposed-modules:
     ByDpi
     HostChassis
