@@ -4,11 +4,11 @@ version: 0.1.0.0
 synopsis: It is my xmonad and xmobar setting
 homepage: https://github.com/ncaq/.xmonad#readme
 bug-reports: https://github.com/ncaq/.xmonad/issues
+license: MIT
+license-file: LICENSE
 author: ncaq
 maintainer: ncaq@ncaq.net
 copyright: ncaq
-license: MIT
-license-file: LICENSE
 build-type: Simple
 
 source-repository head
@@ -16,10 +16,6 @@ source-repository head
   location: https://github.com/ncaq/.xmonad
 
 common basic
-  default-language: GHC2024
-  default-extensions:
-    OverloadedStrings
-    StrictData
   ghc-options:
     -Wall
     -Wcompat
@@ -29,6 +25,11 @@ common basic
     -Wpartial-fields
     -Wredundant-constraints
     -j
+
+  default-language: GHC2024
+  default-extensions:
+    OverloadedStrings
+    StrictData
 
 common basic-executable
   import: basic
@@ -55,20 +56,6 @@ common basic-executable
 
 library
   import: basic
-  exposed-modules:
-    ByDpi
-    HostChassis
-    XMonad.AppMain
-    XMonad.Config
-    XMonad.Key
-    XMonad.ManageHook
-    XMonad.Pp
-    XMonad.Screenshot
-    XMonad.Startup
-    XMonad.TouchPad
-    Xmobar.AppMain
-    Xmobar.Config
-
   hs-source-dirs: src
   build-depends:
     base,
@@ -84,13 +71,26 @@ library
     xmobar,
     xmonad,
     xmonad-contrib,
+  exposed-modules:
+    ByDpi
+    HostChassis
+    XMonad.AppMain
+    XMonad.Config
+    XMonad.Key
+    XMonad.ManageHook
+    XMonad.Pp
+    XMonad.Screenshot
+    XMonad.Startup
+    XMonad.TouchPad
+    Xmobar.AppMain
+    Xmobar.Config
 
 executable xmonad-launch
   import: basic-executable
-  main-is: Main.hs
   hs-source-dirs: app/XMonad
+  main-is: Main.hs
 
 executable xmobar-launch
   import: basic-executable
-  main-is: Main.hs
   hs-source-dirs: app/Xmobar
+  main-is: Main.hs
