@@ -192,7 +192,9 @@
           paths = with pkgs; [
             birdtray
             copyq
+            imagemagick
             networkmanagerapplet
+            oxipng
             snixembed
             trayer
             xmobar-launch
