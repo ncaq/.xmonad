@@ -45,6 +45,9 @@
               src = ./.;
               name = "xmonad-launch";
               compiler-nix-name = ghc-version;
+              # IFD時にcabalやnix-toolsを実行するシステムを固定。
+              # これによりx86_64-linux上でaarch64-linux用のパッケージも評価可能になる。
+              evalSystem = "x86_64-linux";
               modules = [
                 # `nix flake check`レベルではcabalの警告をエラーとして扱います。
                 # ライブラリの問題ない範囲の不一致とか考えるとcabalの警告はエラーにしないべきですが、
