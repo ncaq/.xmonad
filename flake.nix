@@ -21,7 +21,7 @@
       haskellNix,
       ...
     }:
-    flake-utils.lib.eachSystem [ "x86_64-linux" ] (
+    flake-utils.lib.eachSystem [ "aarch64-linux" "x86_64-linux" ] (
       system:
       let
         ghc-version = "ghc9103"; # GHC 9.10.3
