@@ -51,7 +51,7 @@ myKeys hostChassis conf@XConfig{modMask} =
     , ("M-S-d", runOrRaiseNext "jd.sh" (className =? "Jdim"))
     , ("M-h", runOrRaiseNext "firefox" (className ~? "firefox"))
     , ("M-t", runOrRaiseNext "kitty" (className =? "kitty"))
-    , ("M-n", runOrRaiseNext "emacs" (className =? "Emacs"))
+    , ("M-n", runOrRaiseNext "emacsclient --create-frame --no-wait -a emacs" (className =? "Emacs"))
     , ("M-s", runOrRaiseNext "slack" (className =? "Slack"))
     , ("M-f", runOrRaiseNext "nautilus" (className =? "org.gnome.Nautilus"))
     , ("M-g", runOrRaiseNext "gimp" (className ~? "Gimp"))
