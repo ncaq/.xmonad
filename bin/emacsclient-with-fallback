@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+exec emacsclient --create-frame --no-wait -a emacs
