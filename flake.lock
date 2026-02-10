@@ -37,7 +37,7 @@
         "type": "github"
       }
     },
-    "nixpkgs-2511": {
+    "nixpkgs": {
       "locked": {
         "lastModified": 1770617025,
         "narHash": "sha256-1jZvgZoAagZZB6NwGRv2T2ezPy+X6EFDsJm+YSlsvEs=",
@@ -57,10 +57,7 @@
       "inputs": {
         "flake-parts": "flake-parts",
         "gtk2hs": "gtk2hs",
-        "nixpkgs": [
-          "nixpkgs-2511"
-        ],
-        "nixpkgs-2511": "nixpkgs-2511",
+        "nixpkgs": "nixpkgs",
         "treefmt-nix": "treefmt-nix"
       }
     },
