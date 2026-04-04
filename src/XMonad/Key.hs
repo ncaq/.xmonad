@@ -80,7 +80,7 @@ myKeys hostChassis conf@XConfig{modMask} =
       if hostChassis == HostChassisLaptop
         then
           [ ("<XF86Calculator>", toggleTouchPad) -- 意味的に適切ではないが、適切なキーがないため代用。
-          , ("M-l", spawn "dm-tool lock") -- M-lにロックを割り当てておかないとロックファンクションキーも動かなくなる。
+          , ("M-l", spawn "loginctl lock-session") -- M-lにロックを割り当てておかないとロックファンクションキーも動かなくなる。
           ]
         else []
 
