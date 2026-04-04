@@ -174,7 +174,6 @@
 
               # nixの関連ツール。
               nil
-              nixfmt
 
               # GitHub関連ツール。
               gh
