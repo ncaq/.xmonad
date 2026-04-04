@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "deepwiki": {
+      "type": "http",
+      "url": "https://mcp.deepwiki.com/mcp"
+    },
+    "github": {
+      "type": "stdio",
+      "command": "github-mcp-server",
+      "args": ["stdio"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
+      }
+    },
+    "nixos": {
+      "type": "http",
+      "url": "https://mcp-nixos.ncaq.net/mcp"
+    }
+  }
+}
