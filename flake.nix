@@ -116,6 +116,8 @@
               shellcheck.enable = true;
               shfmt.enable = true;
               statix.enable = true;
+              typos.enable = true;
+              zizmor.enable = true;
             };
             settings.formatter = {
               # cabal-gildのモジュール自動発見機能に対応するため、
@@ -149,22 +151,8 @@
                 ];
               };
               editorconfig-checker = {
-                command = lib.getExe (
-                  pkgs.writeShellApplication {
-                    name = "editorconfig-checker-wrapper";
-                    runtimeInputs = [ pkgs.editorconfig-checker ];
-                    text = ''
-                      editorconfig-checker -config .editorconfig-checker.json "$@"
-                    '';
-                  }
-                );
+                command = pkgs.editorconfig-checker;
                 includes = [ "*" ];
-                excludes = [
-                  ".direnv/*"
-                  ".git/*"
-                  "dist-newstyle/*"
-                  "result*"
-                ];
               };
             };
           };
@@ -172,15 +160,32 @@
           devShells.default = haskellPackages.shellFor {
             packages = p: [ p.xmonad-launch ];
             nativeBuildInputs = with pkgs; [
+              # treefmtで指定したプログラムの単体版。
+              actionlint
+              deadnix
+              editorconfig-checker
+              nixfmt
+              prettier
+              shellcheck
+              shfmt
+              statix
+              typos
+              zizmor
+
+              # nixの関連ツール。
+              nil
+
+              # GitHub関連ツール。
+              gh
+              github-mcp-server
+
+              # プロジェクト関連ツール。
               cabal-install
               fourmolu
               gtk3
               haskell-language-server
               haskellPackages.cabal-gild
               hlint
-              nil
-              nixfmt
-              yamllint
 
               (pkgs.writeScriptBin "haskell-language-server-wrapper" ''
                 #!${pkgs.stdenv.shell}
