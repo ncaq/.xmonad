@@ -17,7 +17,7 @@ mkMyConfig = do
     ewmhFullscreen $
       docks $
         def
-          { terminal = "kitty"
+          { terminal = "alacritty"
           , layoutHook = Full ||| Mirror (Tall 0 (3 / 100) 1) ||| spiral (4 / 3)
           , manageHook = myManageHook
           , modMask = mod4Mask
