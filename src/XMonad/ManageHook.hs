@@ -17,7 +17,7 @@ myManageHookFor4 =
   composeAll
     [ isDialog --> doFullFloat
     , className =? "firefox" --> doShift "3"
-    , className =? "kitty" --> doShift "2"
+    , className =? "Alacritty" --> doShift "2"
     , return True --> doShift "1"
     ]
 

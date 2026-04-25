@@ -50,7 +50,7 @@ myKeys hostChassis conf@XConfig{modMask} =
     , ("M-d", runOrRaiseNext "discord" (className =? "discord"))
     , ("M-S-d", runOrRaiseNext "jd.sh" (className =? "Jdim"))
     , ("M-h", runOrRaiseNext "firefox" (className ~? "firefox"))
-    , ("M-t", runOrRaiseNext "kitty" (className =? "kitty"))
+    , ("M-t", runOrRaiseNext "alacritty" (className =? "Alacritty"))
     , ("M-n", runOrRaiseNext "emacsclient-with-fallback" (className =? "Emacs"))
     , ("M-s", runOrRaiseNext "slack" (className =? "Slack"))
     , ("M-f", runOrRaiseNext "nautilus" (className =? "org.gnome.Nautilus"))
