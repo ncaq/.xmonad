@@ -11,7 +11,7 @@ AIは人間に話すときは日本語を使ってください。
 
 ASCIIに対応する全角形(Fullwidth Forms)は使用禁止。
 
-具体的には以下のような文字:
+具体的には以下のような文字は右のように変換してください:
 
 - 全角括弧 `（）` → 半角 `()`
 - 全角コロン `：` → 半角 `:`
@@ -109,7 +109,13 @@ nix flake check
 
 # リポジトリ構成
 
-Codex向けの`AGENTS.md`とClaude Code向けの`CLAUDE.md`は以下のように`.github/copilot-instructions.md`のシンボリックリンクになっています。
+## ルートディレクトリ
+
+### LLM向けのシンボリックリンク
+
+Codex向けの`AGENTS.md`と、
+Claude Code向けの`CLAUDE.md`は、
+以下のように`.github/copilot-instructions.md`のシンボリックリンクになっています。
 
 ```console
 AGENTS.md -> .github/copilot-instructions.md
