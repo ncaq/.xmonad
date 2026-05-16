@@ -123,7 +123,8 @@
             settings.formatter = {
               # cabal-gildのモジュール自動発見機能に対応するため、
               # Haskellソースファイルの変更も検知してcabal-gildを実行します。
-              # treefmt-nixの上流では変更されたファイルだけを修正したいと言われてマージされていませんが、
+              # treefmt-nixの上流では、
+              # 変更されたファイルだけを修正したいと言われてマージされていませんが、
               # ローカルで使う分には問題ありません。
               # [fix(cabal): cabal-fmt and cabal-gild discover module by ncaq · Pull Request #384 · numtide/treefmt-nix](https://github.com/numtide/treefmt-nix/pull/384)
               cabal-gild = {
