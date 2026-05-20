@@ -32,7 +32,6 @@ myStartupHook = do
       , "--alpha 255"
       ]
   spawn "copyq"
-  spawn "nm-applet"
 
 -- | ラップトップ環境での初期設定。
 myStartupHookLaptop :: X ()

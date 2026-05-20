@@ -81,7 +81,6 @@
               copyq
               haskellPackages.xmonad-launch
               imagemagick
-              networkmanagerapplet
               oxipng
               snixembed
               systemd
