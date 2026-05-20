@@ -78,7 +78,6 @@
           xmonad-launch-full = pkgs.symlinkJoin {
             name = "xmonad-launch-full";
             paths = with pkgs; [
-              copyq
               haskellPackages.xmonad-launch
               imagemagick
               oxipng

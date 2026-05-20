@@ -31,7 +31,6 @@ myStartupHook = do
       , "--transparent true"
       , "--alpha 255"
       ]
-  spawn "copyq"
 
 -- | ラップトップ環境での初期設定。
 myStartupHookLaptop :: X ()
