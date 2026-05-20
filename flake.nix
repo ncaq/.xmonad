@@ -83,7 +83,6 @@
               imagemagick
               oxipng
               snixembed
-              systemd
               trayer
               xmonad-helper-bin
               xorg.xinput
