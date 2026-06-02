@@ -83,8 +83,8 @@
               oxipng
               snixembed
               trayer
+              xinput
               xmonad-helper-bin
-              xorg.xinput
             ];
           };
         in
