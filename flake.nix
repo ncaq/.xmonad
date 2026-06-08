@@ -10,7 +10,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     gtk2hs = {
-      url = "github:ncaq/gtk2hs/260805611e54e60383c1d98c5c0a29ad9c2efe7f";
+      url = "github:ncaq/gtk2hs/f8e6044a25009c2b1c9f8eb7ea730db815ca5b5f";
       flake = false;
     };
   };

@@ -23,17 +23,17 @@
     "gtk2hs": {
       "flake": false,
       "locked": {
-        "lastModified": 1747484193,
-        "narHash": "sha256-1rionULNPK/tE3LjDo9xHuhkFCeZ7xmYrvd1Mwd8FbQ=",
+        "lastModified": 1742459601,
+        "narHash": "sha256-2R/kZilxSnqBSNabzbHwWzCjh+BJiR7F5pSK5x/4+wU=",
         "owner": "ncaq",
         "repo": "gtk2hs",
-        "rev": "260805611e54e60383c1d98c5c0a29ad9c2efe7f",
+        "rev": "f8e6044a25009c2b1c9f8eb7ea730db815ca5b5f",
         "type": "github"
       },
       "original": {
         "owner": "ncaq",
         "repo": "gtk2hs",
-        "rev": "260805611e54e60383c1d98c5c0a29ad9c2efe7f",
+        "rev": "f8e6044a25009c2b1c9f8eb7ea730db815ca5b5f",
         "type": "github"
       }
     },
