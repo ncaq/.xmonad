@@ -33,41 +33,53 @@
           ...
         }:
         let
-          haskellPackages = pkgs.haskell.packages.ghc9103.override {
-            overrides = hself: hsuper: {
-              # gtk2hs packages from inputs.gtk2hs
-              # callCabal2nixの第3引数でpkg-config依存のHaskellパッケージ名との衝突を解決する。
-              # cabal2nixはpkgconfig-dependsもHaskellパッケージセットから探すため、
-              # glib, cairo等のシステムライブラリ名がHaskellパッケージ名と衝突して無限再帰になる。
-              gtk2hs-buildtools = hself.callCabal2nix "gtk2hs-buildtools" (inputs.gtk2hs + "/tools") { };
-              # cabal2nixはpkgconfig-dependsの名前をそのまま関数引数にするため、
-              # システムライブラリ名がHaskellパッケージ名と衝突する。
-              # 第3引数で明示的にシステムパッケージを渡して衝突を解決する。
-              glib = hself.callCabal2nix "glib" (inputs.gtk2hs + "/glib") {
-                inherit (pkgs) glib;
-              };
-              cairo = hself.callCabal2nix "cairo" (inputs.gtk2hs + "/cairo") {
-                inherit (pkgs) cairo;
-              };
-              gio = hself.callCabal2nix "gio" (inputs.gtk2hs + "/gio") {
-                system-glib = pkgs.glib;
-              };
-              pango = hself.callCabal2nix "pango" (inputs.gtk2hs + "/pango") {
-                inherit (pkgs) pango;
-              };
-              # cabal2nixはgtk3パッケージとして生成する(gtk/ディレクトリだがcabal名がgtk3)
-              gtk3 = hself.callCabal2nix "gtk3" (inputs.gtk2hs + "/gtk") {
-                inherit (pkgs) gtk3;
-              };
-
-              # xmobar with flags
-              xmobar = pkgs.haskell.lib.compose.enableCabalFlag "with_datezone" (
-                pkgs.haskell.lib.compose.enableCabalFlag "with_threaded" hsuper.xmobar
+          # `cabal.project`の`with-compiler`で指定したGHCバージョンを尊重し、
+          # 対応するnixpkgsのパッケージセットを選択します。
+          # こうすることでGHCバージョンの管理が`cabal.project`に一元化されます。
+          cabalHaskellGhcVersion =
+            let
+              m = builtins.match ".*with-compiler:[[:space:]]*ghc-([0-9.]+).*" (
+                builtins.readFile ./cabal.project
               );
+            in
+            if m == null then throw "cabal.projectにwith-compilerが見つかりません" else builtins.head m;
+          haskellPackages =
+            pkgs.haskell.packages."ghc${builtins.replaceStrings [ "." ] [ "" ] cabalHaskellGhcVersion}".override
+              {
+                overrides = hself: hsuper: {
+                  # gtk2hs packages from inputs.gtk2hs
+                  # callCabal2nixの第3引数でpkg-config依存のHaskellパッケージ名との衝突を解決する。
+                  # cabal2nixはpkgconfig-dependsもHaskellパッケージセットから探すため、
+                  # glib, cairo等のシステムライブラリ名がHaskellパッケージ名と衝突して無限再帰になる。
+                  gtk2hs-buildtools = hself.callCabal2nix "gtk2hs-buildtools" (inputs.gtk2hs + "/tools") { };
+                  # cabal2nixはpkgconfig-dependsの名前をそのまま関数引数にするため、
+                  # システムライブラリ名がHaskellパッケージ名と衝突する。
+                  # 第3引数で明示的にシステムパッケージを渡して衝突を解決する。
+                  glib = hself.callCabal2nix "glib" (inputs.gtk2hs + "/glib") {
+                    inherit (pkgs) glib;
+                  };
+                  cairo = hself.callCabal2nix "cairo" (inputs.gtk2hs + "/cairo") {
+                    inherit (pkgs) cairo;
+                  };
+                  gio = hself.callCabal2nix "gio" (inputs.gtk2hs + "/gio") {
+                    system-glib = pkgs.glib;
+                  };
+                  pango = hself.callCabal2nix "pango" (inputs.gtk2hs + "/pango") {
+                    inherit (pkgs) pango;
+                  };
+                  # cabal2nixはgtk3パッケージとして生成する(gtk/ディレクトリだがcabal名がgtk3)
+                  gtk3 = hself.callCabal2nix "gtk3" (inputs.gtk2hs + "/gtk") {
+                    inherit (pkgs) gtk3;
+                  };
 
-              xmonad-launch = hself.callCabal2nix "xmonad-launch" inputs.self { };
-            };
-          };
+                  # xmobar with flags
+                  xmobar = pkgs.haskell.lib.compose.enableCabalFlag "with_datezone" (
+                    pkgs.haskell.lib.compose.enableCabalFlag "with_threaded" hsuper.xmobar
+                  );
+
+                  xmonad-launch = hself.callCabal2nix "xmonad-launch" inputs.self { };
+                };
+              };
 
           xmonad-helper-bin = pkgs.runCommand "xmonad-helper-bin" { } ''
             mkdir -p $out/bin

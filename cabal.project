@@ -1,8 +1,8 @@
-packages: .
 with-compiler: ghc-9.10.3
 index-state: 2026-06-13T20:52:20Z
+packages: .
 
-package xmonad-launch
+package *
   ghc-options: -j
 
 package xmobar
