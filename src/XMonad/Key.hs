@@ -46,7 +46,7 @@ myKeys hostChassis conf@XConfig{modMask} =
     , ("M-S-i", runOrRaiseNext "idea-community" (className ~? "jetbrains-idea"))
     , ("M-p", runOrRaiseNext "pwvucontrol" (className ~? "pwvucontrol"))
     , ("M-y", runOrRaiseNext "rhythmbox" (className =? "Rhythmbox"))
-    , ("M-x", runOrRaiseNext "steam" (className =? "Steam"))
+    , ("M-x", runOrRaiseNext "steam" (className =? "steam"))
     , ("M-d", runOrRaiseNext "discord" (className =? "discord"))
     , ("M-S-d", runOrRaiseNext "jd.sh" (className =? "Jdim"))
     , ("M-h", runOrRaiseNext "firefox" (className ~? "firefox"))
