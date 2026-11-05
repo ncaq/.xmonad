@@ -87,10 +87,35 @@
             chmod +x $out/bin/*
           '';
 
+          # cabal2nixが生成する生のパッケージはライブラリとhaddockを出力に含み、
+          # 依存するHaskellライブラリの`out`と`doc`が実行時の閉包に残ります。
+          # 実行ファイルだけが必要なので`justStaticExecutables`で包んで、
+          # ライブラリ、haddock、GHCへの参照を閉包から外します。
+          # [xmonad-launchを`justStaticExecutables`で包んでHaskellライブラリとhaddockを閉包から外す · Issue #130 · ncaq/.xmonad](https://github.com/ncaq/.xmonad/issues/130)
+          xmonad-launch-static = lib.pipe haskellPackages.xmonad-launch [
+            pkgs.haskell.lib.compose.justStaticExecutables
+            (pkgs.haskell.lib.compose.addBuildTool pkgs.removeReferencesTo)
+            (pkgs.haskell.lib.compose.overrideCabal (drv: {
+              # xmonadとxmobarはCabalが生成する`Paths_*`モジュールを`version`のためだけにimportしています。
+              # `Paths_*`はbindirやlibdirなどの絶対パスを文字列リテラルとして持っているため、
+              # 静的リンクされた実行ファイルにxmonadとxmobarのライブラリ出力への参照が残り、
+              # そこからGHC本体まで閉包に引き込まれてしまいます。
+              # 実行時には使われない参照なので、nixpkgsのマニュアルの指示通り`remove-references-to`で消します。
+              # [Haskell - Nixpkgs Manual](https://nixos.org/manual/nixpkgs/unstable/#haskell-packaging-helpers)
+              postInstall = (drv.postInstall or "") + ''
+                find "$out/bin" -type f -exec remove-references-to \
+                  -t ${haskellPackages.xmonad} \
+                  -t ${haskellPackages.xmobar} \
+                  -t ${lib.getBin haskellPackages.xmobar} \
+                  {} +
+              '';
+            }))
+          ];
+
           xmonad-launch-full = pkgs.symlinkJoin {
             name = "xmonad-launch-full";
             paths = with pkgs; [
-              haskellPackages.xmonad-launch
+              xmonad-launch-static
               imagemagick
               oxipng
               snixembed
