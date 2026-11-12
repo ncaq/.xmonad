@@ -39,6 +39,7 @@ common basic
     gi-gtk3,
     hostname,
     process,
+    stm,
     text,
     time,
     xmobar,
